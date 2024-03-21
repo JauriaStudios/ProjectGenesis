@@ -1,5 +1,7 @@
 import os
+from pprint import pprint
 
+import oyaml as yaml
 import pygame
 
 import pyscroll
@@ -11,7 +13,8 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCA
 
 from pytmx import load_pygame
 
-from constants import RESOURCE_DIR, RED
+from constants import ROOT_PATH, RESOURCE_DIR, RED
+from menu import Menu
 from warp_point import WarpPoint
 from player import Player
 from npc import Npc
@@ -24,6 +27,7 @@ class Field(object):
         self.screen_size = screen_size
         self.music = music
 
+        self.field_mode = "FIELD"
         self.fading = None
         self.fade_end = False
 
@@ -32,17 +36,15 @@ class Field(object):
 
         self.fade_rect = pygame.Surface(sr.size)
         self.fade_rect.fill((0, 0, 0))
-
-        self.base_dir = os.path.dirname(os.path.abspath(__file__))
-
         self.initialize()
+        self.init_menu()
 
     def initialize(self):
 
         # self.music.change_music(2)
         # self.music.play_music()
 
-        self.file_path = os.path.join(self.base_dir, RESOURCE_DIR, "maps", self.map_name)
+        self.file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "maps", self.map_name)
         # load data from pytmx
         self.tmx_data = load_pygame(self.file_path)
 
@@ -65,12 +67,12 @@ class Field(object):
 
         self.hero_move_speed = 250  # pixels per second
 
-        self.player = Player(self, image="pocky.png")
+        self.player = Player(self, image="Izzy_ck.png")
 
         self.npcs = []
 
-        self.npc_1 = Npc(self, self.player, "rocky.png", 0, 0, 34, 34, follower=True, wanderer=False)
-        self.charly = Npc(self, self.player, "rocky.png", 0, 0, 34, 34, follower=False, wanderer=True)
+        self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False)
+        self.charly = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
 
         self.npcs.append(self.npc_1)
         self.npcs.append(self.charly)
@@ -89,130 +91,154 @@ class Field(object):
         self.spawns = dict()
 
         for obj in self.tmx_data.objects:
+
+            pprint(obj)
+
             if obj.type == "warp":
                 warp = WarpPoint(obj, "warp.png", 30)
                 self.warps[obj.name] = warp
                 self.group.add(warp)
             elif obj.type == "spawn":
                 print("SPAWN FOUND")
-                self.spawns[obj.name] = (obj.x, obj.y)
+                self.spawns[obj.name] = (int(obj.x), int(obj.y))
             elif obj.type == "player":
                 print("PLAYER SPAWN FOUND")
-                self.player.position = [obj.x, obj.y]
+                self.player.position = [int(obj.x), int(obj.y)]
             else:
-                self.walls.append(Rect(obj.x, obj.y, obj.width, obj.height))
+                self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
 
         for name, spawn in self.spawns.items():
             self.charly.position = self.spawns[name]
 
+    def init_menu(self):
+        file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "field.yml")
+        with open(file_path) as fh:
+            options = yaml.load(fh, Loader=yaml.FullLoader)
+
+        self.menu = Menu(options, self.music)
+        print(options)
+
     def handle_input(self, event):
-
         dead_zone = 0.25
+        if self.field_mode == "FIELD":
 
-        if event.type == JOYAXISMOTION:
-            if event.axis == 0 or event.axis == 1:
-                if abs(event.value) > dead_zone:
+            if event.type == JOYAXISMOTION:
+                if event.axis == 0 or event.axis == 1:
+                    if abs(event.value) > dead_zone:
 
-                    self.player.velocity[event.axis] = event.value * self.hero_move_speed
-                else:
-                    self.player.velocity[event.axis] = 0
+                        self.player.velocity[event.axis] = event.value * self.hero_move_speed
+                    else:
+                        self.player.velocity[event.axis] = 0
 
-            elif event.axis == 3:
-                if event.value > dead_zone or event.value < dead_zone:
-                    self.map_layer.zoom += event.value / 10
+                elif event.axis == 3:
+                    if event.value > dead_zone or event.value < dead_zone:
+                        self.map_layer.zoom += event.value / 10
 
-        elif event.type == JOYBUTTONDOWN:
-            if event.button == 1:
-                self.npc_1.shoot()
-                self.player.shoot()
+            elif event.type == JOYBUTTONDOWN:
+                if event.button == 1:
+                    self.npc_1.shoot()
+                    self.player.shoot()
 
-            elif event.button == 0:
-                for name, warp in self.warps.items():
-                    if warp.get_player():
-                        map_name = warp.get_warp_map()
-                        print(f"Change Field {map_name} from warp name {name}")
-                        self.change_field(map_name)
+                elif event.button == 0:
+                    for name, warp in self.warps.items():
+                        if warp.get_player():
+                            map_name = warp.get_warp_map()
+                            print(f"Change Field {map_name} from warp name {name}")
+                            self.change_field(map_name)
+                elif event.button == 8:
+                    self.field_mode = "MENU"
 
-        elif event.type == JOYBUTTONUP:
-            if event.button == 2:
-                pass
+            elif event.type == JOYBUTTONUP:
+                if event.button == 2:
+                    pass
 
-        elif event.type == KEYDOWN:
-            if event.key == K_LEFT:
-                self.player.velocity[0] = -self.hero_move_speed
+            elif event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    self.player.velocity[0] = -self.hero_move_speed
 
-            elif event.key == K_RIGHT:
-                self.player.velocity[0] = self.hero_move_speed
+                elif event.key == K_RIGHT:
+                    self.player.velocity[0] = self.hero_move_speed
 
-            elif event.key == K_UP:
-                self.player.velocity[1] = -self.hero_move_speed
+                elif event.key == K_UP:
+                    self.player.velocity[1] = -self.hero_move_speed
 
-            elif event.key == K_DOWN:
-                self.player.velocity[1] = self.hero_move_speed
+                elif event.key == K_DOWN:
+                    self.player.velocity[1] = self.hero_move_speed
 
-        elif event.type == KEYUP:
-            if event.key == K_LEFT or event.key == K_RIGHT:
-                self.player.velocity[0] = 0
-            elif event.key == K_UP or event.key == K_DOWN:
-                self.player.velocity[1] = 0
+            elif event.type == KEYUP:
+                if event.key == K_LEFT or event.key == K_RIGHT:
+                    self.player.velocity[0] = 0
+                elif event.key == K_UP or event.key == K_DOWN:
+                    self.player.velocity[1] = 0
+        elif self.field_mode == "MENU":
+            self.menu.handle_input(event)
 
     def update(self, dt):
-        self.group.update(dt)
 
-        # check if the sprite's feet are colliding with wall
-        # sprite must have a rect called feet, and move_back method,
-        # otherwise this will fail
-        for sprite in self.group.sprites():
-            if isinstance(sprite, Player):
+        if self.field_mode == "FIELD":
 
-                if sprite.feet.collidelist(self.walls) > -1:
-                    sprite.move_back(dt)
-                # elif sprite.rect.collidelist(self.npcs) > -1:
-                #     sprite.move_back(dt)
+            self.group.update(dt)
 
-                for name, warp in self.warps.items():
-                    if sprite.feet.colliderect(warp.get_rect()):
-                        self.warps[name].go_inside(self.player)
-                    else:
-                        self.warps[name].go_outisde()
+            # check if the sprite's feet are colliding with wall
+            # sprite must have a rect called feet, and move_back method,
+            # otherwise this will fail
+            for sprite in self.group.sprites():
+                if isinstance(sprite, Player):
 
-            elif isinstance(sprite, Npc):
-                if sprite.feet.collidelist(self.walls) > -1:
-                    sprite.move_back(dt)
+                    if sprite.feet.collidelist(self.walls) > -1:
+                        sprite.move_back(dt)
+                    # elif sprite.rect.collidelist(self.npcs) > -1:
+                    #     sprite.move_back(dt)
 
-                elif sprite.feet.colliderect(self.player.get_rect()):
-                    sprite.velocity[0] = 0
-                    sprite.velocity[1] = 0
+                    for name, warp in self.warps.items():
+                        if sprite.feet.colliderect(warp.get_rect()):
+                            self.warps[name].go_inside(self.player)
+                        else:
+                            self.warps[name].go_outisde()
 
-        if self.fading == "IN":
-            fade_speed = 0.25
-            self.alpha += fade_speed
-            if self.alpha >= 255:
-                self.fading = None
-                self.fade_end = True
+                elif isinstance(sprite, Npc):
+                    if sprite.feet.collidelist(self.walls) > -1:
+                        sprite.move_back(dt)
 
-        elif self.fading == "OUT":
-            fade_speed = 0.25
-            self.alpha -= fade_speed
-            if self.alpha <= 0:
-                self.fading = None
+                    elif sprite.feet.colliderect(self.player.get_rect()):
+                        sprite.velocity[0] = 0
+                        sprite.velocity[1] = 0
 
-        if self.fade_end is True:
-            self.initialize()
-            self.fade_end = False
-            self.fading = "OUT"
+            if self.fading == "IN":
+                fade_speed = 0.25
+                self.alpha += fade_speed
+                if self.alpha >= 255:
+                    self.fading = None
+                    self.fade_end = True
+
+            elif self.fading == "OUT":
+                fade_speed = 0.25
+                self.alpha -= fade_speed
+                if self.alpha <= 0:
+                    self.fading = None
+
+            if self.fade_end is True:
+                self.initialize()
+                self.fade_end = False
+                self.fading = "OUT"
+
+        elif self.field_mode == "MENU":
+            self.menu.update(dt)
 
     def draw(self, screen):
 
-        # center the map/screen on our Hero
-        self.group.center(self.player.rect.center)
+        if self.field_mode == "MENU":
+            self.menu.draw(screen)
+        elif self.field_mode == "FIELD":
+            # center the map/screen on our Hero
+            self.group.center(self.player.rect.center)
 
-        # draw the map and all sprites
-        self.group.draw(screen)
+            # draw the map and all sprites
+            self.group.draw(screen)
 
-        if self.fading is not None:
-            self.fade_rect.set_alpha(self.alpha)
-            screen.blit(self.fade_rect, (0, 0))
+            if self.fading is not None:
+                self.fade_rect.set_alpha(self.alpha)
+                screen.blit(self.fade_rect, (0, 0))
 
     def add_bullet(self, bullet):
         self.group.add(bullet)

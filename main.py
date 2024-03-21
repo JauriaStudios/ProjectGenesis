@@ -10,7 +10,7 @@ from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KE
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE
 from pygame.locals import VIDEORESIZE, QUIT
 
-from constants import RESOURCE_DIR, RED, GRAY
+from constants import ROOT_PATH, RESOURCE_DIR, RED, GRAY
 
 from music_list import MusicList
 from menu import Menu
@@ -36,9 +36,7 @@ class Game:
         self.mode = "MENU"
         self.shooting = False
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-
-        with open(os.path.join(base_dir, RESOURCE_DIR, "menu", "main.yml")) as fh:
+        with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "main.yml")) as fh:
             options = yaml.load(fh, Loader=yaml.FullLoader)
 
         self.menu = Menu(options, self.music_list)

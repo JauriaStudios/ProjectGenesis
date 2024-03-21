@@ -3,7 +3,7 @@ from typing import List
 
 import pygame
 
-from constants import RESOURCE_DIR
+from constants import RESOURCE_DIR, ROOT_PATH
 from projectile import Projectile
 from sprite_sheet import SpriteStripAnim
 
@@ -18,21 +18,20 @@ class Player(pygame.sprite.Sprite):
 
         self.game = game
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.image_path = os.path.join(base_dir, RESOURCE_DIR, image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
 
-        self.width = 34
-        self.height = 34
+        self.width = 64
+        self.height = 64
 
         frame_speed = 60
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 
-        self.anim_down = SpriteStripAnim(self.image_path, (0, 0, self.width, self.width), 5, -1, True, frame_speed)
-        self.anim_down_left = SpriteStripAnim(self.image_path, (0, 34, self.width, self.width), 5, -1, True, frame_speed)
-        self.anim_left = SpriteStripAnim(self.image_path, (0, 68, self.width, self.width), 5, -1, True, frame_speed)
-        self.anim_up_left = SpriteStripAnim(self.image_path, (0, 102, self.width, self.width), 5, -1, True, frame_speed)
-        self.anim_up = SpriteStripAnim(self.image_path, (0, 136, self.width, self.width), 5, -1, True, frame_speed)
+        self.anim_down = SpriteStripAnim(self.image_path, (0, 64*10, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_down_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_up_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_up = SpriteStripAnim(self.image_path, (0, 64*8, self.width, self.height), 8, -1, True, frame_speed)
 
         self.anim_list = list()
 

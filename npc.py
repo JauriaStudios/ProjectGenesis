@@ -42,11 +42,11 @@ class Npc(pygame.sprite.Sprite):
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 
-        self.anim_down = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), 5, -1, True, frame_speed)
-        self.anim_down_left = SpriteStripAnim(self.image_path, (0, self.height, self.width, self.height), 5, -1, True, frame_speed)
-        self.anim_left = SpriteStripAnim(self.image_path, (0, self.height * 2, self.width, self.height), 5, -1, True, frame_speed)
-        self.anim_up_left = SpriteStripAnim(self.image_path, (0, self.height * 3, self.width, self.height), 5, -1, True, frame_speed)
-        self.anim_up = SpriteStripAnim(self.image_path, (0, self.height*4, self.width, self.height), 5, -1, True, frame_speed)
+        self.anim_down = SpriteStripAnim(self.image_path, (0, 64*10, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_down_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_up_left = SpriteStripAnim(self.image_path, (0, 64*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_up = SpriteStripAnim(self.image_path, (0, 64*8, self.width, self.height), 8, -1, True, frame_speed)
 
         self.anim_list = list()
 

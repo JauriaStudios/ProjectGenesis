@@ -1,0 +1,33 @@
+field:
+  background: ""
+  main:
+    name: main
+    text: Main
+    size: 48
+    font: "Arial Black"
+    color: white
+    position: [450, 500]
+
+  items:
+    name: items
+    text: Items
+    size: 48
+    font: "Arial Black"
+    color: white
+    position: [450, 550]
+
+  skills:
+    name: skills
+    text: Skills
+    size: 48
+    font: "Arial Black"
+    color: white
+    position: [450, 600]
+
+  back:
+    name: back
+    text: Back
+    size: 48
+    font: "Arial Black"
+    color: white
+    position: [450, 650]

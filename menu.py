@@ -2,11 +2,12 @@
 import os
 
 import pygame
-from constants import RESOURCE_DIR, RED, WHITE
+from constants import ROOT_PATH, RESOURCE_DIR, RED, WHITE
 
 from cursor import Cursor
 from text_sprite import TextSprite
 from dialog import Dialog
+
 from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KEYUP
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_RETURN
 from pygame.locals import QUIT
@@ -22,18 +23,21 @@ class Menu:
 
         self.sprite_group = pygame.sprite.Group()
 
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.image_path = os.path.join(base_dir, RESOURCE_DIR, "menu", "background.png")
-        self.background = pygame.image.load(self.image_path)
-
         self.dialog = Dialog(440, 500, 220, 180)
 
         self.sprite_group.add(self.dialog)
+        self.background = None
+        self.num_options = 1
 
         for name, menu in self.options.items():
             for key, option in menu.items():
-                text = TextSprite(option)
-                self.sprite_group.add(text)
+                if key == "background" and option != "":
+                    self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", option)
+                    self.background = pygame.image.load(self.image_path)
+                elif isinstance(option, dict):
+                    self.num_options += 1
+                    text = TextSprite(option)
+                    self.sprite_group.add(text)
 
         self.sprite_group.add(self.cursor)
 
@@ -41,7 +45,8 @@ class Menu:
         self.music.play_music()
 
     def draw(self, screen):
-        screen.blit(self.background, (0, 0))
+        if self.background:
+            screen.blit(self.background, (0, 0))
         self.sprite_group.draw(screen)
         # print("MENU DRAW")
 
