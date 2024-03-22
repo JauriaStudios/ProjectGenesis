@@ -41,7 +41,7 @@ class Game:
 
         self.menu = Menu(options, self.music_list)
 
-        self.field = Field("cyber.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field("city1.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self) -> None:
         if self.mode == "MENU":
