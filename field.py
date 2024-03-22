@@ -67,7 +67,7 @@ class Field(object):
 
         self.hero_move_speed = 250  # pixels per second
 
-        self.player = Player(self, image="Izzy_ck.png")
+        self.player = Player(self, image="Izzy.png")
 
         self.npcs = []
 
@@ -135,16 +135,17 @@ class Field(object):
                         self.map_layer.zoom += event.value / 10
 
             elif event.type == JOYBUTTONDOWN:
-                if event.button == 1:
-                    self.npc_1.shoot()
-                    self.player.shoot()
-
-                elif event.button == 0:
+                if event.button == 0:
                     for name, warp in self.warps.items():
                         if warp.get_player():
                             map_name = warp.get_warp_map()
                             print(f"Change Field {map_name} from warp name {name}")
                             self.change_field(map_name)
+                elif event.button == 1:
+                    # self.npc_1.shoot()
+                    self.player.action()
+                elif event.button == 2:
+                    self.player.attack()
                 elif event.button == 8:
                     self.field_mode = "MENU"
 

@@ -41,7 +41,7 @@ class Game:
 
         self.menu = Menu(options, self.music_list)
 
-        self.field = Field("01_map.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field("cyber.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self) -> None:
         if self.mode == "MENU":
@@ -49,7 +49,7 @@ class Game:
         elif self.mode == "GAME":
             self.field.draw(self.screen)
 
-    def handle_input(self) -> None:
+    def handle_input(self, dt) -> None:
         """Handle pygame input events"""
         poll = pygame.event.poll
 
@@ -103,7 +103,7 @@ class Game:
                 dt = clock.tick() / 1000
                 times.append(clock.get_fps())
 
-                self.handle_input()
+                self.handle_input(dt)
                 self.update(dt)
                 self.draw()
 
