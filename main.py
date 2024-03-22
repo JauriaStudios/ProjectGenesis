@@ -1,5 +1,5 @@
 import os
-import time
+
 from collections import deque
 
 import oyaml as yaml
@@ -127,8 +127,8 @@ def main() -> None:
     for joystick in joysticks:
         print(f"\t1 {joystick.get_name()}")
 
-    screen = init_screen(1024, 768)
-    pygame.display.set_caption("Turbo Pocky Rocky")
+    screen = init_screen(800, 600)
+    pygame.display.set_caption("ProjectTron")
 
     try:
         game = Game(screen)
