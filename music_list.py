@@ -3,6 +3,7 @@ from constants import ROOT_PATH, RESOURCE_DIR
 
 import pygame
 
+
 class MusicList:
     def __init__(self):
         self.current_song = 0

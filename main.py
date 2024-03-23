@@ -44,11 +44,11 @@ class Game:
 
         self.field = Field("city2.tmx", self.screen.get_size(), self.music_list)
 
-    def draw(self) -> None:
+    def draw(self, dt) -> None:
         if self.mode == "MENU":
-            self.menu.draw(self.screen)
+            self.menu.draw(self.screen, dt)
         elif self.mode == "GAME":
-            self.field.draw(self.screen)
+            self.field.draw(self.screen, dt)
 
     def handle_input(self, dt) -> None:
         """Handle pygame input events"""
@@ -106,7 +106,7 @@ class Game:
 
                 self.handle_input(dt)
                 self.update(dt)
-                self.draw()
+                self.draw(dt)
 
                 pygame.display.flip()
 
@@ -129,7 +129,7 @@ def main() -> None:
         print(f"\t1 {joystick.get_name()}")
 
     screen = init_screen(1024, 768)
-    pygame.display.set_caption("ProjectTron")
+    pygame.display.set_caption("ProjectGenesis")
 
     try:
         game = Game(screen)

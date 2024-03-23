@@ -13,14 +13,14 @@ from utils import Pid
 
 
 class Pet(pygame.sprite.Sprite):
-    """Npc
+    """Pet
 
     """
 
     def __init__(self, game, player, image, x, y, width, height, follower=False, wanderer=False) -> None:
         super(Pet, self).__init__()
 
-        self.interval= None
+        self.interval = None
         self.current_time = None
         self.previous_time = 0
 
@@ -56,7 +56,7 @@ class Pet(pygame.sprite.Sprite):
 
         self.image = self.anim_walk["DOWN"].images[0]
 
-        self.direction = 0
+        self.direction = "DOWN"
         self.facing = 0
         self.mirror = False
 
@@ -74,23 +74,8 @@ class Pet(pygame.sprite.Sprite):
         d = 1.0
 
         if self.follower:
-            self.x_pid = Pid(p=p,
-                             i=i,
-                             d=d,
-                             derivator=0,
-                             integrator=0,
-                             integrator_max=3,
-                             integrator_min=-3
-                             )
-
-            self.y_pid = Pid(p=p,
-                             i=i,
-                             d=d,
-                             derivator=0,
-                             integrator=0,
-                             integrator_max=3,
-                             integrator_min=-3
-                             )
+            self.x_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=3, integrator_min=-3)
+            self.y_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=3, integrator_min=-3)
 
     @property
     def position(self) -> List[float]:
@@ -115,67 +100,66 @@ class Pet(pygame.sprite.Sprite):
 
         if self.velocity[0] > 0 and self.velocity[1] > 0:
             # print("DIAGONAL DOWN RIGHT")
-            self.direction = 1  # DOWN RIGHT
+            self.direction = "RIGHT"  # DOWN RIGHT
             self.facing = 7
             self.mirror = True
             self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[0] < 0 and self.velocity[1] < 0:
             # print("DIAGONAL UP LEFT")
-            self.direction = 3  # UP LEFT
+            self.direction = "LEFT"  # UP LEFT
             self.facing = 3
             self.mirror = False
             self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] > 0 and self.velocity[1] < 0:
             # print("DIAGONAL UP RIGHT")
-            self.direction = 3  # UP RIGHT
+            self.direction = "RIGHT"  # UP RIGHT
             self.facing = 5
             self.mirror = True
             self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[0] < 0 and self.velocity[1] > 0:
             # print("DIAGONAL DOWN LEFT")
-            self.direction = 1  # DOWN LEFT
+            self.direction = "LEFT"  # DOWN LEFT
             self.facing = 1
             self.mirror = False
             self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] < 0:
             # print("LEFT")
-            self.direction = 2  # LEFT
+            self.direction = "LEFT"  # LEFT
             self.facing = 2
             self.mirror = False
             self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] > 0:
             # print("RIGHT")
-            self.direction = 2  # RIGHT
+            self.direction = "RIGHT"  # RIGHT
             self.facing = 6
             self.mirror = True
             self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[1] < 0:
+            # print("UP")
+            self.direction = "UP"  # UP
+            self.facing = 4
+            self.mirror = False
+            self.image = self.anim_walk["UP"].next()
+
+        elif self.velocity[1] > 0:
             # print("DOWN")
-            self.direction = 1  # DOWN
+            self.direction = "DOWN"  # DOWN
             self.facing = 0
             self.mirror = False
             self.image = self.anim_walk["DOWN"].next()
 
-        elif self.velocity[1] > 0:
-            # print("UP")
-            self.direction = 4  # UP
-            self.facing = 4
-            self.mirror = False
-            self.image = self.anim_walk["UP"].next()
-        #
-        # else:
-        #     self.image = self.anim_list[self.direction].images[0]
-        #     self.image = pygame.transform.flip(self.image, self.mirror, False)
+        else:
+            self.image = self.anim_walk[self.direction].images[1]
 
     def follow(self):
 
-        radius = 10
+        radius = 30
         # Check if position in X is greater than player position
 
         if self.position[0] < self.player.position[0]:

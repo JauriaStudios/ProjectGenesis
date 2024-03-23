@@ -4,13 +4,13 @@ import os
 import pygame
 from constants import ROOT_PATH, RESOURCE_DIR, RED, WHITE
 
-from cursor import Cursor
+# from cursor import Cursor
 from text_sprite import TextSprite
-from dialog import Dialog
+# from dialog import Dialog
 
 from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KEYUP
 from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_RETURN
-from pygame.locals import QUIT
+# from pygame.locals import QUIT
 
 
 class Menu:
@@ -21,9 +21,14 @@ class Menu:
         self.index = None
         # self.cursor = Cursor(400, 400, 3, 50)
 
+        self.current_ticks = 0
+        self.prev_ticks = 0
+        self.ticks_interval = 444  # 1 second / 60 fps
+        self.text_visible = True
+
         self.sprite_group = pygame.sprite.Group()
 
-        self.dialog = Dialog(380, 350, 240, 180)
+        # self.dialog = Dialog(380, 350, 240, 180)
 
         # self.sprite_group.add(self.dialog)
         self.background = None
@@ -44,10 +49,18 @@ class Menu:
         self.music.change_music(0)
         self.music.play_music()
 
-    def draw(self, screen):
+    def draw(self, screen, dt):
+        self.current_ticks += dt * 1000
+
         if self.background:
             screen.blit(self.background, (0, 0))
-        self.sprite_group.draw(screen)
+
+        if self.current_ticks - self.prev_ticks > self.ticks_interval:
+            self.prev_ticks = self.current_ticks
+            self.text_visible ^= True
+
+        if self.text_visible is True:
+            self.sprite_group.draw(screen)
         # print("MENU DRAW")
 
     def update(self, dt):

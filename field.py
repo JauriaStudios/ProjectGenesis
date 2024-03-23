@@ -24,6 +24,12 @@ from npc import Npc
 class Field(object):
     def __init__(self, name, screen_size, music):
 
+        self.spawns = None
+        self.warps = None
+        self.walls = None
+        self.npc_1 = None
+        self.pet = None
+        self.npcs = None
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -79,14 +85,16 @@ class Field(object):
 
         self.npcs.append(self.pet)
         self.npcs.append(self.npc_1)
+        # self.npcs.append(self.npc_2)
 
         # put the hero in the center of the map
         self.npc_1.position = [300, 300]
 
         # add our hero to the group
-        self.group.add(self.player)
         self.group.add(self.pet)
         self.group.add(self.npc_1)
+        # self.group.add(self.npc_2)
+        self.group.add(self.player)
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = []
@@ -107,11 +115,14 @@ class Field(object):
             elif obj.type == "player":
                 print("PLAYER SPAWN FOUND")
                 self.player.position = [int(obj.x), int(obj.y)]
+                self.pet.position = [int(obj.x), int(obj.y)]
             else:
                 self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
 
         for name, spawn in self.spawns.items():
             self.npc_1.position = self.spawns[name]
+
+
 
     def init_menu(self):
         file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "field.yml")
@@ -133,9 +144,9 @@ class Field(object):
                     else:
                         self.player.velocity[event.axis] = 0
 
-                elif event.axis == 3:
-                    if event.value > dead_zone or event.value < dead_zone:
-                        self.map_layer.zoom += event.value / 10
+                # elif event.axis == 3:
+                #     if event.value > dead_zone or event.value < dead_zone:
+                #         self.map_layer.zoom += event.value / 10
 
             elif event.type == JOYBUTTONDOWN:
                 if event.button == 0:
@@ -229,7 +240,7 @@ class Field(object):
         elif self.field_mode == "MENU":
             self.menu.update(dt)
 
-    def draw(self, screen):
+    def draw(self, screen, dt):
 
         if self.field_mode == "MENU":
             self.menu.draw(screen)

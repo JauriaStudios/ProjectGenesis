@@ -4,7 +4,6 @@ main:
     name: start
     text: "PRESS START"
     size: 48
-    font: "Arial Black"
+    font: "Press Start 2P"
     color: white
-    position: [320, 400]
-
+    position: [230, 400]
