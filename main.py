@@ -18,7 +18,8 @@ from field import Field
 
 
 def init_screen(width: int, height: int) -> pygame.Surface:
-    screen = pygame.display.set_mode((width, height))
+    flags = pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN
+    screen = pygame.display.set_mode((width, height), flags=flags)
     return screen
 
 
@@ -41,7 +42,7 @@ class Game:
 
         self.menu = Menu(options, self.music_list)
 
-        self.field = Field("city1.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field("city2.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self) -> None:
         if self.mode == "MENU":
@@ -127,7 +128,7 @@ def main() -> None:
     for joystick in joysticks:
         print(f"\t1 {joystick.get_name()}")
 
-    screen = init_screen(800, 600)
+    screen = init_screen(1024, 768)
     pygame.display.set_caption("ProjectTron")
 
     try:

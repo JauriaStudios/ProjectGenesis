@@ -1,25 +1,10 @@
 main:
-  background: background.png
+  background: "genesis_front_nolettering1.png"
   start:
     name: start
-    text: Start
+    text: "PRESS START"
     size: 48
     font: "Arial Black"
     color: white
-    position: [450, 500]
+    position: [320, 400]
 
-  options:
-    name: options
-    text: Options
-    size: 48
-    font: "Arial Black"
-    color: white
-    position: [450, 550]
-
-  quit:
-    name: quit
-    text: Quit
-    size: 48
-    font: "Arial Black"
-    color: white
-    position: [450, 600]

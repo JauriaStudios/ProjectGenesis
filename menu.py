@@ -19,13 +19,13 @@ class Menu:
         self.options = options
         self.music = music
         self.index = None
-        self.cursor = Cursor(600, 525, 3, 50)
+        # self.cursor = Cursor(400, 400, 3, 50)
 
         self.sprite_group = pygame.sprite.Group()
 
-        self.dialog = Dialog(440, 500, 220, 180)
+        self.dialog = Dialog(380, 350, 240, 180)
 
-        self.sprite_group.add(self.dialog)
+        # self.sprite_group.add(self.dialog)
         self.background = None
         self.num_options = 1
 
@@ -39,7 +39,7 @@ class Menu:
                     text = TextSprite(option)
                     self.sprite_group.add(text)
 
-        self.sprite_group.add(self.cursor)
+        # self.sprite_group.add(self.cursor)
 
         self.music.change_music(0)
         self.music.play_music()
@@ -57,33 +57,35 @@ class Menu:
         # print("MENU DT")
     def handle_input(self, event):
 
-        if event.type == JOYAXISMOTION:
-            if event.axis == 1:  # Y Axis = 1
-                if round(event.value) == -1.0:
-                    self.cursor.move_up()
-                elif round(event.value) == 1.0:
-                    self.cursor.move_down()
+        # if event.type == JOYAXISMOTION:
+        #     if event.axis == 1:  # Y Axis = 1
+        #         if round(event.value) == -1.0:
+        #             self.cursor.move_up()
+        #         elif round(event.value) == 1.0:
+        #             self.cursor.move_down()
+        # elif event.type == JOYBUTTONDOWN:
+        if event.type == JOYBUTTONDOWN:
 
-        elif event.type == JOYBUTTONDOWN:
-
-            if event.button == 1:
-                self.index = self.cursor.get_position()
-            elif event.button == 0:
-                self.index = self.cursor.get_position()
-
+            # if event.button == 1:
+            #     self.index = self.cursor.get_position()
+            # elif event.button == 0:
+            #     self.index = self.cursor.get_position()
+            self.index = 1
         elif event.type == JOYBUTTONUP:
             if event.button == 2:
                 pass
 
         elif event.type == KEYDOWN:
-            if event.key == K_UP:
-                self.cursor.move_up()
+            # if event.key == K_UP:
+            #     self.cursor.move_up()
+            #
+            # elif event.key == K_DOWN:
+            #     self.cursor.move_down()
 
-            elif event.key == K_DOWN:
-                self.cursor.move_down()
-
-            elif event.key == K_RETURN:
-                self.index = self.cursor.get_position()
+            # elif event.key == K_RETURN:
+            if event.key == K_RETURN:
+                # self.index = self.cursor.get_position()
+                self.index = 1
 
     def get_mode(self):
         return self.index

@@ -15,6 +15,7 @@ from pytmx import load_pygame
 
 from constants import ROOT_PATH, RESOURCE_DIR, RED
 from menu import Menu
+from pet import Pet
 from warp_point import WarpPoint
 from player import Player
 from npc import Npc
@@ -71,19 +72,21 @@ class Field(object):
 
         self.npcs = []
 
-        self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False)
-        self.charly = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
+        self.pet = Pet(self, self.player, "gengar.png", 0, 0, 48, 48, follower=True, wanderer=False)
 
+        self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
+        # self.npc_2 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
+
+        self.npcs.append(self.pet)
         self.npcs.append(self.npc_1)
-        self.npcs.append(self.charly)
 
         # put the hero in the center of the map
         self.npc_1.position = [300, 300]
 
         # add our hero to the group
         self.group.add(self.player)
+        self.group.add(self.pet)
         self.group.add(self.npc_1)
-        self.group.add(self.charly)
 
         # setup level geometry with simple pygame rects, loaded from pytmx
         self.walls = []
@@ -108,7 +111,7 @@ class Field(object):
                 self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
 
         for name, spawn in self.spawns.items():
-            self.charly.position = self.spawns[name]
+            self.npc_1.position = self.spawns[name]
 
     def init_menu(self):
         file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "field.yml")
