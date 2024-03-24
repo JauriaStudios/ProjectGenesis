@@ -52,6 +52,7 @@ class Field(object):
         # self.music.play_music()
 
         self.file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "maps", self.map_name)
+
         # load data from pytmx
         self.tmx_data = load_pygame(self.file_path)
 
@@ -62,7 +63,7 @@ class Field(object):
         self.map_layer = pyscroll.BufferedRenderer(self.map_data,
                                                    self.screen_size,
                                                    clamp_camera=False,
-                                                   tall_sprites=1
+                                                   tall_sprites=0
                                                    )
         self.map_layer.zoom = 2
 
@@ -72,7 +73,7 @@ class Field(object):
         # layer for sprites as 2
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
 
-        self.hero_move_speed = 250  # pixels per second
+        self.hero_move_speed = 200  # pixels per second
 
         self.player = Player(self, image="Izzy.png")
 

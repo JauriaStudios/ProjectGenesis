@@ -23,10 +23,10 @@ class WarpPoint(pygame.sprite.Sprite):
 
         self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
 
-        self.width = 36
-        self.height = 50
+        self.width = 80
+        self.height = 80
 
-        self.anim = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), 30, -1, True, frame_speed)
+        self.anim = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), 7, -1, True, frame_speed)
 
         self.image = self.anim.images[0]
         self.rect = self.image.get_rect()

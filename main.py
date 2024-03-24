@@ -45,7 +45,9 @@ class Game:
         self.field = Field("city2.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
-        if self.mode == "MENU":
+        if self.mode == "LOADING":
+            pass
+        elif self.mode == "MENU":
             self.menu.draw(self.screen, dt)
         elif self.mode == "GAME":
             self.field.draw(self.screen, dt)
