@@ -46,8 +46,8 @@ class Menu:
 
         # self.sprite_group.add(self.cursor)
 
-        self.music.change_music(0)
-        self.music.play_music()
+        # self.music.change_music(0)
+        # self.music.play_music()
 
     def draw(self, screen, dt):
         self.current_ticks += dt * 1000

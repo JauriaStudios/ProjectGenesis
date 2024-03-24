@@ -1,0 +1,9 @@
+loading_page:
+  background: "loading_page.png"
+  loading_text:
+    name: loading
+    text: "LOADING!"
+    size: 48
+    font: "Press Start 2P"
+    color: white
+    position: [300, 360]

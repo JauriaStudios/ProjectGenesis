@@ -38,15 +38,20 @@ class Game:
         self.shooting = False
 
         with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "main.yml")) as fh:
-            options = yaml.load(fh, Loader=yaml.FullLoader)
+            menu_options = yaml.load(fh, Loader=yaml.FullLoader)
 
-        self.menu = Menu(options, self.music_list)
+        self.menu = Menu(menu_options, self.music_list)
+
+        with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "loading_page.yml")) as fh:
+            loading_options = yaml.load(fh, Loader=yaml.FullLoader)
+
+        self.loading = Menu(loading_options, self.music_list)
 
         self.field = Field("city2.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
         if self.mode == "LOADING":
-            pass
+            self.loading.draw(self.screen, dt)
         elif self.mode == "MENU":
             self.menu.draw(self.screen, dt)
         elif self.mode == "GAME":
@@ -86,11 +91,13 @@ class Game:
             self.menu.update(dt)
             option = self.menu.get_mode()
             if option == 1:
-                self.mode = "GAME"
+                self.mode = "LOADING"
             elif option == 2:
                 pass
             elif option == 3:
                 self.running = False
+        elif self.mode == "LOADING":
+            self.loading.update(dt)
         elif self.mode == "GAME":
             self.field.update(dt)
 
