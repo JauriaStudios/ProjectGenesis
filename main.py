@@ -32,9 +32,15 @@ class Game:
 
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
+
         self.music_list = MusicList()
+
         self.running = False
         self.mode = "MENU"
+        self.current_ticks = 0
+        self.loading_screen = False
+        self.loading_start = 0
+        self.loading_end = 4 * 1000  # 4 secs for loading screen
         self.shooting = False
 
         with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "main.yml")) as fh:
@@ -90,13 +96,21 @@ class Game:
         if self.mode == "MENU":
             self.menu.update(dt)
             option = self.menu.get_mode()
-            if option == 1:
+            if option == 1:  # START
                 self.mode = "LOADING"
+                self.loading_screen = True
             elif option == 2:
                 pass
             elif option == 3:
                 self.running = False
         elif self.mode == "LOADING":
+            self.current_ticks += dt * 1000
+            if self.loading_screen is True:
+                self.loading_start = self.current_ticks
+                self.loading_screen = False
+            if self.current_ticks - self.loading_start > self.loading_end:
+                self.mode = "GAME"
+                self.loading_start = 0
             self.loading.update(dt)
         elif self.mode == "GAME":
             self.field.update(dt)
