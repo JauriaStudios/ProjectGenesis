@@ -1,9 +1,8 @@
 import os
-
 from collections import deque
-
 import oyaml as yaml
 
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
 from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KEYUP
@@ -32,7 +31,7 @@ class Game:
 
     def __init__(self, screen: pygame.Surface) -> None:
         self.screen = screen
-
+        self.fps = 60
         self.music_list = MusicList()
 
         self.running = False
@@ -120,11 +119,11 @@ class Game:
         clock = pygame.time.Clock()
         self.running = True
 
-        times = deque(maxlen=60)
+        times = deque(maxlen=self.fps)
 
         try:
             while self.running:
-                dt = clock.tick() / 1000
+                dt = clock.tick(self.fps) / 1000
                 times.append(clock.get_fps())
 
                 self.handle_input(dt)
@@ -135,6 +134,8 @@ class Game:
 
         except KeyboardInterrupt:
             self.running = False
+        except Exception as e:
+            print(e)
 
 
 def main() -> None:
@@ -148,8 +149,8 @@ def main() -> None:
     if joysticks:
         print("Joystick found:")
 
-    for joystick in joysticks:
-        print(f"\t1 {joystick.get_name()}")
+        for joystick in joysticks:
+            print(f"\t1 {joystick.get_name()}")
 
     screen = init_screen(1024, 768)
     pygame.display.set_caption("ProjectGenesis")

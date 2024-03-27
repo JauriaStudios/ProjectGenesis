@@ -38,7 +38,7 @@ class Pet(pygame.sprite.Sprite):
         self.follower = follower
         self.wanderer = wanderer
 
-        frame_speed = 60
+        frame_speed = 10
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 

@@ -1,5 +1,4 @@
 import os
-from pprint import pprint
 
 import oyaml as yaml
 import pygame
@@ -24,6 +23,7 @@ from npc import Npc
 class Field(object):
     def __init__(self, name, screen_size, music):
 
+        self.menu = None
         self.spawns = None
         self.warps = None
         self.walls = None
@@ -104,17 +104,17 @@ class Field(object):
 
         for obj in self.tmx_data.objects:
 
-            pprint(obj)
+            # pprint(obj)
 
             if obj.type == "warp":
-                warp = WarpPoint(obj, "warp.png", 30)
+                warp = WarpPoint(obj, "warp.png", 10)
                 self.warps[obj.name] = warp
                 self.group.add(warp)
             elif obj.type == "spawn":
-                print("SPAWN FOUND")
+                # print("SPAWN FOUND")
                 self.spawns[obj.name] = (int(obj.x), int(obj.y))
             elif obj.type == "player":
-                print("PLAYER SPAWN FOUND")
+                # print("PLAYER SPAWN FOUND")
                 self.player.position = [int(obj.x), int(obj.y)]
                 self.pet.position = [int(obj.x), int(obj.y)]
             else:
@@ -123,15 +123,13 @@ class Field(object):
         for name, spawn in self.spawns.items():
             self.npc_1.position = self.spawns[name]
 
-
-
     def init_menu(self):
         file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "field.yml")
         with open(file_path) as fh:
             options = yaml.load(fh, Loader=yaml.FullLoader)
 
         self.menu = Menu(options, self.music)
-        print(options)
+        # print(options)
 
     def handle_input(self, event):
         dead_zone = 0.25
@@ -154,7 +152,7 @@ class Field(object):
                     for name, warp in self.warps.items():
                         if warp.get_player():
                             map_name = warp.get_warp_map()
-                            print(f"Change Field {map_name} from warp name {name}")
+                            # print(f"Change Field {map_name} from warp name {name}")
                             self.change_field(map_name)
                 elif event.button == 1:
                     # self.npc_1.shoot()

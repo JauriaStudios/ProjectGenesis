@@ -32,7 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.width = 64
         self.height = 64
 
-        frame_speed = 60
+        frame_speed = 5
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 
@@ -166,11 +166,11 @@ class Player(pygame.sprite.Sprite):
                     self.image = self.anim_action[self.direction].images[self.animation_action_frame]
 
                     self.animation_action_frame += 1
-                    print(f"Play frame {self.animation_action_frame} in direction = {self.direction} facing {self.facing}")
+                    # print(f"Play frame {self.animation_action_frame} in direction = {self.direction} facing {self.facing}")
                 else:
                     self.animation_action_frame = 0
                     self.run_attack_action = False
-                    print("animation end")
+                    # print("animation end")
 
                 self.prev_ticks = self.current_ticks
 

@@ -38,7 +38,7 @@ class Npc(pygame.sprite.Sprite):
         self.follower = follower
         self.wanderer = wanderer
 
-        frame_speed = 90
+        frame_speed = 5
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 

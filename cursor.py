@@ -6,6 +6,7 @@ import pygame.gfxdraw
 
 from constants import RESOURCE_DIR, ROOT_PATH
 
+
 class Cursor(pygame.sprite.Sprite):
 
     def __init__(self, pos_x, pos_y, steps, step):
@@ -20,7 +21,7 @@ class Cursor(pygame.sprite.Sprite):
 
         image = "cursor.png"
         self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", image)
-        print(self.image_path)
+        # print(self.image_path)
         self.cursor_sheet = pygame.image.load(self.image_path).convert_alpha()
 
         rect = pygame.rect.Rect(0, 0, 48, 48)
