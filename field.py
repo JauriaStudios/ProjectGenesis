@@ -71,7 +71,7 @@ class Field(object):
         # layers begin with 0, so the layers are 0, 1, and 2.
         # since we want the sprite to be on top of layer 1, we set the default
         # layer for sprites as 2
-        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=2)
+        self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
 
         self.hero_move_speed = 200  # pixels per second
 
