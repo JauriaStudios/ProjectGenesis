@@ -6,10 +6,10 @@ from typing import List
 
 import pygame
 
-from constants import ROOT_PATH, RESOURCE_DIR
-from projectile import Projectile
-from sprite_sheet import SpriteStripAnim
-from utils import Pid
+from lib.constants import ROOT_PATH, RESOURCE_DIR
+from lib.projectile import Projectile
+from lib.sprite_sheet import SpriteStripAnim
+from lib.utils import Pid
 
 
 class Pet(pygame.sprite.Sprite):
@@ -60,7 +60,7 @@ class Pet(pygame.sprite.Sprite):
         self.facing = 0
         self.mirror = False
 
-        self.speed = 12
+        self.speed = 200
 
         self.velocity = [0, 0]
         self._position = [0.0, 0.0]
@@ -69,13 +69,15 @@ class Pet(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 8)
 
-        p = 3.0
-        i = 2.0
-        d = 1.0
+        p = 10.0
+        i = 5.0
+        d = 10.0
+        int_max = 3.0
+        int_min = -3.0
 
         if self.follower:
-            self.x_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=3, integrator_min=-3)
-            self.y_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=3, integrator_min=-3)
+            self.x_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=int_max, integrator_min=int_min)
+            self.y_pid = Pid(p=p, i=i, d=d, derivator=0, integrator=0, integrator_max=int_max, integrator_min=int_min)
 
     @property
     def position(self) -> List[float]:

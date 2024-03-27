@@ -4,8 +4,8 @@ from typing import List
 import pygame
 
 
-from constants import RESOURCE_DIR
-from sprite_sheet import SpriteStripAnim
+from lib.constants import RESOURCE_DIR
+from lib.sprite_sheet import SpriteStripAnim
 
 
 class Projectile(pygame.sprite.Sprite):

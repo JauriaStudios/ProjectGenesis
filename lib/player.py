@@ -5,9 +5,9 @@ from typing import List
 import time
 import pygame
 
-from constants import RESOURCE_DIR, ROOT_PATH
-from projectile import Projectile
-from sprite_sheet import SpriteStripAnim
+from lib.constants import RESOURCE_DIR, ROOT_PATH
+from lib.projectile import Projectile
+from lib.sprite_sheet import SpriteStripAnim
 
 
 class Player(pygame.sprite.Sprite):

@@ -5,10 +5,10 @@ import random
 
 import pygame
 
-from constants import ROOT_PATH, RESOURCE_DIR
-from projectile import Projectile
-from sprite_sheet import SpriteStripAnim
-from utils import Pid
+from lib.constants import ROOT_PATH, RESOURCE_DIR
+from lib.projectile import Projectile
+from lib.sprite_sheet import SpriteStripAnim
+from lib.utils import Pid
 
 
 class Npc(pygame.sprite.Sprite):

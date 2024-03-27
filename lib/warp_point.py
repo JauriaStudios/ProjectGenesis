@@ -4,8 +4,8 @@ import pygame
 
 from typing import List
 
-from constants import ROOT_PATH, RESOURCE_DIR
-from sprite_sheet import SpriteStripAnim
+from lib.constants import ROOT_PATH, RESOURCE_DIR
+from lib.sprite_sheet import SpriteStripAnim
 
 
 class WarpPoint(pygame.sprite.Sprite):

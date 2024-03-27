@@ -2,10 +2,10 @@
 import os
 
 import pygame
-from constants import ROOT_PATH, RESOURCE_DIR, RED, WHITE
+from lib.constants import ROOT_PATH, RESOURCE_DIR, RED, WHITE
 
 # from cursor import Cursor
-from text_sprite import TextSprite
+from lib.text_sprite import TextSprite
 # from dialog import Dialog
 
 from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KEYUP

@@ -12,17 +12,24 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCA
 
 from pytmx import load_pygame
 
-from constants import ROOT_PATH, RESOURCE_DIR, RED
-from menu import Menu
-from pet import Pet
-from warp_point import WarpPoint
-from player import Player
-from npc import Npc
+from lib.constants import ROOT_PATH, RESOURCE_DIR, RED
+from lib.menu import Menu
+from lib.pet import Pet
+from lib.warp_point import WarpPoint
+from lib.player import Player
+from lib.npc import Npc
 
 
 class Field(object):
     def __init__(self, name, screen_size, music):
 
+        self.player = None
+        self.hero_move_speed = None
+        self.group = None
+        self.map_layer = None
+        self.map_data = None
+        self.tmx_data = None
+        self.file_path = None
         self.menu = None
         self.spawns = None
         self.warps = None
@@ -35,10 +42,10 @@ class Field(object):
         self.music = music
 
         self.field_mode = "FIELD"
-        self.fading = None
+        self.fading = "OUT"
         self.fade_end = False
 
-        self.alpha = 0
+        self.alpha = 255
         sr = Rect(0, 0, screen_size[0], screen_size[1])
 
         self.fade_rect = pygame.Surface(sr.size)
@@ -51,7 +58,7 @@ class Field(object):
         # self.music.change_music(2)
         # self.music.play_music()
 
-        self.file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "maps", self.map_name)
+        self.file_path = str(os.path.join(ROOT_PATH, RESOURCE_DIR, "maps", self.map_name))
 
         # load data from pytmx
         self.tmx_data = load_pygame(self.file_path)
@@ -219,22 +226,23 @@ class Field(object):
                         sprite.velocity[1] = 0
 
             if self.fading == "IN":
-                fade_speed = 0.25
+                fade_speed = 1
                 self.alpha += fade_speed
                 if self.alpha >= 255:
                     self.fading = None
                     self.fade_end = True
 
             elif self.fading == "OUT":
-                fade_speed = 0.25
+                fade_speed = 1
                 self.alpha -= fade_speed
                 if self.alpha <= 0:
                     self.fading = None
+                    self.fade_end = True
 
-            if self.fade_end is True:
-                self.initialize()
-                self.fade_end = False
-                self.fading = "OUT"
+            # if self.fade_end is True:
+            #     self.initialize()
+            #     self.fade_end = False
+            #     self.fading = "OUT"
 
         elif self.field_mode == "MENU":
             self.menu.update(dt)

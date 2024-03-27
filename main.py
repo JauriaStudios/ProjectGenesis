@@ -5,15 +5,15 @@ import oyaml as yaml
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
-from pygame import JOYAXISMOTION, KEYUP, JOYBUTTONDOWN, JOYBUTTONUP, KEYDOWN, KEYUP
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE
-from pygame.locals import VIDEORESIZE, QUIT
+from pygame import KEYDOWN
+from pygame.locals import K_ESCAPE
+from pygame.locals import QUIT
 
-from constants import ROOT_PATH, RESOURCE_DIR, RED, GRAY
+from lib.constants import ROOT_PATH, RESOURCE_DIR
 
-from music_list import MusicList
-from menu import Menu
-from field import Field
+from lib.music_list import MusicList
+from lib.menu import Menu
+from lib.field import Field
 
 
 def init_screen(width: int, height: int) -> pygame.Surface:
