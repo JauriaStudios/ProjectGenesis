@@ -13,6 +13,7 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCA
 from pytmx import load_pygame
 
 from lib.constants import ROOT_PATH, RESOURCE_PATH, RED
+from lib.enemy import Enemy
 from lib.menu import Menu
 from lib.pet import Pet
 from lib.warp_point import WarpPoint
@@ -24,6 +25,7 @@ class Field(object):
     def __init__(self, name, screen_size, music):
 
         self.player = None
+        self.pet = None
         self.hero_move_speed = None
         self.group = None
         self.map_layer = None
@@ -35,8 +37,8 @@ class Field(object):
         self.warps = None
         self.walls = None
         self.npc_1 = None
-        self.pet = None
-        self.npcs = None
+        self.enemy_1 = None
+        # self.npcs = None
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -84,24 +86,30 @@ class Field(object):
 
         self.player = Player(self, image="Izzy.png")
 
-        self.npcs = []
+        # self.npcs = []
 
         self.pet = Pet(self, self.player, "gengar.png", 0, 0, 48, 48, follower=True, wanderer=False)
 
-        self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
+        # self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
         # self.npc_2 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
 
-        self.npcs.append(self.pet)
-        self.npcs.append(self.npc_1)
+        self.enemy_1 = Enemy(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False, level=0)
+
+        # self.npcs.append(self.pet)
+        # self.npcs.append(self.npc_1)
         # self.npcs.append(self.npc_2)
 
         # put the hero in the center of the map
-        self.npc_1.position = [300, 300]
+        # self.npc_1.position = [300, 300]
 
         # add our hero to the group
         self.group.add(self.pet)
-        self.group.add(self.npc_1)
+
+        # self.group.add(self.npc_1)
         # self.group.add(self.npc_2)
+
+        self.group.add(self.enemy_1)
+
         self.group.add(self.player)
 
         # setup level geometry with simple pygame rects, loaded from pytmx
@@ -122,8 +130,8 @@ class Field(object):
                 self.spawns[obj.name] = (int(obj.x), int(obj.y))
             elif obj.type == "player":
                 # print("PLAYER SPAWN FOUND")
-                self.player.position = [int(obj.x), int(obj.y)]
                 self.pet.position = [int(obj.x), int(obj.y)]
+                self.player.position = [int(obj.x), int(obj.y)]
             else:
                 self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
 
