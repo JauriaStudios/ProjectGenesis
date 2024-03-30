@@ -2,15 +2,13 @@ import os
 from collections import deque
 import oyaml as yaml
 
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 
 from pygame import KEYDOWN
 from pygame.locals import K_ESCAPE
 from pygame.locals import QUIT
 
-from lib.constants import ROOT_PATH, RESOURCE_DIR
-
+from lib.constants import ROOT_PATH, RESOURCE_PATH
 from lib.music_list import MusicList
 from lib.menu import Menu
 from lib.field import Field
@@ -42,12 +40,12 @@ class Game:
         self.loading_end = 4 * 1000  # 4 secs for loading screen
         self.shooting = False
 
-        with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "main.yml")) as fh:
+        with open(os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "main.yml")) as fh:
             menu_options = yaml.load(fh, Loader=yaml.FullLoader)
 
         self.menu = Menu(menu_options, self.music_list)
 
-        with open(os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "loading_page.yml")) as fh:
+        with open(os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "loading_page.yml")) as fh:
             loading_options = yaml.load(fh, Loader=yaml.FullLoader)
 
         self.loading = Menu(loading_options, self.music_list)

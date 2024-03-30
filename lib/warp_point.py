@@ -4,7 +4,7 @@ import pygame
 
 from typing import List
 
-from lib.constants import ROOT_PATH, RESOURCE_DIR
+from lib.constants import ROOT_PATH, RESOURCE_PATH
 from lib.sprite_sheet import SpriteStripAnim
 
 
@@ -21,7 +21,7 @@ class WarpPoint(pygame.sprite.Sprite):
 
         self.player_inside = False
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
 
         self.width = 80
         self.height = 80

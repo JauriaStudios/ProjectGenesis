@@ -4,7 +4,7 @@ from typing import List
 import pygame
 
 
-from lib.constants import RESOURCE_DIR
+from lib.constants import RESOURCE_PATH
 from lib.sprite_sheet import SpriteStripAnim
 
 
@@ -20,7 +20,7 @@ class Projectile(pygame.sprite.Sprite):
 
         image = "notes.png"
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.image_path = os.path.join(base_dir, RESOURCE_DIR, "shoots", image)
+        self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", image)
 
         self.x = self.player.position[0] + self.player.rect.width * 0.5
         self.y = self.player.position[1] + self.player.rect.height * 0.5

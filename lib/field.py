@@ -12,7 +12,7 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCA
 
 from pytmx import load_pygame
 
-from lib.constants import ROOT_PATH, RESOURCE_DIR, RED
+from lib.constants import ROOT_PATH, RESOURCE_PATH, RED
 from lib.menu import Menu
 from lib.pet import Pet
 from lib.warp_point import WarpPoint
@@ -58,7 +58,7 @@ class Field(object):
         # self.music.change_music(2)
         # self.music.play_music()
 
-        self.file_path = str(os.path.join(ROOT_PATH, RESOURCE_DIR, "maps", self.map_name))
+        self.file_path = str(os.path.join(ROOT_PATH, RESOURCE_PATH, "maps", self.map_name))
 
         # load data from pytmx
         self.tmx_data = load_pygame(self.file_path)
@@ -131,7 +131,7 @@ class Field(object):
             self.npc_1.position = self.spawns[name]
 
     def init_menu(self):
-        file_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", "field.yml")
+        file_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "field.yml")
         with open(file_path) as fh:
             options = yaml.load(fh, Loader=yaml.FullLoader)
 

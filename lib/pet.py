@@ -6,7 +6,7 @@ from typing import List
 
 import pygame
 
-from lib.constants import ROOT_PATH, RESOURCE_DIR
+from lib.constants import ROOT_PATH, RESOURCE_PATH
 from lib.projectile import Projectile
 from lib.sprite_sheet import SpriteStripAnim
 from lib.utils import Pid
@@ -27,7 +27,7 @@ class Pet(pygame.sprite.Sprite):
         self.game = game
         self.player = player
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
 
         self.x = x
         self.y = y

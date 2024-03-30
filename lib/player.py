@@ -5,7 +5,7 @@ from typing import List
 import time
 import pygame
 
-from lib.constants import RESOURCE_DIR, ROOT_PATH
+from lib.constants import RESOURCE_PATH, ROOT_PATH
 from lib.projectile import Projectile
 from lib.sprite_sheet import SpriteStripAnim
 
@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.prev_ticks = 0
         self.ticks_interval = 60  # 1 second / 60 fps
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
 
         self.width = 64
         self.height = 64

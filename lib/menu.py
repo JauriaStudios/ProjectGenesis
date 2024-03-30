@@ -1,8 +1,7 @@
-
 import os
 
 import pygame
-from lib.constants import ROOT_PATH, RESOURCE_DIR, RED, WHITE
+from lib.constants import ROOT_PATH, RESOURCE_PATH, RED, WHITE
 
 # from cursor import Cursor
 from lib.text_sprite import TextSprite
@@ -37,7 +36,7 @@ class Menu:
         for name, menu in self.options.items():
             for key, option in menu.items():
                 if key == "background" and option != "":
-                    self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "menu", option)
+                    self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", option)
                     self.background = pygame.image.load(self.image_path)
                 elif isinstance(option, dict):
                     self.num_options += 1
@@ -61,6 +60,7 @@ class Menu:
 
         if self.text_visible is True:
             self.sprite_group.draw(screen)
+
         # print("MENU DRAW")
 
     def update(self, dt):
@@ -68,6 +68,7 @@ class Menu:
         self.sprite_group.update(dt)
 
         # print("MENU DT")
+
     def handle_input(self, event):
 
         # if event.type == JOYAXISMOTION:
