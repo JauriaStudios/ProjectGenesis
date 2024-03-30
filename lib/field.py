@@ -72,7 +72,7 @@ class Field(object):
                                                    clamp_camera=False,
                                                    tall_sprites=0
                                                    )
-        self.map_layer.zoom = 2
+        self.map_layer.zoom = 2.5
 
         # pyscroll supports layered rendering.  our map has 3 'under' layers
         # layers begin with 0, so the layers are 0, 1, and 2.
