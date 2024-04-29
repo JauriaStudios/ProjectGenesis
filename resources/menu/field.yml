@@ -4,7 +4,7 @@ field:
     name: main
     text: Main
     size: 48
-    font: "Arial Black"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [450, 500]
 
@@ -12,7 +12,7 @@ field:
     name: items
     text: Items
     size: 48
-    font: "Arial Black"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [450, 550]
 
@@ -20,7 +20,7 @@ field:
     name: skills
     text: Skills
     size: 48
-    font: "Arial Black"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [450, 600]
 
@@ -28,6 +28,6 @@ field:
     name: back
     text: Back
     size: 48
-    font: "Arial Black"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [450, 650]

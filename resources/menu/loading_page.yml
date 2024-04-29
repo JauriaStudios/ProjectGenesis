@@ -4,6 +4,6 @@ loading_page:
     name: loading
     text: "LOADING!"
     size: 48
-    font: "Press Start 2P"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [300, 360]

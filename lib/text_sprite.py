@@ -1,5 +1,5 @@
+import os
 from typing import List
-
 import pygame
 
 
@@ -11,14 +11,15 @@ class TextSprite(pygame.sprite.Sprite):
         self.text = options.get("text")
         self.size = options.get("size")
         self.color = options.get("color")
-        self.font = options.get("font")
+        self.font_name = options.get("font")
+        self.font_size = options.get("size")
 
         self._position = options.get("position")
         self._old_position = self.position
 
-        self.text_font = pygame.font.SysFont(self.font, self.size)
+        self.font = pygame.font.Font(os.path.join("resources", "fonts", self.font_name), self.font_size)
 
-        self.image = self.text_font.render(self._text, True, self.color)
+        self.image = self.font.render(self._text, True, self.color)
 
         self.rect = self.image.get_rect()
 

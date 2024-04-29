@@ -148,10 +148,10 @@ def main() -> None:
         print("Joystick found:")
 
         for joystick in joysticks:
-            print(f"\t1 {joystick.get_name()}")
+            print(f"\t1{joystick.get_name()}")
 
     screen = init_screen(1024, 768)
-    pygame.display.set_caption("ProjectGenesis")
+    pygame.display.set_caption("Project Genesis")
 
     try:
         game = Game(screen)

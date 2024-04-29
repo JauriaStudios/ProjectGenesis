@@ -4,6 +4,6 @@ main:
     name: start
     text: "PRESS START"
     size: 48
-    font: "Press Start 2P"
+    font: "PressStart2P-Regular.ttf"
     color: white
     position: [230, 400]
