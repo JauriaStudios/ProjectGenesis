@@ -75,6 +75,8 @@ class Player(pygame.sprite.Sprite):
         self.direction = "DOWN"
         self.facing = 0
 
+        self.speed = 12
+
         self.velocity = [0, 0]
         self._position = [0.0, 0.0]
         self._old_position = self.position
@@ -96,7 +98,7 @@ class Player(pygame.sprite.Sprite):
         self._position[0] += self.velocity[0] * dt
         self._position[1] += self.velocity[1] * dt
 
-        self.rect.topleft = self._position
+        self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
         if self.velocity[0] > 0 and self.velocity[1] > 0:
@@ -181,7 +183,10 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-        projectile = Projectile(self)
+
+        direction = self.direction
+
+        projectile = Projectile(self, direction)
         self.game.add_bullet(projectile)
 
     def attack(self):

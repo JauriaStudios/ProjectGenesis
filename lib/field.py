@@ -8,7 +8,7 @@ import pyscroll.data
 from pyscroll.group import PyscrollGroup
 
 from pygame import Rect, JOYAXISMOTION, JOYBUTTONDOWN, JOYBUTTONUP, KEYUP, KEYDOWN
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_SPACE
 
 from pytmx import load_pygame
 
@@ -36,9 +36,8 @@ class Field(object):
         self.spawns = None
         self.warps = None
         self.walls = None
-        self.npc_1 = None
-        self.enemy_1 = None
-        # self.npcs = None
+        self.enemies = None
+        self.npcs = None
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -86,14 +85,17 @@ class Field(object):
 
         self.player = Player(self, image="Izzy.png")
 
-        # self.npcs = []
+        self.npcs = list()
+        self.enemies =dict()
 
         self.pet = Pet(self, self.player, "gengar.png", 0, 0, 48, 48, follower=True, wanderer=False)
 
         # self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
         # self.npc_2 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
 
-        self.enemy_1 = Enemy(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False, level=0)
+        enemy_1 = Enemy(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False, level=0)
+
+        self.enemies["enemigo1"] = enemy_1
 
         # self.npcs.append(self.pet)
         # self.npcs.append(self.npc_1)
@@ -107,8 +109,8 @@ class Field(object):
 
         # self.group.add(self.npc_1)
         # self.group.add(self.npc_2)
-
-        self.group.add(self.enemy_1)
+        for _, enemy in self.enemies.items():
+            self.group.add(enemy)
 
         self.group.add(self.player)
 
@@ -132,11 +134,16 @@ class Field(object):
                 # print("PLAYER SPAWN FOUND")
                 self.pet.position = [int(obj.x), int(obj.y)]
                 self.player.position = [int(obj.x), int(obj.y)]
+            elif obj.type == "enemies":
+                # print("PLAYER SPAWN FOUND")
+                pass
+                # self.pet.position = [int(obj.x), int(obj.y)]
+                # self.player.position = [int(obj.x), int(obj.y)]
             else:
                 self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
 
-        for name, spawn in self.spawns.items():
-            self.npc_1.position = self.spawns[name]
+        # for name, spawn in self.spawns.items():
+        #     self.npc_1.position = self.spawns[name]
 
     def init_menu(self):
         file_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "field.yml")
@@ -194,6 +201,8 @@ class Field(object):
                 elif event.key == K_DOWN:
                     self.player.velocity[1] = self.hero_move_speed
 
+                elif event.key == K_SPACE:
+                    self.player.attack()
             elif event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.player.velocity[0] = 0

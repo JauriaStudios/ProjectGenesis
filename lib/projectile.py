@@ -13,10 +13,11 @@ class Projectile(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, player):
+    def __init__(self, player, direction):
         super(Projectile, self).__init__()
 
         self.player = player
+        self.direction = direction
 
         image = "notes.png"
         base_dir = os.path.dirname(os.path.abspath(__file__))
