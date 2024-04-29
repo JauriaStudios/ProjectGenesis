@@ -50,7 +50,7 @@ class Game:
 
         self.loading = Menu(loading_options, self.music_list)
 
-        self.field = Field("city2.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field("stage2.0.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
         if self.mode == "LOADING":
