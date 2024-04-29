@@ -1,3 +1,4 @@
+import math
 import os
 from collections import OrderedDict
 from typing import List
@@ -232,7 +233,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def follow(self):
 
-        radius = 75
+        radius = 90
 
         # Check if position in X is greater than player position
         if self.position[0] < self.player.position[0]:
@@ -280,9 +281,16 @@ class Enemy(pygame.sprite.Sprite):
 
     def shoot(self):
 
-        direction = self.direction
+        distance = [self.player.position[0] - self.position[0], self.player.position[1] - self.position[1]]
 
-        projectile = Projectile(self, direction)
+        norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
+
+        direction = [distance[0] / norm, distance[1] / norm]
+
+        bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
+
+        projectile = Projectile(self, bullet_vector)
+
         self.game.add_bullet(projectile)
 
     def attack(self):

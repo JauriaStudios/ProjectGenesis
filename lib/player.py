@@ -1,3 +1,4 @@
+import math
 import os
 from collections import OrderedDict
 from typing import List
@@ -184,10 +185,15 @@ class Player(pygame.sprite.Sprite):
 
     def shoot(self):
 
-        direction = self.direction
-
-        projectile = Projectile(self, direction)
-        self.game.add_bullet(projectile)
+        pass
+        # distance = [self.player.position[0] - self.position[0], self.player.position[1] - self.position[1]]
+        # norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
+        # direction = [distance[0] / norm, distance[1] / norm]
+        # bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
+        #
+        # projectile = Projectile(self, bullet_vector)
+        #
+        # self.game.add_bullet(projectile)
 
     def attack(self):
         self.shooting = True
