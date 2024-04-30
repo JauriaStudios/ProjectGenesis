@@ -10,18 +10,19 @@ from lib.sprite_sheet import SpriteStripAnim
 
 class WarpPoint(pygame.sprite.Sprite):
 
-    def __init__(self, warp, image, frame_speed):
+    def __init__(self, warp, name, frame_speed):
         super(WarpPoint, self).__init__()
 
         self.warp = warp
-        # for name, property in self.warp.properties.items():
-        #     print(name, property)
+
+        for warp_name, warp_property in self.warp.properties.items():
+            print(warp_name, warp_property)
 
         self.map_name = self.warp.properties.get("Map")
 
         self.player_inside = False
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", f"{name}.png")
 
         self.width = 80
         self.height = 80

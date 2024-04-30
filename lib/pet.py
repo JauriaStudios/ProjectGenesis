@@ -17,7 +17,7 @@ class Pet(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, game, player, image, x, y, width, height, follower=False, wanderer=False) -> None:
+    def __init__(self, game, player, name, x, y, width, height, follower=False, wanderer=False) -> None:
         super(Pet, self).__init__()
 
         self.interval = None
@@ -27,7 +27,7 @@ class Pet(pygame.sprite.Sprite):
         self.game = game
         self.player = player
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", f"{name}.png")
 
         self.x = x
         self.y = y

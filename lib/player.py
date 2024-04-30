@@ -15,7 +15,7 @@ class Player(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, game, image) -> None:
+    def __init__(self, game, name, x, y) -> None:
         super(Player, self).__init__()
 
         self.shooting = False
@@ -27,7 +27,10 @@ class Player(pygame.sprite.Sprite):
         self.prev_ticks = 0
         self.ticks_interval = 60  # 1 second / 60 fps
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", f"{name}.png")
+
+        self.x = x
+        self.y = y
 
         self.width = 64
         self.height = 64
@@ -36,20 +39,24 @@ class Player(pygame.sprite.Sprite):
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 
-        self.anim_effect_up = SpriteStripAnim(self.image_path, (0, self.width*0, self.width, self.height), 7, -1, False, frame_speed)
-        self.anim_effect_left = SpriteStripAnim(self.image_path, (0, self.width*1, self.width, self.height), 7, -1, False, frame_speed)
-        self.anim_effect_down = SpriteStripAnim(self.image_path, (0, self.width*2, self.width, self.height), 7, -1, False, frame_speed)
-        self.anim_effect_right = SpriteStripAnim(self.image_path, (0, self.width*3, self.width, self.height), 7, -1, False, frame_speed)
+        self.anim_effect_up = SpriteStripAnim(self.image_path, (0, self.height*0, self.width, self.height), 7, -1, False, frame_speed)
+        self.anim_effect_left = SpriteStripAnim(self.image_path, (0, self.height*1, self.width, self.height), 7, -1, False, frame_speed)
+        self.anim_effect_down = SpriteStripAnim(self.image_path, (0, self.height*2, self.width, self.height), 7, -1, False, frame_speed)
+        self.anim_effect_right = SpriteStripAnim(self.image_path, (0, self.height*3, self.width, self.height), 7, -1, False, frame_speed)
 
-        self.anim_up = SpriteStripAnim(self.image_path, (0, self.width*8, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_left = SpriteStripAnim(self.image_path, (0, self.width*9, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_down = SpriteStripAnim(self.image_path, (0, self.width*10, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_right = SpriteStripAnim(self.image_path, (0, self.width*11, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_up = SpriteStripAnim(self.image_path, (0, self.height*8, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_left = SpriteStripAnim(self.image_path, (0, self.height*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_down = SpriteStripAnim(self.image_path, (0, self.height*10, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_right = SpriteStripAnim(self.image_path, (0, self.height*11, self.width, self.height), 8, -1, True, frame_speed)
 
-        self.anim_action_up = SpriteStripAnim(self.image_path, (0, self.width*12, self.width, self.height), 6, -1, False, frame_speed)
-        self.anim_action_left = SpriteStripAnim(self.image_path, (0, self.width*13, self.width, self.height), 6, -1, False, frame_speed)
-        self.anim_action_down = SpriteStripAnim(self.image_path, (0, self.width*14, self.width, self.height), 6, -1, False, frame_speed)
-        self.anim_action_right = SpriteStripAnim(self.image_path, (0, self.width*15, self.width, self.height), 6, -1, False, frame_speed)
+        self.anim_action_up = SpriteStripAnim(self.image_path, (0, self.height*12, self.width, self.height), 6, -1, False, frame_speed)
+        self.anim_action_left = SpriteStripAnim(self.image_path, (0, self.height*13, self.width, self.height), 6, -1, False, frame_speed)
+        self.anim_action_down = SpriteStripAnim(self.image_path, (0, self.height*14, self.width, self.height), 6, -1, False, frame_speed)
+        self.anim_action_right = SpriteStripAnim(self.image_path, (0, self.height*15, self.width, self.height), 6, -1, False, frame_speed)
+
+
+        self.anim_dead = SpriteStripAnim(self.image_path, (0, self.height*21, self.width, self.height), 6, -1, False, frame_speed)
+
 
         self.anim_effect = OrderedDict()
         self.anim_walk = OrderedDict()
@@ -76,7 +83,7 @@ class Player(pygame.sprite.Sprite):
         self.facing = 0
 
         self.velocity = [0, 0]
-        self._position = [0.0, 0.0]
+        self._position = [self.x, self.y]
         self._old_position = self.position
 
         self.rect = self.image.get_rect()
