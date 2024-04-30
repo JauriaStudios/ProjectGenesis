@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="47" nextobjectid="49">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="47" nextobjectid="55">
  <tileset firstgid="1" source="cyberpunk-corridor.tsx"/>
  <tileset firstgid="1217" source="back.tsx"/>
  <tileset firstgid="1349" source="cyberpunk-corridor-foreground.tsx"/>
@@ -123,24 +123,6 @@
 34,35,36,37,38,34,35,36,37,38,39,40,36,37,38,39,40,40,34,35,36,37,38,39,40,34,35,36,37,38,39,40,37,38,39,40,36,37,38,39,34,35,36,37,38,39,40,34,35,36,37,38,39,40,34,35,36,37,38,39,40,34,35,36,37,38,39,34,35,36,37,38,39,40,37,38,39,40,34,35,36,37,38,39,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="spawn">
-  <object id="1" name="Player" type="player" x="255.569" y="173.992">
-   <point/>
-  </object>
-  <object id="10" name="npc_spaw_1" type="spawn" x="853" y="185">
-   <properties>
-    <property name="Npc" value="Charly"/>
-   </properties>
-   <point/>
-  </object>
- </objectgroup>
- <objectgroup id="8" name="limits">
-  <object id="3" x="-124.903" y="-69.6574" width="122.501" height="461.18"/>
-  <object id="4" x="-0.401978" y="-64.4415" width="591.691" height="210.55"/>
-  <object id="5" x="763.829" y="-60.0495" width="598.317" height="208.972"/>
-  <object id="12" x="591" y="-12.5" width="175.5" height="144.121"/>
-  <object id="13" x="-1.25" y="300.5" width="1386.34" height="23.5"/>
- </objectgroup>
  <layer id="16" name="Copiar desde Capa de patrones 2" width="160" height="20">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1217,1218,1219,1220,1221,1222,1223,1224,1225,1226,1227,1228,1217,1218,1219,1220,1221,1222,1223,1224,1225,1226,1227,1228,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -261,11 +243,55 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,34,35,36,37,38,34,35,36,37,38,39,40,36,37,38,39,40,40,34,35,36,37,38,39,40,34,35,36,37,38,39,40,37,38,39,40,36,37,38,39,34,35,36,37,38,39,40,34,35,36,37,38,39,40,34,35,36,37,38,39,40,34,35,36,37,38,39,34,35,36,37,38,39,40,37,38,39,40,34,35,36,37,38,39,40
 </data>
  </layer>
+ <objectgroup id="6" name="spawn">
+  <object id="50" name="Player" type="player_spawn" x="252.667" y="176">
+   <properties>
+    <property name="Name" value="Izzy"/>
+    <property name="Pet" value="gengar"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="51" name="level 2 Furro" type="enemy_spawn" x="1456.67" y="188.333">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="Furro"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="52" name="level 2 Furro" type="enemy_spawn" x="1533" y="225">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="Furro"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="53" name="level 1 Furro" type="enemy_spawn" x="1316.34" y="273.333">
+   <properties>
+    <property name="AttackType" value="melee"/>
+    <property name="Level" type="int" value="1"/>
+    <property name="Name" value="Malote"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="54" name="Warp" type="map_warp" x="2479.42" y="114.167" width="32.1667" height="43.1667">
+   <properties>
+    <property name="Map" value="02_map.tmx"/>
+   </properties>
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="8" name="limits">
+  <object id="3" type="collision" x="-124.903" y="-69.6574" width="122.501" height="461.18"/>
+  <object id="4" type="collision" x="-0.401978" y="-64.4415" width="591.691" height="210.55"/>
+  <object id="5" type="collision" x="763.829" y="-60.0495" width="1022.56" height="208.972"/>
+  <object id="12" type="collision" x="591" y="-12.5" width="175.5" height="144.121"/>
+  <object id="13" type="collision" x="-1.25" y="300.5" width="2553.01" height="23.5"/>
+ </objectgroup>
  <objectgroup id="10" name="Copiar desde limits">
-  <object id="16" x="1199.6" y="-64.4415" width="591.691" height="210.55"/>
-  <object id="17" x="1963.83" y="-60.0495" width="598.317" height="208.972"/>
-  <object id="18" x="2561.62" y="148.638" width="53.1475" height="175.629"/>
-  <object id="19" x="1791" y="-12.5" width="175.5" height="147.152"/>
-  <object id="20" x="1198.75" y="300.5" width="1386.34" height="23.5"/>
+  <object id="17" type="collision" x="1963.47" y="-60.0495" width="598.317" height="208.972"/>
+  <object id="18" type="collision" x="2561.62" y="148.638" width="53.1475" height="175.629"/>
+  <object id="19" type="collision" x="1791" y="-12.5" width="175.5" height="147.152"/>
  </objectgroup>
 </map>
