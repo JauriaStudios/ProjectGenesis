@@ -75,10 +75,11 @@ class Field(object):
                                                    )
         self.map_layer.zoom = 2.5
 
-        # pyscroll supports layered rendering.  our map has 3 'under' layers
+        # pyscroll supports layered rendering. our map has 3 'under' layers,
         # layers begin with 0, so the layers are 0, 1, and 2.
         # since we want the sprite to be on top of layer 1, we set the default
         # layer for sprites as 2
+
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
 
         self.hero_move_speed = 200  # pixels per second
@@ -86,7 +87,7 @@ class Field(object):
         self.player = Player(self, image="Izzy.png")
 
         self.npcs = list()
-        self.enemies =dict()
+        self.enemies = dict()
 
         self.pet = Pet(self, self.player, "gengar.png", 0, 0, 48, 48, follower=True, wanderer=False)
 

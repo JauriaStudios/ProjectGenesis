@@ -184,7 +184,6 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-
         pass
         # distance = [self.player.position[0] - self.position[0], self.player.position[1] - self.position[1]]
         # norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
