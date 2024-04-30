@@ -3,7 +3,7 @@ loading_page:
   loading_text:
     name: loading
     text: "LOADING!"
-    size: 48
+    size: 39
     font: "Press Start 2P"
     color: white
-    position: [300, 360]
+    position: [359, 365]
