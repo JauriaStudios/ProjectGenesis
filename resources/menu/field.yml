@@ -6,7 +6,7 @@ field:
     size: 48
     font: "PressStart2P-Regular.ttf"
     color: white
-    position: [450, 500]
+    position: [ 450, 500 ]
 
   items:
     name: items
@@ -14,7 +14,7 @@ field:
     size: 48
     font: "PressStart2P-Regular.ttf"
     color: white
-    position: [450, 550]
+    position: [ 450, 550 ]
 
   skills:
     name: skills
@@ -22,7 +22,7 @@ field:
     size: 48
     font: "PressStart2P-Regular.ttf"
     color: white
-    position: [450, 600]
+    position: [ 450, 600 ]
 
   back:
     name: back
@@ -30,4 +30,4 @@ field:
     size: 48
     font: "PressStart2P-Regular.ttf"
     color: white
-    position: [450, 650]
+    position: [ 450, 650 ]

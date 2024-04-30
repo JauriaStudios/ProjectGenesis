@@ -3,12 +3,7 @@ main:
   start:
     name: start
     text: "PRESS START"
-<<<<<<< HEAD
     size: 48
     font: "PressStart2P-Regular.ttf"
-=======
-    size: 36
-    font: "Press Start 2P"
->>>>>>> new_feature
     color: white
     position: [317, 400]

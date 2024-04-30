@@ -36,22 +36,13 @@ class Field(object):
         self.tmx_data = None
         self.file_path = None
         self.menu = None
-<<<<<<< HEAD
+
         self.spawns = None
         self.warps = None
         self.walls = None
         self.enemies = None
         self.npcs = None
-=======
 
-        self.spawns = dict()
-        self.warps = dict()
-        self.walls = list()
-        self.npcs = list()
-        self.enemies = list()
-
-        # self.npcs = None
->>>>>>> new_feature
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -108,42 +99,24 @@ class Field(object):
         self.warps = {}
         self.spawns = {}
 
-<<<<<<< HEAD
-        self.npcs = list()
-        self.enemies = dict()
-=======
         self.player = Player(self, name="Izzy", x=0, y=0)
->>>>>>> new_feature
 
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
         self.group.add(self.player)
         self.group.add(self.pet)
 
-<<<<<<< HEAD
-        enemy_1 = Enemy(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False, level=0)
-
-        self.enemies["enemigo1"] = enemy_1
-=======
->>>>>>> new_feature
 
 
         for obj in self.tmx_data.objects:
 
             pprint(obj.properties)
 
-<<<<<<< HEAD
-        # self.group.add(self.npc_1)
-        # self.group.add(self.npc_2)
-        for _, enemy in self.enemies.items():
-            self.group.add(enemy)
-=======
             if obj.type == "player_spawn":
                 # print("PLAYER SPAWN FOUND")
 
                 self.player._position[0] = int(obj.x) + self.player.width
                 self.player._position[1] = int(obj.y) - self.player.height
->>>>>>> new_feature
 
                 self.pet._position[0] = int(obj.x) + self.player.width
                 self.pet._position[1] = int(obj.y) - self.player.height
@@ -244,15 +217,8 @@ class Field(object):
                     self.player.velocity[1] = self.hero_move_speed
 
                 elif event.key == K_SPACE:
-<<<<<<< HEAD
                     self.player.attack()
-=======
-                    for enemy in self.enemies:
-                        enemy.attack()
 
-
-
->>>>>>> new_feature
             elif event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.player.velocity[0] = 0

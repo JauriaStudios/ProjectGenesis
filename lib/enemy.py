@@ -213,17 +213,11 @@ class Enemy(pygame.sprite.Sprite):
             self.facing = 0
             self.mirror = False
             self.image = self.anim_walk["DOWN"].next()
-
-        else:
-            self.image = self.anim_walk[self.direction].images[0]
-
         elif self.velocity[0] == 0 and self.velocity[1] == 0:
             if self.run_attack_action == False:
                 self.attack()
-
         else:
             self.image = self.anim_walk[self.direction].images[0]
-            # self.image = pygame.transform.flip(self.image, self.mirror, False)
 
         if self.run_attack_action:
             self.current_ticks += dt * 1000
