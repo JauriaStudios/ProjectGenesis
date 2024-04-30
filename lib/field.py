@@ -1,4 +1,5 @@
 import os
+from pprint import pprint
 
 import oyaml as yaml
 import pygame
@@ -24,6 +25,8 @@ from lib.npc import Npc
 class Field(object):
     def __init__(self, name, screen_size, music):
 
+        print("INIT FIELD")
+
         self.player = None
         self.pet = None
         self.hero_move_speed = None
@@ -33,11 +36,22 @@ class Field(object):
         self.tmx_data = None
         self.file_path = None
         self.menu = None
+<<<<<<< HEAD
         self.spawns = None
         self.warps = None
         self.walls = None
         self.enemies = None
         self.npcs = None
+=======
+
+        self.spawns = dict()
+        self.warps = dict()
+        self.walls = list()
+        self.npcs = list()
+        self.enemies = list()
+
+        # self.npcs = None
+>>>>>>> new_feature
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -47,14 +61,18 @@ class Field(object):
         self.fade_end = False
 
         self.alpha = 255
-        sr = Rect(0, 0, screen_size[0], screen_size[1])
 
-        self.fade_rect = pygame.Surface(sr.size)
+        screen_rect = Rect(0, 0, screen_size[0], screen_size[1])
+
+        self.fade_rect = pygame.Surface(screen_rect.size)
         self.fade_rect.fill((0, 0, 0))
         self.initialize()
         self.init_menu()
 
     def initialize(self):
+
+        print("INITIALIZE FIELD")
+
 
         # self.music.change_music(2)
         # self.music.play_music()
@@ -70,7 +88,7 @@ class Field(object):
         # create new renderer (camera)
         self.map_layer = pyscroll.BufferedRenderer(self.map_data,
                                                    self.screen_size,
-                                                   clamp_camera=False,
+                                                   clamp_camera=True,
                                                    tall_sprites=0
                                                    )
         self.map_layer.zoom = 2.5
@@ -84,69 +102,92 @@ class Field(object):
 
         self.hero_move_speed = 200  # pixels per second
 
-        self.player = Player(self, image="Izzy.png")
+        self.npcs = []
+        self.enemies = []
+        self.walls = []
+        self.warps = {}
+        self.spawns = {}
 
+<<<<<<< HEAD
         self.npcs = list()
         self.enemies = dict()
+=======
+        self.player = Player(self, name="Izzy", x=0, y=0)
+>>>>>>> new_feature
 
-        self.pet = Pet(self, self.player, "gengar.png", 0, 0, 48, 48, follower=True, wanderer=False)
+        self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
-        # self.npc_1 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
-        # self.npc_2 = Npc(self, self.player, "Furro.png", 0, 0, 64, 64, follower=False, wanderer=True)
+        self.group.add(self.player)
+        self.group.add(self.pet)
 
+<<<<<<< HEAD
         enemy_1 = Enemy(self, self.player, "Furro.png", 0, 0, 64, 64, follower=True, wanderer=False, level=0)
 
         self.enemies["enemigo1"] = enemy_1
+=======
+>>>>>>> new_feature
 
-        # self.npcs.append(self.pet)
-        # self.npcs.append(self.npc_1)
-        # self.npcs.append(self.npc_2)
 
-        # put the hero in the center of the map
-        # self.npc_1.position = [300, 300]
+        for obj in self.tmx_data.objects:
 
-        # add our hero to the group
-        self.group.add(self.pet)
+            pprint(obj.properties)
 
+<<<<<<< HEAD
         # self.group.add(self.npc_1)
         # self.group.add(self.npc_2)
         for _, enemy in self.enemies.items():
             self.group.add(enemy)
+=======
+            if obj.type == "player_spawn":
+                # print("PLAYER SPAWN FOUND")
 
-        self.group.add(self.player)
+                self.player._position[0] = int(obj.x) + self.player.width
+                self.player._position[1] = int(obj.y) - self.player.height
+>>>>>>> new_feature
 
-        # setup level geometry with simple pygame rects, loaded from pytmx
-        self.walls = []
-        self.warps = dict()
-        self.spawns = dict()
+                self.pet._position[0] = int(obj.x) + self.player.width
+                self.pet._position[1] = int(obj.y) - self.player.height
 
-        for obj in self.tmx_data.objects:
+            if obj.type == "enemy_spawn":
+                # print("SPAWN FOUND")
 
-            # pprint(obj)
+                enemy_name = obj.properties.get("Name")
+                enemy_level = obj.properties.get("Level")
 
-            if obj.type == "warp":
-                warp = WarpPoint(obj, "warp.png", 10)
+                print(F"Spawn {enemy_name} level {enemy_level}")
+
+                enemy = Enemy(self, self.player, name=enemy_name, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=False, wanderer=True, level=enemy_level)
+
+                self.group.add(enemy)
+
+                self.spawns[obj.name] = (int(obj.x), int(obj.y))
+                self.enemies.append(enemy)
+
+
+            elif obj.type == "collision":
+                collision = Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height))
+
+                self.walls.append(collision)
+                # self.group.add(collision)
+
+
+            elif obj.type == "map_warp":
+                warp = WarpPoint(obj, name="warp", frame_speed=10)
+
                 self.warps[obj.name] = warp
                 self.group.add(warp)
-            elif obj.type == "spawn":
-                # print("SPAWN FOUND")
-                self.spawns[obj.name] = (int(obj.x), int(obj.y))
-            elif obj.type == "player":
-                # print("PLAYER SPAWN FOUND")
-                self.pet.position = [int(obj.x), int(obj.y)]
-                self.player.position = [int(obj.x), int(obj.y)]
-            elif obj.type == "enemies":
-                # print("PLAYER SPAWN FOUND")
-                pass
-                # self.pet.position = [int(obj.x), int(obj.y)]
-                # self.player.position = [int(obj.x), int(obj.y)]
+
             else:
-                self.walls.append(Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height)))
+                pprint(obj)
 
         # for name, spawn in self.spawns.items():
         #     self.npc_1.position = self.spawns[name]
 
+
     def init_menu(self):
+
+        print("INIT MENU")
+
         file_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "field.yml")
         with open(file_path) as fh:
             options = yaml.load(fh, Loader=yaml.FullLoader)
@@ -203,7 +244,15 @@ class Field(object):
                     self.player.velocity[1] = self.hero_move_speed
 
                 elif event.key == K_SPACE:
+<<<<<<< HEAD
                     self.player.attack()
+=======
+                    for enemy in self.enemies:
+                        enemy.attack()
+
+
+
+>>>>>>> new_feature
             elif event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.player.velocity[0] = 0
@@ -236,6 +285,14 @@ class Field(object):
                             self.warps[name].go_outisde()
 
                 elif isinstance(sprite, Npc):
+                    if sprite.feet.collidelist(self.walls) > -1:
+                        sprite.move_back(dt)
+
+                    elif sprite.feet.colliderect(self.player.get_rect()):
+                        sprite.velocity[0] = 0
+                        sprite.velocity[1] = 0
+
+                elif isinstance(sprite, Enemy):
                     if sprite.feet.collidelist(self.walls) > -1:
                         sprite.move_back(dt)
 

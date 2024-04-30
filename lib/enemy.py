@@ -18,7 +18,7 @@ class Enemy(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, game, player, image, x, y, width, height, follower=False, wanderer=False, level=0) -> None:
+    def __init__(self, game, player, name, x, y, width, height, follower=False, wanderer=False, level=0) -> None:
         super(Enemy, self).__init__()
 
         self.interval = None
@@ -36,7 +36,9 @@ class Enemy(pygame.sprite.Sprite):
 
         self.player = player
 
-        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", image)
+        self.attacking = False
+
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", f"{name}.png")
 
         self.x = x
         self.y = y
@@ -50,17 +52,20 @@ class Enemy(pygame.sprite.Sprite):
 
         frame_speed = 5
 
-        # self.sprite_sheet = SpriteSheet(self.image_path)
-
         self.anim_effect_up = SpriteStripAnim(self.image_path, (0, self.width*0, self.width, self.height), 7, -1, False, frame_speed)
         self.anim_effect_left = SpriteStripAnim(self.image_path, (0, self.width*1, self.width, self.height), 7, -1, False, frame_speed)
         self.anim_effect_down = SpriteStripAnim(self.image_path, (0, self.width*2, self.width, self.height), 7, -1, False, frame_speed)
         self.anim_effect_right = SpriteStripAnim(self.image_path, (0, self.width*3, self.width, self.height), 7, -1, False, frame_speed)
 
-        self.anim_up = SpriteStripAnim(self.image_path, (0, self.width*8, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_left = SpriteStripAnim(self.image_path, (0, self.width*9, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_down = SpriteStripAnim(self.image_path, (0, self.width*10, self.width, self.height), 8, -1, True, frame_speed)
-        self.anim_right = SpriteStripAnim(self.image_path, (0, self.width*11, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_attack_up = SpriteStripAnim(self.image_path, (0, self.height * 4, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_attack_left = SpriteStripAnim(self.image_path, (0, self.height * 5, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_attack_down = SpriteStripAnim(self.image_path, (0, self.height * 6, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_attack_right = SpriteStripAnim(self.image_path, (0, self.height * 7, self.width, self.height), 8, -1, True, frame_speed)
+
+        self.anim_walk_up = SpriteStripAnim(self.image_path, (0, self.height*8, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_walk_left = SpriteStripAnim(self.image_path, (0, self.height*9, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_walk_down = SpriteStripAnim(self.image_path, (0, self.height*10, self.width, self.height), 8, -1, True, frame_speed)
+        self.anim_walk_right = SpriteStripAnim(self.image_path, (0, self.height*11, self.width, self.height), 8, -1, True, frame_speed)
 
         self.anim_action_up = SpriteStripAnim(self.image_path, (0, self.width*12, self.width, self.height), 6, -1, False, frame_speed)
         self.anim_action_left = SpriteStripAnim(self.image_path, (0, self.width*13, self.width, self.height), 6, -1, False, frame_speed)
@@ -68,6 +73,7 @@ class Enemy(pygame.sprite.Sprite):
         self.anim_action_right = SpriteStripAnim(self.image_path, (0, self.width*15, self.width, self.height), 6, -1, False, frame_speed)
 
         self.anim_effect = OrderedDict()
+        self.anim_attack = OrderedDict()
         self.anim_walk = OrderedDict()
         self.anim_action = OrderedDict()
 
@@ -76,17 +82,22 @@ class Enemy(pygame.sprite.Sprite):
         self.anim_effect["DOWN"] = self.anim_effect_down
         self.anim_effect["RIGHT"] = self.anim_effect_right
 
-        self.anim_walk["UP"] = self.anim_up
-        self.anim_walk["LEFT"] = self.anim_left
-        self.anim_walk["DOWN"] = self.anim_down
-        self.anim_walk["RIGHT"] = self.anim_right
+        self.anim_attack["UP"] = self.anim_attack_up
+        self.anim_attack["LEFT"] = self.anim_attack_left
+        self.anim_attack["DOWN"] = self.anim_attack_down
+        self.anim_attack["RIGHT"] = self.anim_attack_right
 
         self.anim_action["UP"] = self.anim_action_up
         self.anim_action["LEFT"] = self.anim_action_left
         self.anim_action["DOWN"] = self.anim_action_down
         self.anim_action["RIGHT"] = self.anim_action_right
 
-        self.image = self.anim_down.images[0]
+        self.anim_walk["UP"] = self.anim_walk_up
+        self.anim_walk["LEFT"] = self.anim_walk_left
+        self.anim_walk["DOWN"] = self.anim_walk_down
+        self.anim_walk["RIGHT"] = self.anim_walk_right
+
+        self.image = self.anim_walk["DOWN"].images[0]
 
         self.direction = "DOWN"
         self.facing = 0
@@ -95,7 +106,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = 12
 
         self.velocity = [0, 0]
-        self._position = [0.0, 0.0]
+        self._position = [self.x, self.y]
         self._old_position = self.position
 
         self.rect = self.image.get_rect()
@@ -105,31 +116,31 @@ class Enemy(pygame.sprite.Sprite):
         i = 2.0
         d = 1.0
 
-        if self.follower:
-            self.x_pid = Pid(p=p,
-                             i=i,
-                             d=d,
-                             derivator=0,
-                             integrator=0,
-                             integrator_max=3,
-                             integrator_min=-3
-                             )
+        derivator = 0
+        integrator = 0
 
-            self.y_pid = Pid(p=p,
-                             i=i,
-                             d=d,
-                             derivator=0,
-                             integrator=0,
-                             integrator_max=3,
-                             integrator_min=-3
-                             )
+        integrator_max = 3
+        integrator_min = -3
+
+        if self.follower:
+            self.x_pid = Pid(p=p, i=i, d=d,
+                             derivator=derivator,
+                             integrator=integrator,
+                             integrator_max=integrator_max,
+                             integrator_min=integrator_min)
+
+            self.y_pid = Pid(p=p, i=i, d=d,
+                             derivator=derivator,
+                             integrator=integrator,
+                             integrator_max=integrator_max,
+                             integrator_min=integrator_min)
 
     @property
-    def position(self) -> List[float]:
+    def position(self) -> List[int]:
         return list(self._position)
 
     @position.setter
-    def position(self, value: List[float]) -> None:
+    def position(self, value: List[int]) -> None:
         self._position = list(value)
 
     def update(self, dt: float) -> None:
@@ -148,57 +159,63 @@ class Enemy(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
         if self.velocity[0] > 0 and self.velocity[1] > 0:
-            self.direction = "DOWN"  # DOWN RIGHT
+            # print("DIAGONAL DOWN RIGHT")
+            self.direction = "RIGHT"
             self.facing = 7
-            self.image = self.anim_right.next()
-            # print(f"move DOWN RIGHT {self.direction}")
+            self.mirror = True
+            self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[0] < 0 and self.velocity[1] < 0:
             # print("DIAGONAL UP LEFT")
-            self.direction = "LEFT"  # UP LEFT
+            self.direction = "LEFT"
             self.facing = 3
-            self.image = self.anim_left.next()
-            # print(f"move UP LEFT {self.direction}")
+            self.mirror = False
+            self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] > 0 and self.velocity[1] < 0:
-            self.direction = "RIGHT"  # UP RIGHT
+            # print("DIAGONAL UP RIGHT")
+            self.direction = "RIGHT"
             self.facing = 5
-            self.image = self.anim_right.next()
-            # print(f"move UP RIGHT {self.direction}")
+            self.mirror = True
+            self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[0] < 0 and self.velocity[1] > 0:
             # print("DIAGONAL DOWN LEFT")
-            self.direction = "LEFT"  # DOWN LEFT
+            self.direction = "LEFT"
             self.facing = 1
-            self.image = self.anim_left.next()
-            # print(f"move DOWN LEFT {self.direction}")
+            self.mirror = False
+            self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] < 0:
-            self.direction = "LEFT"  # LEFT
+            # print("LEFT")
+            self.direction = "LEFT"
             self.facing = 2
-            self.image = self.anim_left.next()
-            # print(f"move LEFT {self.direction}")
+            self.mirror = False
+            self.image = self.anim_walk["LEFT"].next()
 
         elif self.velocity[0] > 0:
-            self.direction = "RIGHT"  # RIGHT
+            # print("RIGHT")
+            self.direction = "RIGHT"
             self.facing = 6
-            self.image = self.anim_right.next()
-            # print(f"move RIGHT {self.direction}")
-
-        elif self.velocity[1] > 0:
-            self.direction = "DOWN"  # DOWN
-            self.facing = 0
-            self.image = self.anim_down.next()
-            # print(f"move DOWN {self.direction}")
+            self.mirror = True
+            self.image = self.anim_walk["RIGHT"].next()
 
         elif self.velocity[1] < 0:
-            self.direction = "UP"  # UP
+            # print("UP")
+            self.direction = "UP"
             self.facing = 4
-            self.image = self.anim_up.next()
-            # print(f"move UP {self.direction}")
-        #
-        # elif self.run_attack_action is False:
-        #     self.image = self.anim_walk[self.direction].images[0]
+            self.mirror = False
+            self.image = self.anim_walk["UP"].next()
+
+        elif self.velocity[1] > 0:
+            # print("DOWN")
+            self.direction = "DOWN"
+            self.facing = 0
+            self.mirror = False
+            self.image = self.anim_walk["DOWN"].next()
+
+        else:
+            self.image = self.anim_walk[self.direction].images[0]
 
         elif self.velocity[0] == 0 and self.velocity[1] == 0:
             if self.run_attack_action == False:
@@ -297,6 +314,8 @@ class Enemy(pygame.sprite.Sprite):
         self.shooting = True
         self.run_attack_action = True
 
+        self.attacking = True
+        print("el enemigo esta atacando")
 
     def wander(self, dt):
 
