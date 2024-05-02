@@ -3,20 +3,21 @@ from collections import deque
 import oyaml as yaml
 
 import pygame
+import pygame_gui
 
 from pygame import KEYDOWN
 from pygame.locals import K_ESCAPE
 from pygame.locals import QUIT
 
-from lib.const import ROOT_PATH, RESOURCE_PATH
+from lib.const import ROOT_PATH, RESOURCE_PATH, SCREEN_SIZE
 from lib.music_list import MusicList
 from lib.menu import Menu
 from lib.field import Field
 
 
-def init_screen(width: int, height: int) -> pygame.Surface:
+def init_screen(size: list) -> pygame.Surface:
     flags = pygame.HWSURFACE | pygame.SCALED | pygame.FULLSCREEN
-    screen = pygame.display.set_mode((width, height), flags=flags)
+    screen = pygame.display.set_mode(size, flags=flags)
     return screen
 
 
@@ -27,11 +28,12 @@ class Game:
     Finally, it uses a pyscroll group to render the map and Hero.
     """
 
-    def __init__(self, screen: pygame.Surface) -> None:
+    def __init__(self, screen: pygame.Surface, manager) -> None:
         self.screen = screen
         self.fps = 60
         self.music_list = MusicList()
 
+        self.manager = manager
         self.running = False
         self.mode = "MENU"
         self.current_ticks = 0
@@ -59,6 +61,7 @@ class Game:
             self.menu.draw(self.screen, dt)
         elif self.mode == "GAME":
             self.field.draw(self.screen, dt)
+            self.manager.draw_ui(self.screen)
 
     def handle_input(self, dt) -> None:
         """Handle pygame input events"""
@@ -80,14 +83,14 @@ class Game:
                 self.menu.handle_input(event)
             elif self.mode == "GAME":
                 self.field.handle_input(event)
+                self.manager.process_events(event)
 
             # this will be handled if the window is resized
             # elif event.type == VIDEORESIZE:
             #     self.screen = init_screen(event.w, event.h)
             #     self.map_layer.set_size((event.w, event.h))
-
+            
             event = poll()
-
     def update(self, dt):
         """Tasks that occur over time should be handled here"""
         if self.mode == "MENU":
@@ -111,6 +114,7 @@ class Game:
             self.loading.update(dt)
         elif self.mode == "GAME":
             self.field.update(dt)
+            self.manager.update(dt)
 
     def run(self):
         """Run the game loop"""
@@ -129,6 +133,7 @@ class Game:
                 self.draw(dt)
 
                 pygame.display.flip()
+                pygame.display.update()
 
         except KeyboardInterrupt:
             self.running = False
@@ -150,11 +155,14 @@ def main() -> None:
         for joystick in joysticks:
             print(f"\t1{joystick.get_name()}")
 
-    screen = init_screen(1024, 768)
+    screen = init_screen(SCREEN_SIZE)
+    screen.fill(pygame.Color('#000000'))
+
     pygame.display.set_caption("Project Genesis")
 
+    manager = pygame_gui.UIManager(SCREEN_SIZE)
     try:
-        game = Game(screen)
+        game = Game(screen, manager)
         game.run()
 
     except KeyboardInterrupt:

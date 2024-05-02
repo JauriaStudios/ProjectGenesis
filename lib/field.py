@@ -166,7 +166,6 @@ class Field(object):
         # for name, spawn in self.spawns.items():
         #     self.npc_1.position = self.spawns[name]
 
-
     def init_menu(self):
 
         print("INIT MENU")

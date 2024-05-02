@@ -3,34 +3,29 @@ import os
 import pygame
 
 from typing import List
-
+from lib.const import RESOURCE_PATH, ROOT_PATH
 
 class Hud:
 
     def __init__(self, game):
-        # self.image_name = self.player_icon
-        # self.image = self.power_bar
         self.game = game
-        self.player_icon = pygame.image.load("/hud/player.png")
-        self.power_bar = pygame.image.load("/hud/bar_0_percent.png")
 
-      #building hud
-    def print_images(self, screen, rect=None):
+        self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player.png")
+        self.power_bar_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "bar_0_percent.png")
 
-        if self.game.mode == "GAME" :
-            self.rect2 = self.player_icon.get_rect()
-            self.rect2.center = 200, 150
-            self.rect1 = self.power_bar.get_rect()
-            self.rect1.center = 200, 150
+        self.player_icon = pygame.image.load(self.image_path).convert_alpha()
+        self.power_bar = pygame.image.load(self.power_bar_path).convert_alpha()
 
-            
-             # scale images
-             #self.player_icon = pygame.transform.scale(self.player_icon, (10, 10))
-             #self.power_bar = pygame.transform.scale(self.power_bar, (10, 10))
-        elif self.game.mode == "MENU":
-            pass
-            
+        self.player_rect = self.player_icon.get_rect()
+        #self.rect2.center = 200, 150
+        self.power_bar_rect = self.power_bar.get_rect()
+        #self.rect1.center = 200, 150
 
     def update(self, dt: float) -> None:
 
-        self.screen.blit(self.player_icon, self.power_bar, self.rect1, self.rect2)
+        if self.game.mode == "FIELD":
+            pass
+            # self.game.screen.blit(self.player_icon, self.power_bar, self.rect1, self.rect2)
+            # self.game.screen.blit(self.player_icon, (0, 0))
+        elif self.game.mode == "MENU":
+            pass

@@ -2,3 +2,4 @@ pygame
 pyscroll
 PyTMX
 oyaml
+pygame_gui
