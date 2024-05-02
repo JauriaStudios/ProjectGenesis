@@ -83,10 +83,32 @@ class Hud:
         self.sprite_list = pygame.sprite.Group()
         self.player_sprite = PlayerSprite(self.sprite_list)
 
-        path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player_nobg.png")
-        self.image = pygame.image.load(path).convert_alpha()
+        avatar_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player_nobg.png")
+        self.avatar_image = pygame.image.load(avatar_path).convert_alpha()
 
-        self.avatar = pygame_gui.elements.UIImage(pygame.Rect((45, 45), (223, 223)), self.image, self.game.manager)
+        power_bar_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "power_bar.png")
+        self.power_bar_image = pygame.image.load(power_bar_path).convert_alpha()
+
+        power_laser_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "power_laser.png")
+        self.power_laser_image = pygame.image.load(power_laser_path).convert_alpha()
+
+        life_support_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "life_support.png")
+        self.life_support_image = pygame.image.load(life_support_path).convert_alpha()
+
+        life_on_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "life_on.png")
+        self.life_on_image = pygame.image.load(life_on_path).convert_alpha()
+
+        life_off_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "life_off.png")
+        self.life_off_image = pygame.image.load(life_off_path).convert_alpha()
+
+
+        self.avatar = pygame_gui.elements.UIImage(pygame.Rect((30, 45), (223, 223)), self.avatar_image, self.game.manager)
+        self.power_bar = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_bar_image, self.game.manager)
+        self.power_laser = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_laser_image, self.game.manager)
+        self.life_support = pygame_gui.elements.UIImage(pygame.Rect((250, 90), (146, 35)), self.life_support_image, self.game.manager)
+        self.life_on = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_on_image, self.game.manager)
+        self.life_off1 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_off_image, self.game.manager)
+        self.life_off2 = pygame_gui.elements.UIImage(pygame.Rect((352, 63), (32, 32)), self.life_off_image, self.game.manager)
 
         # self.progress_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((100, 100), (200, 30)),
         #                                                self.game.manager,
