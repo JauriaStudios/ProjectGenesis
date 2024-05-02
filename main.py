@@ -89,7 +89,7 @@ class Game:
             # elif event.type == VIDEORESIZE:
             #     self.screen = init_screen(event.w, event.h)
             #     self.map_layer.set_size((event.w, event.h))
-            
+
             event = poll()
     def update(self, dt):
         """Tasks that occur over time should be handled here"""
