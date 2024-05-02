@@ -7,7 +7,7 @@ import random
 
 import pygame
 
-from lib.constants import RESOURCE_PATH, ROOT_PATH
+from lib.const import RESOURCE_PATH, ROOT_PATH
 from lib.projectile import Projectile
 from lib.sprite_sheet import SpriteStripAnim
 from lib.utils import Pid
@@ -213,9 +213,11 @@ class Enemy(pygame.sprite.Sprite):
             self.facing = 0
             self.mirror = False
             self.image = self.anim_walk["DOWN"].next()
+
         elif self.velocity[0] == 0 and self.velocity[1] == 0:
-            if self.run_attack_action == False:
-                self.attack()
+            pass
+            # if self.run_attack_action == False:
+            #     self.attack()
         else:
             self.image = self.anim_walk[self.direction].images[0]
 

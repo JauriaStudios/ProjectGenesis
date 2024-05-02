@@ -1,5 +1,5 @@
 import os
-from lib.constants import ROOT_PATH, RESOURCE_PATH
+from lib.const import ROOT_PATH, RESOURCE_PATH
 
 import pygame
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="47" nextobjectid="55">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="47" nextobjectid="56">
  <tileset firstgid="1" source="cyberpunk-corridor.tsx"/>
  <tileset firstgid="1217" source="back.tsx"/>
  <tileset firstgid="1349" source="cyberpunk-corridor-foreground.tsx"/>
@@ -244,7 +244,7 @@
 </data>
  </layer>
  <objectgroup id="6" name="spawn">
-  <object id="50" name="Player" type="player_spawn" x="252.667" y="176">
+  <object id="50" name="Player" type="player_spawn" x="180.667" y="212">
    <properties>
     <property name="Name" value="Izzy"/>
     <property name="Pet" value="gengar"/>
@@ -280,6 +280,12 @@
     <property name="Map" value="02_map.tmx"/>
    </properties>
    <ellipse/>
+  </object>
+  <object id="55" name="Item" type="item" x="412" y="237">
+   <properties>
+    <property name="Name" value="fireball"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="8" name="limits">

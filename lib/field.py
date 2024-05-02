@@ -13,20 +13,22 @@ from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCA
 
 from pytmx import load_pygame
 
-from lib.constants import ROOT_PATH, RESOURCE_PATH, RED
-from lib.enemy import Enemy
-from lib.menu import Menu
-from lib.pet import Pet
-from lib.warp_point import WarpPoint
-from lib.player import Player
-from lib.npc import Npc
+from .const import ROOT_PATH, RESOURCE_PATH
+from .enemy import Enemy
+from .hud import Hud
+from .item import Item
+from .menu import Menu
+from .pet import Pet
+from .warp_point import WarpPoint
+from .player import Player
+from .npc import Npc
 
 
 class Field(object):
-    def __init__(self, name, screen_size, music):
+    def __init__(self, game, name, screen_size, music):
 
         print("INIT FIELD")
-
+        self.game = game
         self.player = None
         self.pet = None
         self.hero_move_speed = None
@@ -64,7 +66,7 @@ class Field(object):
 
         print("INITIALIZE FIELD")
 
-
+        self.hud = Hud(self.game)
         # self.music.change_music(2)
         # self.music.play_music()
 
@@ -143,6 +145,7 @@ class Field(object):
                 self.walls.append(collision)
                 # self.group.add(collision)
 
+        
 
             elif obj.type == "map_warp":
                 warp = WarpPoint(obj, name="warp", frame_speed=10)
@@ -150,8 +153,15 @@ class Field(object):
                 self.warps[obj.name] = warp
                 self.group.add(warp)
 
+            elif obj.type == "item":
+                item = Item("shoots/fireball.png", (int(obj.x), int(obj.y)),10)
+
+                self.group.add(item)
+
             else:
                 pprint(obj)
+
+
 
         # for name, spawn in self.spawns.items():
         #     self.npc_1.position = self.spawns[name]

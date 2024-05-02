@@ -1,7 +1,7 @@
 import os
 
 import pygame
-from lib.constants import ROOT_PATH, RESOURCE_PATH, RED, WHITE
+from lib.const import ROOT_PATH, RESOURCE_PATH, RED, WHITE
 
 # from cursor import Cursor
 from lib.text_sprite import TextSprite

@@ -4,7 +4,7 @@ from typing import List
 import pygame
 
 
-from lib.constants import RESOURCE_PATH
+from lib.const import RESOURCE_PATH
 from lib.sprite_sheet import SpriteStripAnim
 
 

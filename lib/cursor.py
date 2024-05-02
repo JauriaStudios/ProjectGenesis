@@ -4,7 +4,7 @@ from typing import List
 import pygame
 import pygame.gfxdraw
 
-from constants import RESOURCE_DIR, ROOT_PATH
+from const import RESOURCE_DIR, ROOT_PATH
 
 
 class Cursor(pygame.sprite.Sprite):

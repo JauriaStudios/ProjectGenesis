@@ -6,7 +6,7 @@ from typing import List
 
 import pygame
 
-from lib.constants import ROOT_PATH, RESOURCE_PATH
+from lib.const import ROOT_PATH, RESOURCE_PATH
 from lib.projectile import Projectile
 from lib.sprite_sheet import SpriteStripAnim
 from lib.utils import Pid

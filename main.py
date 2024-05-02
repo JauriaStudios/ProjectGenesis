@@ -8,7 +8,7 @@ from pygame import KEYDOWN
 from pygame.locals import K_ESCAPE
 from pygame.locals import QUIT
 
-from lib.constants import ROOT_PATH, RESOURCE_PATH
+from lib.const import ROOT_PATH, RESOURCE_PATH
 from lib.music_list import MusicList
 from lib.menu import Menu
 from lib.field import Field
@@ -50,7 +50,7 @@ class Game:
 
         self.loading = Menu(loading_options, self.music_list)
 
-        self.field = Field("stage2.0.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field(self, "stage2.0.tmx", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
         if self.mode == "LOADING":
