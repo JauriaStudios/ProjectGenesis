@@ -83,8 +83,8 @@ class Hud:
         self.sprite_list = pygame.sprite.Group()
         self.player_sprite = PlayerSprite(self.sprite_list)
 
-        path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player.png")
-        self.image = pygame.image.load(path)
+        path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player_nobg.png")
+        self.image = pygame.image.load(path).convert_alpha()
 
         self.avatar = pygame_gui.elements.UIImage(pygame.Rect((45, 45), (223, 223)), self.image, self.game.manager)
 
