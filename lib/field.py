@@ -38,8 +38,10 @@ class Field(object):
         self.tmx_data = None
         self.file_path = None
         self.menu = None
+        self.player_collides = False
 
         self.spawns = None
+        self.items = None
         self.warps = None
         self.walls = None
         self.enemies = None
@@ -91,10 +93,13 @@ class Field(object):
         # since we want the sprite to be on top of layer 1, we set the default
         # layer for sprites as 2
 
+        self.items_group = pygame.sprite.Group()
+
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
 
         self.hero_move_speed = 200  # pixels per second
 
+        self.items = []
         self.npcs = []
         self.enemies = []
         self.walls = []
@@ -107,8 +112,6 @@ class Field(object):
 
         self.group.add(self.player)
         self.group.add(self.pet)
-
-
 
         for obj in self.tmx_data.objects:
 
@@ -138,7 +141,6 @@ class Field(object):
                 self.spawns[obj.name] = (int(obj.x), int(obj.y))
                 self.enemies.append(enemy)
 
-
             elif obj.type == "collision":
                 collision = Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height))
 
@@ -155,7 +157,7 @@ class Field(object):
 
             elif obj.type == "item":
                 item = Item("shoots/fireball.png", (int(obj.x), int(obj.y)),10)
-
+                self.items_group.add(item)
                 self.group.add(item)
 
             else:
@@ -245,19 +247,23 @@ class Field(object):
             # check if the sprite's feet are colliding with wall
             # sprite must have a rect called feet, and move_back method,
             # otherwise this will fail
+
             for sprite in self.group.sprites():
                 if isinstance(sprite, Player):
-
                     if sprite.feet.collidelist(self.walls) > -1:
                         sprite.move_back(dt)
-                    # elif sprite.rect.collidelist(self.npcs) > -1:
-                    #     sprite.move_back(dt)
 
                     for name, warp in self.warps.items():
                         if sprite.feet.colliderect(warp.get_rect()):
                             self.warps[name].go_inside(self.player)
                         else:
                             self.warps[name].go_outisde()
+
+                    for item in self.items_group.sprites():
+                        if sprite.rect.colliderect(item.rect):
+                            self.player_collides = True
+                        else:
+                            self.player_collides = False
 
                 elif isinstance(sprite, Npc):
                     if sprite.feet.collidelist(self.walls) > -1:
