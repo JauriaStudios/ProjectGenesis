@@ -38,7 +38,7 @@ class Field(object):
         self.tmx_data = None
         self.file_path = None
         self.menu = None
-        self.player_collides = False
+        self.player_collides = None
 
         self.spawns = None
         self.items = None
@@ -261,9 +261,8 @@ class Field(object):
 
                     for item in self.items_group.sprites():
                         if sprite.rect.colliderect(item.rect):
-                            self.player_collides = True
-                        else:
-                            self.player_collides = False
+                            self.items_group.remove(item)
+                            self.group.remove(item)
 
                 elif isinstance(sprite, Npc):
                     if sprite.feet.collidelist(self.walls) > -1:
