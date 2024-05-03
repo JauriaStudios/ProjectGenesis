@@ -68,7 +68,7 @@ class Field(object):
 
         print("INITIALIZE FIELD")
 
-        self.hud = Hud(self.game)
+        self.hud = Hud(self, self.game)
         # self.music.change_music(2)
         # self.music.play_music()
 
@@ -261,6 +261,7 @@ class Field(object):
 
                     for item in self.items_group.sprites():
                         if sprite.rect.colliderect(item.rect):
+                            self.player.set_power(True)
                             self.items_group.remove(item)
                             self.group.remove(item)
 
@@ -298,6 +299,8 @@ class Field(object):
             #     self.initialize()
             #     self.fade_end = False
             #     self.fading = "OUT"
+
+            self.hud.update(dt)
 
         elif self.field_mode == "MENU":
             self.menu.update(dt)

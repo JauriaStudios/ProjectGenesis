@@ -8,7 +8,7 @@ from typing import List
 from lib.const import RESOURCE_PATH, ROOT_PATH
 
 
-class PlayerSprite(pygame.sprite.Sprite):
+class HUDSprite(pygame.sprite.Sprite):
     def __init__(self, *groups: pygame.sprite.AbstractGroup):
         super().__init__(*groups)
 
@@ -37,6 +37,8 @@ class PlayerSprite(pygame.sprite.Sprite):
 
         self.stam_recharge_tick = 0.05
         self.stam_recharge_acc = 0.0
+
+
 
     def get_health_percentage(self) -> float:
         return self.current_health/self.max_health
@@ -77,11 +79,15 @@ class PlayerSprite(pygame.sprite.Sprite):
 
 class Hud:
 
-    def __init__(self, game):
+    def __init__(self, field, game):
+
+        self.field = field
         self.game = game
 
+        self.power_laser_visible = False
+
         self.sprite_list = pygame.sprite.Group()
-        self.player_sprite = PlayerSprite(self.sprite_list)
+        self.player_sprite = HUDSprite(self.sprite_list)
 
         avatar_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "player_nobg.png")
         self.avatar_image = pygame.image.load(avatar_path).convert_alpha()
@@ -101,10 +107,9 @@ class Hud:
         life_off_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "life_off.png")
         self.life_off_image = pygame.image.load(life_off_path).convert_alpha()
 
-
         self.avatar = pygame_gui.elements.UIImage(pygame.Rect((30, 45), (223, 223)), self.avatar_image, self.game.manager)
         self.power_bar = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_bar_image, self.game.manager)
-        self.power_laser = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_laser_image, self.game.manager)
+        self.power_laser = None
         self.life_support = pygame_gui.elements.UIImage(pygame.Rect((250, 90), (146, 35)), self.life_support_image, self.game.manager)
         self.life_on = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_on_image, self.game.manager)
         self.life_off1 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_off_image, self.game.manager)
@@ -136,7 +141,12 @@ class Hud:
 
     def update(self, dt: float) -> None:
 
-        if self.game.mode == "FIELD":
+        if self.game.mode == "GAME":
+            if self.field.player:
+                if self.field.player.get_power():
+                    if self.power_laser_visible is not True:
+                        self.power_laser = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_laser_image, self.game.manager)
+                        self.power_laser_visible = True
             self.sprite_list.update(dt)
         elif self.game.mode == "MENU":
             pass

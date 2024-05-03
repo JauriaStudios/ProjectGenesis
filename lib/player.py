@@ -85,6 +85,9 @@ class Player(pygame.sprite.Sprite):
 
         self.speed = 12
 
+        self.power_laser_bar = 0
+        self.life_bar = 0
+
         self.velocity = [0, 0]
         self._position = [self.x, self.y]
         self._old_position = self.position
@@ -210,3 +213,15 @@ class Player(pygame.sprite.Sprite):
 
     def get_rect(self):
         return self.rect
+
+    def set_power(self, value):
+        self.power_laser_bar += 1
+
+    def get_power(self):
+        return self.power_laser_bar
+
+    def set_life(self, value):
+        self.life_bar += value
+
+    def get_life(self):
+        return self.life_bar
