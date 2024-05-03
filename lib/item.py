@@ -25,15 +25,12 @@ class Item(pygame.sprite.Sprite):
 
         #self.image_path = os.path.join(ROOT_PATH, RESOURCE_DIR, "sprites", image)
 
-        self.width = 32
-        self.height = 32
+        self.width = 33
+        self.height = 74
 
-        self.item_anim_up = SpriteStripAnim(self.image_path, (self.width*3, self.height*0, self.width, self.height), 3, -1, True, frame_speed)
-        self.item_anim_left = SpriteStripAnim(self.image_path, (self.width*3, self.height*0, self.width, self.height), 3, -1, True, frame_speed)
-        self.item_anim_right = SpriteStripAnim(self.image_path, (self.width*3, self.height*0, self.width, self.height), 3, -1, True, frame_speed)
-        self.item_anim_down = SpriteStripAnim(self.image_path, (self.width*3, self.height*0, self.width, self.height), 3, -1, True, frame_speed)
+        self.item_anim_up = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), 1, -1, True, frame_speed)
 
-        self.image = self.item_anim_down.images[0]
+        self.image = self.item_anim_up.images[0]
         self.rect = self.image.get_rect()
 
         self._position = (position[0], position[1])
@@ -71,4 +68,4 @@ class Item(pygame.sprite.Sprite):
 
     def update(self, dt: float) -> None:
 
-        self.image = self.item_anim_down.next()
+        self.image = self.item_anim_up.next()

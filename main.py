@@ -39,7 +39,7 @@ class Game:
         self.current_ticks = 0
         self.loading_screen = False
         self.loading_start = 0
-        self.loading_end = 4 * 1000  # 4 secs for loading screen
+        self.loading_end = 2 * 1000  # 4 secs for loading screen
         self.shooting = False
 
         with open(os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "main.yml")) as fh:
