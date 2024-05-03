@@ -3,7 +3,7 @@ from pathlib import Path
 
 # define configuration variables here
 
-SCREEN_SIZE = (1024, 768)
+SCREEN_SIZE = (1366, 768)
 LIB_PATH = Path(__file__).parent
 ROOT_PATH = LIB_PATH.parent
 RESOURCE_PATH = os.path.join(ROOT_PATH, "resources")

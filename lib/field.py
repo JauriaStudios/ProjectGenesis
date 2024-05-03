@@ -156,7 +156,7 @@ class Field(object):
                 self.group.add(warp)
 
             elif obj.type == "item":
-                item = Item("shoots/fireball.png", (int(obj.x), int(obj.y)),10)
+                item = Item("items/vaina12.png", (int(obj.x), int(obj.y)),10)
                 self.items_group.add(item)
                 self.group.add(item)
 
