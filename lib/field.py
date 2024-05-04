@@ -19,6 +19,7 @@ from .hud import Hud
 from .item import Item
 from .menu import Menu
 from .pet import Pet
+from .projectile import Projectile
 from .warp_point import WarpPoint
 from .player import Player
 from .npc import Npc
@@ -28,6 +29,7 @@ class Field(object):
     def __init__(self, game, name, screen_size, music):
 
         print("INIT FIELD")
+        self.hud = None
         self.game = game
         self.player = None
         self.pet = None
@@ -47,6 +49,7 @@ class Field(object):
         self.enemies = None
         self.npcs = None
 
+        self.player_bullets = None
         self.map_name = name
         self.screen_size = screen_size
         self.music = music
@@ -67,6 +70,8 @@ class Field(object):
     def initialize(self):
 
         print("INITIALIZE FIELD")
+
+        self.player_bullets = []
 
         self.hud = Hud(self, self.game)
         # self.music.change_music(2)
@@ -215,26 +220,35 @@ class Field(object):
                     pass
 
             elif event.type == KEYDOWN:
-                if event.key == K_LEFT:
-                    self.player.velocity[0] = -self.hero_move_speed
+                if self.player.run_attack_action == False:
+                    if event.key == K_LEFT:
+                        self.player.velocity[0] = -self.hero_move_speed
 
-                elif event.key == K_RIGHT:
-                    self.player.velocity[0] = self.hero_move_speed
+                    elif event.key == K_RIGHT:
+                        self.player.velocity[0] = self.hero_move_speed
 
-                elif event.key == K_UP:
-                    self.player.velocity[1] = -self.hero_move_speed
+                    elif event.key == K_UP:
+                        self.player.velocity[1] = -self.hero_move_speed
 
-                elif event.key == K_DOWN:
-                    self.player.velocity[1] = self.hero_move_speed
+                    elif event.key == K_DOWN:
+                        self.player.velocity[1] = self.hero_move_speed
 
-                elif event.key == K_SPACE:
-                    self.player.attack()
+                    elif event.key == K_SPACE:
+                        self.player.attack()
+                else:
+                    self.player.velocity[0] = 0
+                    self.player.velocity[1] = 0
 
             elif event.type == KEYUP:
-                if event.key == K_LEFT or event.key == K_RIGHT:
+                if self.player.run_attack_action == False:
+                    if event.key == K_LEFT or event.key == K_RIGHT:
+                        self.player.velocity[0] = 0
+                    elif event.key == K_UP or event.key == K_DOWN:
+                        self.player.velocity[1] = 0
+                else:
                     self.player.velocity[0] = 0
-                elif event.key == K_UP or event.key == K_DOWN:
                     self.player.velocity[1] = 0
+
         elif self.field_mode == "MENU":
             self.menu.handle_input(event)
 
@@ -261,7 +275,7 @@ class Field(object):
 
                     for item in self.items_group.sprites():
                         if sprite.rect.colliderect(item.rect):
-                            self.player.set_power(True)
+                            self.player.set_power(3)
                             self.items_group.remove(item)
                             self.group.remove(item)
 
@@ -280,6 +294,13 @@ class Field(object):
                     elif sprite.feet.colliderect(self.player.get_rect()):
                         sprite.velocity[0] = 0
                         sprite.velocity[1] = 0
+                elif isinstance(sprite, Projectile):
+                    for enemy in self.enemies:
+                        if sprite.feet.colliderect(enemy.get_rect()):
+                            self.group.remove(enemy)
+                            self.group.remove(sprite)
+
+
 
             if self.fading == "IN":
                 fade_speed = 1
@@ -321,6 +342,7 @@ class Field(object):
                 screen.blit(self.fade_rect, (0, 0))
 
     def add_bullet(self, bullet):
+        self.player_bullets.append(bullet)
         self.group.add(bullet)
 
     def change_field(self, name):

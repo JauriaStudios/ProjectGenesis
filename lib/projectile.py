@@ -18,23 +18,35 @@ class Projectile(pygame.sprite.Sprite):
 
         self.player = player
 
-        image = "notes.png"
+        image = "note1.png"
         base_dir = os.path.dirname(os.path.abspath(__file__))
         self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", image)
-
+        self.rotation = 0
+        self.rotation_speed = 20
         self.x = self.player.position[0] + self.player.rect.width * 0.5
         self.y = self.player.position[1] + self.player.rect.height * 0.5
 
         self.width = 32
         self.height = 32
 
-        self.speed = 175
-        frame_speed = 60
+        self.speed = 30
+        frame_speed = 7
 
-        self.shoot_anim = SpriteStripAnim(self.image_path, (0, 0, self.width, self.width), 6, -1, True, frame_speed)
+        self.shoot_anim = SpriteStripAnim(self.image_path, (0, 0, self.height, self.width), 5, -1, True, frame_speed)
+
         self.image = self.shoot_anim.images[0]
 
-        self.velocity = bullet_vector
+        if bullet_vector is not None:
+            self.velocity = bullet_vector
+        else:
+            if player.direction == "RIGHT":
+                self.velocity = [self.speed, 0]
+            elif player.direction == "LEFT":
+                self.velocity = [-self.speed, 0]
+            elif player.direction == "UP":
+                self.velocity = [0, -self.speed]
+            elif player.direction == "DOWN":
+                self.velocity = [0, self.speed]
 
         self._position = [self.x, self.y]
         self._old_position = self.position
@@ -50,6 +62,13 @@ class Projectile(pygame.sprite.Sprite):
     def position(self, value: List[float]) -> None:
         self._position = list(value)
 
+    # THE MAIN ROTATE FUNCTION
+    def rot(self):
+        self.image = pygame.transform.rotate(self.image, self.rotation)
+        self.rotation += self.rotation_speed
+        self.rotation = self.rotation % 360
+        self.rect = self.image.get_rect(center=self.rect.center)
+
     def update(self, dt: float) -> None:
         self.image = self.shoot_anim.next()
         self._old_position = self._position[:]
@@ -57,7 +76,7 @@ class Projectile(pygame.sprite.Sprite):
         self._position[1] += self.velocity[1] * (dt * 10)
         self.rect.topleft = self._position
         self.feet.midbottom = self.rect.midbottom
-
+        self.rot()
     def move_back(self, dt: float) -> None:
         """If called after an update, the sprite can move back"""
         self.image = self.shoot_anim.images[0]

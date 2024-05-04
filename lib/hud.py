@@ -39,7 +39,6 @@ class HUDSprite(pygame.sprite.Sprite):
         self.stam_recharge_acc = 0.0
 
 
-
     def get_health_percentage(self) -> float:
         return self.current_health/self.max_health
 
@@ -85,6 +84,7 @@ class Hud:
         self.game = game
 
         self.power_laser_visible = False
+        self.player_laser_level = 0
 
         self.sprite_list = pygame.sprite.Group()
         self.player_sprite = HUDSprite(self.sprite_list)
@@ -98,6 +98,9 @@ class Hud:
         power_laser_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "power_laser.png")
         self.power_laser_image = pygame.image.load(power_laser_path).convert_alpha()
 
+        power_power_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "power_up.png")
+        self.power_up_image = pygame.image.load(power_power_path).convert_alpha()
+
         life_support_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "hud", "life_support.png")
         self.life_support_image = pygame.image.load(life_support_path).convert_alpha()
 
@@ -108,9 +111,21 @@ class Hud:
         self.life_off_image = pygame.image.load(life_off_path).convert_alpha()
 
         self.avatar = pygame_gui.elements.UIImage(pygame.Rect((30, 45), (223, 223)), self.avatar_image, self.game.manager)
+
         self.power_bar = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_bar_image, self.game.manager)
-        self.power_laser = None
+
+        self.power_laser = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_laser_image, self.game.manager)
+
+        self.power_up_1 = pygame_gui.elements.UIImage(pygame.Rect((127, 535), (27, 41)), self.power_up_image, self.game.manager)
+        self.power_up_2 = pygame_gui.elements.UIImage(pygame.Rect((127, 495), (27, 41)), self.power_up_image, self.game.manager)
+        self.power_up_3 = pygame_gui.elements.UIImage(pygame.Rect((127, 455), (27, 41)), self.power_up_image, self.game.manager)
+        self.power_up_4 = pygame_gui.elements.UIImage(pygame.Rect((127, 415), (27, 41)), self.power_up_image, self.game.manager)
+        self.power_up_5 = pygame_gui.elements.UIImage(pygame.Rect((127, 375), (27, 41)), self.power_up_image, self.game.manager)
+        self.power_up_6 = pygame_gui.elements.UIImage(pygame.Rect((127, 335), (27, 41)), self.power_up_image, self.game.manager)
+
+
         self.life_support = pygame_gui.elements.UIImage(pygame.Rect((250, 90), (146, 35)), self.life_support_image, self.game.manager)
+
         self.life_on = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_on_image, self.game.manager)
         self.life_off1 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_off_image, self.game.manager)
         self.life_off2 = pygame_gui.elements.UIImage(pygame.Rect((352, 63), (32, 32)), self.life_off_image, self.game.manager)
@@ -139,14 +154,52 @@ class Hud:
         #                                               object_id=ObjectID(
         #                                                   '#stamina_bar', '@player_status_bars'))
 
+        self.power_laser.hide()
+
+        self.power_up_1.hide()
+        self.power_up_2.hide()
+        self.power_up_3.hide()
+        self.power_up_4.hide()
+        self.power_up_5.hide()
+        self.power_up_6.hide()
+
     def update(self, dt: float) -> None:
 
         if self.game.mode == "GAME":
             if self.field.player:
-                if self.field.player.get_power():
+                power = self.field.player.get_power()
+                # TODO fix multiple calls to show()
+                if power >= 1:
                     if self.power_laser_visible is not True:
-                        self.power_laser = pygame_gui.elements.UIImage(pygame.Rect((78, 265), (126, 381)), self.power_laser_image, self.game.manager)
+                        self.power_laser.show()
+                        self.power_up_1.show()
                         self.power_laser_visible = True
+                        self.player_laser_level = power
+                else:
+                    self.power_laser.hide()
+                    self.power_up_1.hide()
+
+                if power >= 2:
+                    self.power_up_2.show()
+                else:
+                    self.power_up_2.hide()
+                if power >= 3:
+                    self.power_up_3.show()
+                else:
+                    self.power_up_3.hide()
+                if power >= 4:
+                    self.power_up_4.show()
+                else:
+                    self.power_up_4.hide()
+                if power >= 5:
+                    self.power_up_5.show()
+                else:
+                    self.power_up_5.hide()
+                if power == 6:
+                    self.power_up_6.show()
+                else:
+                    self.power_up_6.hide()
+
             self.sprite_list.update(dt)
         elif self.game.mode == "MENU":
             pass

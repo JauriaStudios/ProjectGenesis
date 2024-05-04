@@ -293,15 +293,11 @@ class Enemy(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-
+        # get the player vector
         distance = [self.player.position[0] - self.position[0], self.player.position[1] - self.position[1]]
-
         norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
-
         direction = [distance[0] / norm, distance[1] / norm]
-
         bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
-
         projectile = Projectile(self, bullet_vector)
 
         self.game.add_bullet(projectile)
@@ -334,3 +330,7 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.velocity[0] = 0
                 self.velocity[1] = 0
+
+    def get_rect(self):
+
+        return self.rect

@@ -194,15 +194,18 @@ class Player(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-        pass
+
         # distance = [self.player.position[0] - self.position[0], self.player.position[1] - self.position[1]]
         # norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
         # direction = [distance[0] / norm, distance[1] / norm]
         # bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
         #
-        # projectile = Projectile(self, bullet_vector)
-        #
-        # self.game.add_bullet(projectile)
+
+        if self.power_laser_bar > 0:
+            projectile = Projectile(self, None)
+            self.game.add_bullet(projectile)
+            self.power_laser_bar -= 1
+
 
     def attack(self):
         self.shooting = True
@@ -215,7 +218,7 @@ class Player(pygame.sprite.Sprite):
         return self.rect
 
     def set_power(self, value):
-        self.power_laser_bar += 1
+        self.power_laser_bar += value
 
     def get_power(self):
         return self.power_laser_bar
