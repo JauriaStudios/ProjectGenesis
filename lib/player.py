@@ -22,11 +22,13 @@ class Player(pygame.sprite.Sprite):
         self.shooting = False
         self.run_attack_action = False
         self.animation_action_frame = 0
+        self.animation_dead_frame = 0
         self.game = game
 
         self.current_ticks = 0
         self.prev_ticks = 0
         self.ticks_interval = 60  # 1 second / 60 fps
+        self.ticks_interval_dead = 60  # 1 second / 60 fps
 
         self.image_path = os.path.join(ROOT_PATH, RESOURCE_PATH, "sprites", f"{name}.png")
 
@@ -112,80 +114,92 @@ class Player(pygame.sprite.Sprite):
         self.rect.topleft = self.position
         self.feet.midbottom = self.rect.midbottom
 
-        if self.velocity[0] > 0 and self.velocity[1] > 0:
-            self.direction = "DOWN"  # DOWN RIGHT
-            self.facing = 7
-            self.image = self.anim_right.next()
-            # print(f"move DOWN RIGHT {self.direction}")
-
-        elif self.velocity[0] < 0 and self.velocity[1] < 0:
-            # print("DIAGONAL UP LEFT")
-            self.direction = "LEFT"  # UP LEFT
-            self.facing = 3
-            self.image = self.anim_left.next()
-            # print(f"move UP LEFT {self.direction}")
-
-        elif self.velocity[0] > 0 and self.velocity[1] < 0:
-            self.direction = "RIGHT"  # UP RIGHT
-            self.facing = 5
-            self.image = self.anim_right.next()
-            # print(f"move UP RIGHT {self.direction}")
-
-        elif self.velocity[0] < 0 and self.velocity[1] > 0:
-            # print("DIAGONAL DOWN LEFT")
-            self.direction = "LEFT"  # DOWN LEFT
-            self.facing = 1
-            self.image = self.anim_left.next()
-            # print(f"move DOWN LEFT {self.direction}")
-
-        elif self.velocity[0] < 0:
-            self.direction = "LEFT"  # LEFT
-            self.facing = 2
-            self.image = self.anim_left.next()
-            # print(f"move LEFT {self.direction}")
-
-        elif self.velocity[0] > 0:
-            self.direction = "RIGHT"  # RIGHT
-            self.facing = 6
-            self.image = self.anim_right.next()
-            # print(f"move RIGHT {self.direction}")
-
-        elif self.velocity[1] > 0:
-            self.direction = "DOWN"  # DOWN
-            self.facing = 0
-            self.image = self.anim_down.next()
-            # print(f"move DOWN {self.direction}")
-
-        elif self.velocity[1] < 0:
-            self.direction = "UP"  # UP
-            self.facing = 4
-            self.image = self.anim_up.next()
-            # print(f"move UP {self.direction}")
-        elif self.run_attack_action is False:
-            self.image = self.anim_walk[self.direction].images[0]
-
-        if self.run_attack_action:
+        if self.get_life() == 0:
             self.current_ticks += dt * 1000
+            if self.current_ticks - self.prev_ticks > self.ticks_interval_dead:
+                if self.animation_dead_frame < 6:
+                    print(self.animation_dead_frame)
 
-            if self.current_ticks - self.prev_ticks > self.ticks_interval:
+                    self.image = self.anim_dead.next()
+                    self.prev_ticks = self.current_ticks
+                    self.animation_dead_frame += 1
+            # self.group.remove(self.player)
+        else:
 
-                if (self.shooting is True) and (self.animation_action_frame == 3):
-                    self.shoot()
-                    self.shooting = False
-                elif self.animation_action_frame < 5:
-                    # if (self.direction == 6) and (self.facing == 2):
-                    #     self.image = pygame.transform.flip(self.image, self.mirror, False)
+            if self.velocity[0] > 0 and self.velocity[1] > 0:
+                self.direction = "DOWN"  # DOWN RIGHT
+                self.facing = 7
+                self.image = self.anim_right.next()
+                # print(f"move DOWN RIGHT {self.direction}")
 
-                    self.image = self.anim_action[self.direction].images[self.animation_action_frame]
+            elif self.velocity[0] < 0 and self.velocity[1] < 0:
+                # print("DIAGONAL UP LEFT")
+                self.direction = "LEFT"  # UP LEFT
+                self.facing = 3
+                self.image = self.anim_left.next()
+                # print(f"move UP LEFT {self.direction}")
 
-                    self.animation_action_frame += 1
-                    # print(f"Play frame {self.animation_action_frame} in direction = {self.direction} facing {self.facing}")
-                else:
-                    self.animation_action_frame = 0
-                    self.run_attack_action = False
-                    # print("animation end")
+            elif self.velocity[0] > 0 and self.velocity[1] < 0:
+                self.direction = "RIGHT"  # UP RIGHT
+                self.facing = 5
+                self.image = self.anim_right.next()
+                # print(f"move UP RIGHT {self.direction}")
 
-                self.prev_ticks = self.current_ticks
+            elif self.velocity[0] < 0 and self.velocity[1] > 0:
+                # print("DIAGONAL DOWN LEFT")
+                self.direction = "LEFT"  # DOWN LEFT
+                self.facing = 1
+                self.image = self.anim_left.next()
+                # print(f"move DOWN LEFT {self.direction}")
+
+            elif self.velocity[0] < 0:
+                self.direction = "LEFT"  # LEFT
+                self.facing = 2
+                self.image = self.anim_left.next()
+                # print(f"move LEFT {self.direction}")
+
+            elif self.velocity[0] > 0:
+                self.direction = "RIGHT"  # RIGHT
+                self.facing = 6
+                self.image = self.anim_right.next()
+                # print(f"move RIGHT {self.direction}")
+
+            elif self.velocity[1] > 0:
+                self.direction = "DOWN"  # DOWN
+                self.facing = 0
+                self.image = self.anim_down.next()
+                # print(f"move DOWN {self.direction}")
+
+            elif self.velocity[1] < 0:
+                self.direction = "UP"  # UP
+                self.facing = 4
+                self.image = self.anim_up.next()
+                # print(f"move UP {self.direction}")
+            elif self.run_attack_action is False:
+                self.image = self.anim_walk[self.direction].images[0]
+
+            if self.run_attack_action:
+                self.current_ticks += dt * 1000
+
+                if self.current_ticks - self.prev_ticks > self.ticks_interval:
+
+                    if (self.shooting is True) and (self.animation_action_frame == 3):
+                        self.shoot()
+                        self.shooting = False
+                    elif self.animation_action_frame < 5:
+                        # if (self.direction == 6) and (self.facing == 2):
+                        #     self.image = pygame.transform.flip(self.image, self.mirror, False)
+
+                        self.image = self.anim_action[self.direction].images[self.animation_action_frame]
+
+                        self.animation_action_frame += 1
+                        # print(f"Play frame {self.animation_action_frame} in direction = {self.direction} facing {self.facing}")
+                    else:
+                        self.animation_action_frame = 0
+                        self.run_attack_action = False
+                        # print("animation end")
+
+                    self.prev_ticks = self.current_ticks
 
     def move_back(self, dt: float) -> None:
         """If called after an update, the sprite can move back"""
@@ -202,10 +216,9 @@ class Player(pygame.sprite.Sprite):
         #
 
         if self.power_laser_bar > 0:
-            projectile = Projectile(self, None)
+            projectile = Projectile(self, "Player", None)
             self.game.add_bullet(projectile)
             self.power_laser_bar -= 1
-
 
     def attack(self):
         self.shooting = True
@@ -223,8 +236,14 @@ class Player(pygame.sprite.Sprite):
     def get_power(self):
         return self.power_laser_bar
 
-    def set_life(self, value):
-        self.life_bar += value
+    def increase_life(self, value):
+        print(value)
+        if self.life_bar <= 2:
+            self.life_bar += value
+
+    def decrease_life(self, value):
+        if self.life_bar >= 1:
+            self.life_bar -= value
 
     def get_life(self):
         return self.life_bar

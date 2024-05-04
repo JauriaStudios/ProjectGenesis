@@ -13,9 +13,9 @@ class Projectile(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, player, bullet_vector=None):
+    def __init__(self, player, owner, bullet_vector=None):
         super(Projectile, self).__init__()
-
+        self.owner = owner
         self.player = player
 
         image = "note1.png"

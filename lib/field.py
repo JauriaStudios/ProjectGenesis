@@ -9,7 +9,7 @@ import pyscroll.data
 from pyscroll.group import PyscrollGroup
 
 from pygame import Rect, JOYAXISMOTION, JOYBUTTONDOWN, JOYBUTTONUP, KEYUP, KEYDOWN
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_SPACE
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_SPACE, K_c
 
 from pytmx import load_pygame
 
@@ -73,6 +73,7 @@ class Field(object):
 
         self.player_bullets = []
 
+
         self.hud = Hud(self, self.game)
         # self.music.change_music(2)
         # self.music.play_music()
@@ -112,7 +113,7 @@ class Field(object):
         self.spawns = {}
 
         self.player = Player(self, name="Izzy", x=0, y=0)
-
+        self.player.increase_life(3)
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
         self.group.add(self.player)
@@ -139,7 +140,7 @@ class Field(object):
 
                 print(F"Spawn {enemy_name} level {enemy_level}")
 
-                enemy = Enemy(self, self.player, name=enemy_name, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=False, wanderer=True, level=enemy_level)
+                enemy = Enemy(self, self.player, name=enemy_name, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level)
 
                 self.group.add(enemy)
 
@@ -168,8 +169,7 @@ class Field(object):
             else:
                 pprint(obj)
 
-
-
+        self.fading = "OUT"
         # for name, spawn in self.spawns.items():
         #     self.npc_1.position = self.spawns[name]
 
@@ -235,6 +235,12 @@ class Field(object):
 
                     elif event.key == K_SPACE:
                         self.player.attack()
+                    elif event.key == K_c:
+                        for name, warp in self.warps.items():
+                            if warp.get_player():
+                                map_name = warp.get_warp_map()
+                                # print(f"Change Field {map_name} from warp name {name}")
+                                self.change_field(map_name)
                 else:
                     self.player.velocity[0] = 0
                     self.player.velocity[1] = 0
@@ -269,13 +275,14 @@ class Field(object):
 
                     for name, warp in self.warps.items():
                         if sprite.feet.colliderect(warp.get_rect()):
-                            self.warps[name].go_inside(self.player)
+                            self.warps[name].go_inside()
                         else:
                             self.warps[name].go_outisde()
 
                     for item in self.items_group.sprites():
                         if sprite.rect.colliderect(item.rect):
                             self.player.set_power(3)
+                            self.player.increase_life(2)
                             self.items_group.remove(item)
                             self.group.remove(item)
 
@@ -295,10 +302,16 @@ class Field(object):
                         sprite.velocity[0] = 0
                         sprite.velocity[1] = 0
                 elif isinstance(sprite, Projectile):
+                    if sprite.feet.colliderect(self.player.get_rect()):
+                        if sprite.owner == "Enemy":
+                            self.player.decrease_life(1)
+                            self.group.remove(sprite)
+
                     for enemy in self.enemies:
                         if sprite.feet.colliderect(enemy.get_rect()):
-                            self.group.remove(enemy)
-                            self.group.remove(sprite)
+                            if sprite.owner == "Player":
+                                self.group.remove(enemy)
+                                self.group.remove(sprite)
 
 
 
@@ -308,6 +321,8 @@ class Field(object):
                 if self.alpha >= 255:
                     self.fading = None
                     self.fade_end = True
+                    if self.map_name != self.previous_map_name:
+                        self.initialize()
 
             elif self.fading == "OUT":
                 fade_speed = 1
@@ -316,10 +331,13 @@ class Field(object):
                     self.fading = None
                     self.fade_end = True
 
+
             # if self.fade_end is True:
             #     self.initialize()
             #     self.fade_end = False
             #     self.fading = "OUT"
+
+
 
             self.hud.update(dt)
 
@@ -347,4 +365,5 @@ class Field(object):
 
     def change_field(self, name):
         self.fading = "IN"
+        self.previous_map_name = self.map_name
         self.map_name = name

@@ -50,7 +50,7 @@ class Enemy(pygame.sprite.Sprite):
         self.wanderer = wanderer
         self.level = level
 
-        frame_speed = 5
+        frame_speed = 6
 
         self.anim_effect_up = SpriteStripAnim(self.image_path, (0, self.width*0, self.width, self.height), 7, -1, False, frame_speed)
         self.anim_effect_left = SpriteStripAnim(self.image_path, (0, self.width*1, self.width, self.height), 7, -1, False, frame_speed)
@@ -215,9 +215,9 @@ class Enemy(pygame.sprite.Sprite):
             self.image = self.anim_walk["DOWN"].next()
 
         elif self.velocity[0] == 0 and self.velocity[1] == 0:
-            pass
-            # if self.run_attack_action == False:
-            #     self.attack()
+            # FIXME enemy attack
+            if self.run_attack_action == False:
+                self.attack()
         else:
             self.image = self.anim_walk[self.direction].images[0]
 
@@ -298,7 +298,7 @@ class Enemy(pygame.sprite.Sprite):
         norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
         direction = [distance[0] / norm, distance[1] / norm]
         bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
-        projectile = Projectile(self, bullet_vector)
+        projectile = Projectile(self,"Enemy",  bullet_vector)
 
         self.game.add_bullet(projectile)
 

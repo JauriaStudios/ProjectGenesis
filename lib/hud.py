@@ -126,9 +126,17 @@ class Hud:
 
         self.life_support = pygame_gui.elements.UIImage(pygame.Rect((250, 90), (146, 35)), self.life_support_image, self.game.manager)
 
-        self.life_on = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_on_image, self.game.manager)
-        self.life_off1 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_off_image, self.game.manager)
-        self.life_off2 = pygame_gui.elements.UIImage(pygame.Rect((352, 63), (32, 32)), self.life_off_image, self.game.manager)
+        self.life_off1 = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_off_image,
+                                                     self.game.manager)
+        self.life_off2 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_off_image,
+                                                     self.game.manager)
+        self.life_off3 = pygame_gui.elements.UIImage(pygame.Rect((352, 63), (32, 32)), self.life_off_image,
+                                                     self.game.manager)
+
+        self.life_on_1 = pygame_gui.elements.UIImage(pygame.Rect((266, 63), (32, 32)), self.life_on_image, self.game.manager)
+        self.life_on_2 = pygame_gui.elements.UIImage(pygame.Rect((308, 63), (32, 32)), self.life_on_image, self.game.manager)
+        self.life_on_3 = pygame_gui.elements.UIImage(pygame.Rect((352, 63), (32, 32)), self.life_on_image, self.game.manager)
+
 
         # self.progress_bar = pygame_gui.elements.UIStatusBar(pygame.Rect((100, 100), (200, 30)),
         #                                                self.game.manager,
@@ -162,12 +170,17 @@ class Hud:
         self.power_up_4.hide()
         self.power_up_5.hide()
         self.power_up_6.hide()
+        self.life_on_1.hide()
+        self.life_on_2.hide()
+        self.life_on_3.hide()
 
     def update(self, dt: float) -> None:
 
         if self.game.mode == "GAME":
             if self.field.player:
                 power = self.field.player.get_power()
+                life = self.field.player.get_life()
+                print(f"life {life}")
                 # TODO fix multiple calls to show()
                 if power >= 1:
                     if self.power_laser_visible is not True:
@@ -199,6 +212,22 @@ class Hud:
                     self.power_up_6.show()
                 else:
                     self.power_up_6.hide()
+
+                if life >= 1:
+                    self.life_on_1.show()
+                else:
+                    self.life_on_1.hide()
+                if life >= 2:
+                    self.life_on_2.show()
+                else:
+                    self.life_on_2.hide()
+                if life == 3:
+                    self.life_on_3.show()
+                else:
+                    self.life_on_3.hide()
+
+
+
 
             self.sprite_list.update(dt)
         elif self.game.mode == "MENU":

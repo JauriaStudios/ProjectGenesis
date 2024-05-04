@@ -51,7 +51,7 @@ class WarpPoint(pygame.sprite.Sprite):
                            self.warp.width,
                            self.warp.height)
 
-    def go_inside(self, player):
+    def go_inside(self):
         # print("IN")
         self.player_inside = True
 
