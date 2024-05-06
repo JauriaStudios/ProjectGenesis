@@ -221,13 +221,10 @@ class Hud:
                     self.life_on_2.show()
                 else:
                     self.life_on_2.hide()
-                if life == 3:
+                if life >= 3:
                     self.life_on_3.show()
                 else:
                     self.life_on_3.hide()
-
-
-
 
             self.sprite_list.update(dt)
         elif self.game.mode == "MENU":
