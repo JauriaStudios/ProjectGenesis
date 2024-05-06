@@ -114,6 +114,7 @@ class Field(object):
 
         self.player = Player(self, name="Izzy", x=0, y=0)
         self.player.increase_life(3)
+
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
         self.group.add(self.player)
@@ -152,8 +153,6 @@ class Field(object):
 
                 self.walls.append(collision)
                 # self.group.add(collision)
-
-        
 
             elif obj.type == "map_warp":
                 warp = WarpPoint(obj, name="warp", frame_speed=10)
@@ -310,6 +309,10 @@ class Field(object):
                     for enemy in self.enemies:
                         if sprite.feet.colliderect(enemy.get_rect()):
                             if sprite.owner == "Player":
+                                item = Item("items/purplegem.png", (int(enemy.position[0]), int(enemy.position[1])),10)
+                                self.items_group.add(item)
+                                self.group.add(item)
+
                                 self.group.remove(enemy)
                                 self.group.remove(sprite)
 
