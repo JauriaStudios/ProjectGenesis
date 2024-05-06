@@ -183,11 +183,11 @@ class Hud:
                 print(f"life {life}")
                 # TODO fix multiple calls to show()
                 if power >= 1:
-                    if self.power_laser_visible is not True:
-                        self.power_laser.show()
-                        self.power_up_1.show()
-                        self.power_laser_visible = True
-                        self.player_laser_level = power
+                    # if self.power_laser_visible is not True:
+                    self.power_laser.show()
+                    self.power_up_1.show()
+                    # self.power_laser_visible = True
+                    # self.player_laser_level = power
                 else:
                     self.power_laser.hide()
                     self.power_up_1.hide()
@@ -208,7 +208,7 @@ class Hud:
                     self.power_up_5.show()
                 else:
                     self.power_up_5.hide()
-                if power == 6:
+                if power >= 6:
                     self.power_up_6.show()
                 else:
                     self.power_up_6.hide()

@@ -20,10 +20,10 @@ class Projectile(pygame.sprite.Sprite):
         self.owner = owner
         self.player = player
 
-        image = "note1.png"
+        self.name = "note1"
         base_dir = os.path.dirname(os.path.abspath(__file__))
-
-        self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", image)
+        
+        self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", f"{self.name}.png")
         self.rotation = 0
         self.rotation_speed = 20
 

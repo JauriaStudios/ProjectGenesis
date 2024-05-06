@@ -113,7 +113,9 @@ class Field(object):
         self.spawns = {}
 
         self.player = Player(self, name="Izzy", x=0, y=0)
-        self.player.increase_life(3)
+
+        self.player.increase_life(1)
+        self.player.set_power(1)
 
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
@@ -122,7 +124,7 @@ class Field(object):
 
         for obj in self.tmx_data.objects:
 
-            pprint(obj.properties)
+            # pprint(obj.properties)
 
             if obj.type == "player_spawn":
                 # print("PLAYER SPAWN FOUND")
@@ -139,7 +141,7 @@ class Field(object):
                 enemy_name = obj.properties.get("Name")
                 enemy_level = obj.properties.get("Level")
 
-                print(F"Spawn {enemy_name} level {enemy_level}")
+                # print(F"Spawn {enemy_name} level {enemy_level}")
 
                 enemy = Enemy(self, self.player, name=enemy_name, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level)
 
@@ -161,7 +163,8 @@ class Field(object):
                 self.group.add(warp)
 
             elif obj.type == "item":
-                item = Item("items/purplegem.png", (int(obj.x), int(obj.y)),10)
+                item_name = obj.properties.get("Name")
+                item = Item(item_name, (int(obj.x), int(obj.y)), 10)
                 self.items_group.add(item)
                 self.group.add(item)
 
@@ -278,12 +281,14 @@ class Field(object):
                         else:
                             self.warps[name].go_outisde()
 
-                    for item in self.items_group.sprites():
-                        if sprite.rect.colliderect(item.rect):
-                            self.player.set_power(3)
-                            self.player.increase_life(2)
-                            self.items_group.remove(item)
-                            self.group.remove(item)
+                if isinstance(sprite, Item):
+                    if self.player.rect.colliderect(sprite.rect):
+                        if sprite.name == "purplegem":
+                            self.player.set_power(1)
+                        if sprite.name == "redgem":
+                            self.player.increase_life(1)
+                        self.items_group.remove(sprite)
+                        self.group.remove(sprite)
 
                 elif isinstance(sprite, Npc):
                     if sprite.feet.collidelist(self.walls) > -1:
@@ -309,7 +314,7 @@ class Field(object):
                     for enemy in self.enemies:
                         if sprite.feet.colliderect(enemy.get_rect()):
                             if sprite.owner == "Player":
-                                item = Item("items/purplegem.png", (int(enemy.position[0]), int(enemy.position[1])),10)
+                                item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])),10)
                                 self.items_group.add(item)
                                 self.group.add(item)
 

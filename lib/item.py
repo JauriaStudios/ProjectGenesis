@@ -13,8 +13,8 @@ class Item(pygame.sprite.Sprite):
     def __init__(self, image, position, frame_speed):
         super(Item, self).__init__()
 
-        self.image_name = image
-        self.image_path = os.path.join(RESOURCE_PATH, self.image_name)
+        self.name = image
+        self.image_path = os.path.join(RESOURCE_PATH, "items", f"{self.name}.png")
         self.width = 16
         self.height = 16
 

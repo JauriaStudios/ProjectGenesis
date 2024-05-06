@@ -237,7 +237,6 @@ class Player(pygame.sprite.Sprite):
         return self.power_laser_bar
 
     def increase_life(self, value):
-        print(value)
         if self.life_bar <= 2:
             self.life_bar += value
 
