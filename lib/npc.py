@@ -226,7 +226,7 @@ class Npc(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-        projectile = Projectile(self)
+        projectile = Projectile(self, self.game)
         self.game.add_bullet(projectile)
 
     def wander(self, dt):

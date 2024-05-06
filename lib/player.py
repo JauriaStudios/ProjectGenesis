@@ -216,7 +216,7 @@ class Player(pygame.sprite.Sprite):
         #
 
         if self.power_laser_bar > 0:
-            projectile = Projectile(self, "Player", None)
+            projectile = Projectile(self, self.game, "Player", None)
             self.game.add_bullet(projectile)
             self.power_laser_bar -= 1
 

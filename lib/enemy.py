@@ -298,7 +298,7 @@ class Enemy(pygame.sprite.Sprite):
         norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
         direction = [distance[0] / norm, distance[1] / norm]
         bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
-        projectile = Projectile(self,"Enemy",  bullet_vector)
+        projectile = Projectile(self, self.game, "Enemy",  bullet_vector)
 
         self.game.add_bullet(projectile)
 

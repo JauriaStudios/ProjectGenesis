@@ -13,21 +13,27 @@ class Projectile(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, player, owner, bullet_vector=None):
+    def __init__(self, player, game, owner, bullet_vector=None ):
         super(Projectile, self).__init__()
+
+        self.game = game
         self.owner = owner
         self.player = player
 
         image = "note1.png"
         base_dir = os.path.dirname(os.path.abspath(__file__))
+
         self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", image)
         self.rotation = 0
         self.rotation_speed = 20
+
         self.x = self.player.position[0] + self.player.rect.width * 0.5
         self.y = self.player.position[1] + self.player.rect.height * 0.5
-        self.duration = 240
-        self.previous_ticks = 0
+
+        self.duration = 3 * 1000  # second * 1000 millis
+        self.prev_ticks = 0
         self.current_ticks = 0
+
         self.width = 32
         self.height = 32
 
@@ -72,6 +78,13 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def update(self, dt: float) -> None:
+
+        self.current_ticks += dt * 1000
+        if self.current_ticks - self.prev_ticks > self.duration:
+            self.game.remove_bullet(self)
+            self.prev_ticks = self.current_ticks
+            return
+
         self.image = self.shoot_anim.next()
         self._old_position = self._position[:]
         self._position[0] += self.velocity[0] * (dt * 10)
@@ -79,6 +92,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.topleft = self._position
         self.feet.midbottom = self.rect.midbottom
         self.rot()
+
     def move_back(self, dt: float) -> None:
         """If called after an update, the sprite can move back"""
         self.image = self.shoot_anim.images[0]

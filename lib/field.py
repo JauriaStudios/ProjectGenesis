@@ -360,8 +360,12 @@ class Field(object):
                 screen.blit(self.fade_rect, (0, 0))
 
     def add_bullet(self, bullet):
-        self.player_bullets.append(bullet)
+        # self.player_bullets.append(bullet)
         self.group.add(bullet)
+
+    def remove_bullet(self, bullet):
+        # self.player_bullets.append(bullet)
+        self.group.remove(bullet)
 
     def change_field(self, name):
         self.fading = "IN"
