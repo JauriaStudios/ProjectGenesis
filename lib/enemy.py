@@ -32,7 +32,7 @@ class Enemy(pygame.sprite.Sprite):
 
         self.current_ticks = 0
         self.prev_ticks = 0
-        self.ticks_interval = 60  # 1 second / 60 fps
+        self.ticks_interval = 120  # 1 second / 60 fps
 
         self.player = player
 

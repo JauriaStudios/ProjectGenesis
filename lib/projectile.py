@@ -25,7 +25,9 @@ class Projectile(pygame.sprite.Sprite):
         self.rotation_speed = 20
         self.x = self.player.position[0] + self.player.rect.width * 0.5
         self.y = self.player.position[1] + self.player.rect.height * 0.5
-
+        self.duration = 240
+        self.previous_ticks = 0
+        self.current_ticks = 0
         self.width = 32
         self.height = 32
 

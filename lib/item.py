@@ -15,10 +15,13 @@ class Item(pygame.sprite.Sprite):
 
         self.image_name = image
         self.image_path = os.path.join(RESOURCE_PATH, self.image_name)
+        self.width = 16
+        self.height = 16
 
         self.player_inside = False
+        self.power_item = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), 4, -1, True, frame_speed)
 
-        self.image = pygame.image.load(self.image_path).convert_alpha()
+        self.image = self.power_item.images[0]
         self.rect = self.image.get_rect()
 
         self._position = (position[0], position[1])
@@ -41,4 +44,4 @@ class Item(pygame.sprite.Sprite):
                            self.warp.height)
 
     def update(self, dt: float) -> None:
-        pass
+        self.image = self.power_item.next()
