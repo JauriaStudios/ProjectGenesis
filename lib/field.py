@@ -126,8 +126,8 @@ class Field(object):
             if obj.type == "player_spawn":
                 # print("PLAYER SPAWN FOUND")
 
-                self.player._position[0] = int(obj.x) + self.player.width
-                self.player._position[1] = int(obj.y) - self.player.height
+                self.player._position[0] = int(obj.x) + self.player.width/2
+                self.player._position[1] = int(obj.y) - self.player.height/2
 
                 self.pet._position[0] = int(obj.x) + self.player.width
                 self.pet._position[1] = int(obj.y) - self.player.height

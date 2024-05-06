@@ -207,7 +207,7 @@ class Pet(pygame.sprite.Sprite):
         self.feet.midbottom = self.rect.midbottom
 
     def shoot(self):
-        projectile = Projectile(self, self.game, "pet", None)
+        projectile = Projectile(self, self.game, "Pet", None)
         self.game.add_bullet(projectile)
 
     def wander(self, dt):

@@ -32,7 +32,7 @@ class WarpPoint(pygame.sprite.Sprite):
         self.image = self.anim.images[0]
         self.rect = self.image.get_rect()
 
-        self._position = (self.warp.x, self.warp.y)
+        self._position = (self.warp.x-(self.width/2), self.warp.y-(self.height/2))
         self._old_position = self.position
 
         self.rect.topleft = self._position
