@@ -9,7 +9,7 @@ import pyscroll.data
 from pyscroll.group import PyscrollGroup
 
 from pygame import Rect, JOYAXISMOTION, JOYBUTTONDOWN, JOYBUTTONUP, KEYUP, KEYDOWN
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_SPACE, K_c
+from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, K_MINUS, K_PLUS, K_ESCAPE, K_BACKSPACE, K_SPACE, K_c, K_x
 
 from pytmx import load_pygame
 
@@ -20,6 +20,7 @@ from .item import Item
 from .menu import Menu
 from .pet import Pet
 from .projectile import Projectile
+from .text import TextBox
 from .warp_point import WarpPoint
 from .player import Player
 from .npc import Npc
@@ -29,6 +30,10 @@ class Field(object):
     def __init__(self, game, name, screen_size, music):
 
         print("INIT FIELD")
+        self.dialog_purple = None
+        self.dialog_red = None
+        self.dialog = None
+        self.dialog_on = None
         self.hud = None
         self.game = game
         self.player = None
@@ -71,8 +76,12 @@ class Field(object):
 
         print("INITIALIZE FIELD")
 
-        self.player_bullets = []
 
+
+        self.player_bullets = []
+        self.dialog_purple = False
+        self.dialog_red = False
+        self.dialog_on = False
 
         self.hud = Hud(self, self.game)
         # self.music.change_music(2)
@@ -81,7 +90,7 @@ class Field(object):
         self.file_path = str(os.path.join(ROOT_PATH, RESOURCE_PATH, "maps", self.map_name))
 
         # load data from pytmx
-        self.tmx_data = load_pygame(self.file_path)
+        self.tmx_data = load_pygame(f"{self.file_path}.tmx")
 
         # create new data source for pyscroll
         self.map_data = pyscroll.data.TiledMapData(self.tmx_data)
@@ -175,6 +184,31 @@ class Field(object):
         # for name, spawn in self.spawns.items():
         #     self.npc_1.position = self.spawns[name]
 
+        image_path = os.path.join(RESOURCE_PATH, "dialog", "purplegem.png")
+        purple_html = "<body>"\
+                      f"<img src='{image_path}' "\
+                      "padding='50px 10px 10px 100px'>"\
+                      "<br><br>"\
+                      "<div text-align='center'>"\
+                      "<p><font color=#E0E080>"\
+                      "Has recibido 1 Cristal morado."\
+                      "<br>"\
+                      "Restablece 1 punto de <b>poder</b>"\
+                      "</font>""</p>""</div>"
+        image_path = os.path.join(RESOURCE_PATH, "dialog", "redgem.png")
+        red_html = "<body>"\
+                          f"<img src='{image_path}' "\
+                          "padding='50px 10px 10px 100px'>"\
+                          "<br><br>"\
+                          "<div text-align='center'>"\
+                          "<p><font color=#E0E080>"\
+                          "Has recibido 1 Cristal rojo."\
+                          "<br>"\
+                          "Restablece 1 corazón de <b>vida</b>"\
+                          "</font>""</p>""</div>"
+        self.dialog_win_purple = TextBox(self.game, purple_html)
+        self.dialog_win_red = TextBox(self.game, red_html)
+
     def init_menu(self):
 
         print("INIT MENU")
@@ -185,6 +219,7 @@ class Field(object):
 
         self.menu = Menu(options, self.music)
         # print(options)
+
 
     def handle_input(self, event):
         dead_zone = 0.25
@@ -209,6 +244,7 @@ class Field(object):
                             map_name = warp.get_warp_map()
                             # print(f"Change Field {map_name} from warp name {name}")
                             self.change_field(map_name)
+
                 elif event.button == 1:
                     # self.npc_1.shoot()
                     self.player.action()
@@ -222,7 +258,7 @@ class Field(object):
                     pass
 
             elif event.type == KEYDOWN:
-                if self.player.run_attack_action == False:
+                if not self.player.run_attack_action:
                     if event.key == K_LEFT:
                         self.player.velocity[0] = -self.hero_move_speed
 
@@ -237,12 +273,22 @@ class Field(object):
 
                     elif event.key == K_SPACE:
                         self.player.attack()
+
                     elif event.key == K_c:
                         for name, warp in self.warps.items():
                             if warp.get_player():
                                 map_name = warp.get_warp_map()
                                 # print(f"Change Field {map_name} from warp name {name}")
                                 self.change_field(map_name)
+
+                    elif event.key == K_x:
+                        if self.dialog_purple:
+                            self.dialog_win_purple.show_dialog(False)
+                            self.dialog_purple = True
+                        if self.dialog_red:
+                            self.dialog_win_red.show_dialog(False)
+                            self.dialog_red = True
+
                 else:
                     self.player.velocity[0] = 0
                     self.player.velocity[1] = 0
@@ -256,15 +302,14 @@ class Field(object):
                 else:
                     self.player.velocity[0] = 0
                     self.player.velocity[1] = 0
-
         elif self.field_mode == "MENU":
             self.menu.handle_input(event)
 
     def update(self, dt):
 
         if self.field_mode == "FIELD":
-
-            self.group.update(dt)
+            if self.player.life_bar > 0:
+                self.group.update(dt)
 
             # check if the sprite's feet are colliding with wall
             # sprite must have a rect called feet, and move_back method,
@@ -285,8 +330,12 @@ class Field(object):
                     if self.player.rect.colliderect(sprite.rect):
                         if sprite.name == "purplegem":
                             self.player.set_power(1)
+                            self.dialog_win_purple.show_dialog(True)
+                            self.dialog_purple = True
                         if sprite.name == "redgem":
                             self.player.increase_life(1)
+                            self.dialog_win_red.show_dialog(True)
+                            self.dialog_red = True
                         self.items_group.remove(sprite)
                         self.group.remove(sprite)
 
@@ -314,14 +363,12 @@ class Field(object):
                     for enemy in self.enemies:
                         if sprite.feet.colliderect(enemy.get_rect()):
                             if sprite.owner == "Player":
-                                item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])),10)
+                                item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
                                 self.items_group.add(item)
                                 self.group.add(item)
 
                                 self.group.remove(enemy)
                                 self.group.remove(sprite)
-
-
 
             if self.fading == "IN":
                 fade_speed = 1
@@ -339,15 +386,14 @@ class Field(object):
                     self.fading = None
                     self.fade_end = True
 
-
             # if self.fade_end is True:
             #     self.initialize()
             #     self.fade_end = False
             #     self.fading = "OUT"
 
-
-
             self.hud.update(dt)
+            self.dialog_win_red.update(dt)
+            self.dialog_win_purple.update(dt)
 
         elif self.field_mode == "MENU":
             self.menu.update(dt)

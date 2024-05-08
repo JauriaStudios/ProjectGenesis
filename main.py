@@ -52,7 +52,7 @@ class Game:
 
         self.loading = Menu(loading_options, self.music_list)
 
-        self.field = Field(self, "stage2.0.tmx", self.screen.get_size(), self.music_list)
+        self.field = Field(self, "stage2.0", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
         if self.mode == "LOADING":
@@ -91,6 +91,7 @@ class Game:
             #     self.map_layer.set_size((event.w, event.h))
 
             event = poll()
+
     def update(self, dt):
         """Tasks that occur over time should be handled here"""
         if self.mode == "MENU":

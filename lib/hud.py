@@ -38,7 +38,6 @@ class HUDSprite(pygame.sprite.Sprite):
         self.stam_recharge_tick = 0.05
         self.stam_recharge_acc = 0.0
 
-
     def get_health_percentage(self) -> float:
         return self.current_health/self.max_health
 

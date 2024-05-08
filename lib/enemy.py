@@ -245,15 +245,68 @@ class Enemy(pygame.sprite.Sprite):
                 self.prev_ticks = self.current_ticks
 
     def follow(self):
+        self.pid_plus()
 
-        radius = 90
+    def pid_plus(self):
+
+        radius = 80
+
+        # Check if position in X is greater than player position
+        if self.position[0] > self.player.position[0]:
+            self.x_pid.set_setpoint(self.player.position[0])
+            self.x_pid.update(self.position[0])
+            error = self.x_pid.get_error()
+            if error > radius:
+                self.velocity[0] = error
+            else:
+                self.velocity[0] = 0
+                self.wanderer = True
+                self.follower = False
+
+        elif self.position[0] < self.player.position[0]:
+            self.x_pid.set_setpoint(self.player.position[0])
+            self.x_pid.update(self.position[0])
+            error = self.x_pid.get_error()
+            if error < -radius:
+                self.velocity[0] = error
+            else:
+                self.velocity[0] = 0
+                self.wanderer = True
+                self.follower = False
+
+        # Check if position in Y is greater than player position
+        if self.position[1] > self.player.position[1]:
+            self.y_pid.set_setpoint(self.player.position[1])
+            self.y_pid.update(self.position[1])
+            error = self.y_pid.get_error()
+            if error > radius:
+                self.velocity[1] = error
+            else:
+                self.velocity[1] = 0
+                self.wanderer = True
+                self.follower = False
+
+        elif self.position[1] < self.player.position[1]:
+            self.y_pid.set_setpoint(self.player.position[1])
+            self.y_pid.update(self.position[1])
+            error = self.y_pid.get_error()
+            if error < -radius:
+                self.velocity[1] = error
+            else:
+                self.velocity[1] = 0
+                self.wanderer = True
+                self.follower = False
+
+    def pid_minus(self):
+
+        radius = 100
 
         # Check if position in X is greater than player position
         if self.position[0] < self.player.position[0]:
             self.x_pid.set_setpoint(self.player.position[0])
             self.x_pid.update(self.position[0])
             error = self.x_pid.get_error()
-            if error > radius:
+            if error < radius:
                 self.velocity[0] = error
             else:
                 self.velocity[0] = 0
@@ -262,7 +315,7 @@ class Enemy(pygame.sprite.Sprite):
             self.x_pid.set_setpoint(self.player.position[0])
             self.x_pid.update(self.position[0])
             error = self.x_pid.get_error()
-            if error < -radius:
+            if error > -radius:
                 self.velocity[0] = error
             else:
                 self.velocity[0] = 0
@@ -272,7 +325,7 @@ class Enemy(pygame.sprite.Sprite):
             self.y_pid.set_setpoint(self.player.position[1])
             self.y_pid.update(self.position[1])
             error = self.y_pid.get_error()
-            if error > radius:
+            if error < -radius:
                 self.velocity[1] = error
             else:
                 self.velocity[1] = 0
@@ -281,7 +334,7 @@ class Enemy(pygame.sprite.Sprite):
             self.y_pid.set_setpoint(self.player.position[1])
             self.y_pid.update(self.position[1])
             error = self.y_pid.get_error()
-            if error < -radius:
+            if error > radius:
                 self.velocity[1] = error
             else:
                 self.velocity[1] = 0
@@ -310,6 +363,8 @@ class Enemy(pygame.sprite.Sprite):
         print("el enemigo esta atacando")
 
     def wander(self, dt):
+
+        self.pid_minus()
 
         self.current_time = pygame.time.get_ticks()
 

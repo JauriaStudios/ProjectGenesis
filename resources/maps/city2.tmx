@@ -464,7 +464,7 @@
   <object id="11" type="collision" x="1600" y="190.667" width="42.6667" height="292"/>
   <object id="12" name="Warp" type="map_warp" x="785.917" y="268.417" width="32.1667" height="43.1667">
    <properties>
-    <property name="Map" value="02_map.tmx"/>
+    <property name="Map" value="02_map"/>
    </properties>
    <ellipse/>
   </object>
