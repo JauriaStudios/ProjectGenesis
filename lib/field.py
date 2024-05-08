@@ -1,4 +1,5 @@
 import os
+import random
 from pprint import pprint
 
 import oyaml as yaml
@@ -114,8 +115,8 @@ class Field(object):
 
         self.player = Player(self, name="Izzy", x=0, y=0)
 
-        self.player.increase_life(1)
-        self.player.set_power(1)
+        self.player.increase_life(3)
+        self.player.set_power(3)
 
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
@@ -314,7 +315,15 @@ class Field(object):
                     for enemy in self.enemies:
                         if sprite.feet.colliderect(enemy.get_rect()):
                             if sprite.owner == "Player":
-                                item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])),10)
+
+                                x = random.randint(0, 1)
+
+                                if x == 1:
+                                    item_name = "purplegem"
+                                else:
+                                    item_name = "redgem"
+
+                                item = Item(item_name, (int(enemy.position[0]), int(enemy.position[1])),10)
                                 self.items_group.add(item)
                                 self.group.add(item)
 
