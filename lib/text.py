@@ -19,16 +19,18 @@ class TextBox:
         self.html_text = html_text
         self.text_box = UITextBox(
                 html_text=self.html_text,
-                relative_rect=pygame.Rect(SCREEN_SIZE[0]/2-350/2, SCREEN_SIZE[1]/2-360/2, 350, 360),
+                relative_rect=pygame.Rect(SCREEN_SIZE[0]/2-350/2, SCREEN_SIZE[1]/2-360/2, 350, 365),
                 manager=self.manager)
 
         # self.text_box.scroll_bar.has_moved_recently = False
         self.text_box.update(5.0)
         self.text_box.visible = False
-
+        self.hide_counter = 2
+        self.max_counter = 0
     def update(self, dt):
         if self.text_box.visible:
             self.manager.draw_ui(window_surface=self.screen)
 
     def show_dialog(self, visible):
         self.text_box.visible = visible
+

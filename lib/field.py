@@ -53,7 +53,8 @@ class Field(object):
         self.walls = None
         self.enemies = None
         self.npcs = None
-
+        self.hide_counter = 0
+        self.max_counter = 2
         self.player_bullets = None
         self.map_name = name
         self.screen_size = screen_size
@@ -82,7 +83,6 @@ class Field(object):
         self.dialog_purple = False
         self.dialog_red = False
         self.dialog_on = False
-
         self.hud = Hud(self, self.game)
         # self.music.change_music(2)
         # self.music.play_music()
@@ -187,27 +187,30 @@ class Field(object):
         image_path = os.path.join(RESOURCE_PATH, "dialog", "purplegem.png")
         purple_html = "<body>"\
                       f"<img src='{image_path}' "\
-                      "padding='50px 10px 10px 100px'>"\
-                      "<br><br>"\
-                      "<div text-align='center'>"\
-                      "<p><font color=#E0E080>"\
-                      "Has recibido 1 Cristal morado."\
+                      "padding='40px 10px 0px 100px'>"\
                       "<br>"\
-                      "Restablece 1 punto de <b>poder</b>"\
-                      "</font>""</p>""</div>"
+                      "<p font_color=#ffffff>"\
+                      "Has recibido <font color=#6c17d3><b>1 Cristal morado.</b></font>" \
+                      "<br>" \
+                      "Restablece 1 punto de <font color=#6c17d3><b>poder.</b></font>" \
+                      "<br>" \
+                      "<p>Pulsa cualquier botón"\
+                      "</font>""</p>"
         image_path = os.path.join(RESOURCE_PATH, "dialog", "redgem.png")
         red_html = "<body>"\
                           f"<img src='{image_path}' "\
-                          "padding='50px 10px 10px 100px'>"\
-                          "<br><br>"\
-                          "<div text-align='center'>"\
-                          "<p><font color=#E0E080>"\
-                          "Has recibido 1 Cristal rojo."\
+                          "padding='40px 10px 0px 100px'>"\
                           "<br>"\
-                          "Restablece 1 corazón de <b>vida</b>"\
-                          "</font>""</p>""</div>"
+                          "<p><font color=#ffffff text_vert_alignment='center'>"\
+                          "Has recibido <font color=#e20909><b>1 Cristal rojo.</b></font>"\
+                          "<br>"\
+                          "Restablece 1 corazón de <font color=#e20909><b>vida.</b></font>" \
+                          "<br>" \
+                          "<p>Pulsa cualquier botón" \
+                          "</font>""</p>"
         self.dialog_win_purple = TextBox(self.game, purple_html)
         self.dialog_win_red = TextBox(self.game, red_html)
+
 
     def init_menu(self):
 
@@ -326,16 +329,23 @@ class Field(object):
                         else:
                             self.warps[name].go_outisde()
 
-                if isinstance(sprite, Item):
+                if isinstance(sprite, Item, ):
                     if self.player.rect.colliderect(sprite.rect):
                         if sprite.name == "purplegem":
                             self.player.set_power(1)
-                            self.dialog_win_purple.show_dialog(True)
-                            self.dialog_purple = True
+                            if self.hide_counter < self.max_counter:
+                                self.dialog_win_purple.show_dialog(True)
+                                self.dialog_purple = True
+                            elif self.hide_counter == self.max_counter:
+                                pass
                         if sprite.name == "redgem":
                             self.player.increase_life(1)
-                            self.dialog_win_red.show_dialog(True)
-                            self.dialog_red = True
+                            if self.hide_counter < self.max_counter:
+                                self.dialog_win_red.show_dialog(True)
+                                self.dialog_red = True
+                            elif self.hide_counter == self.max_counter:
+                                pass
+                        self.hide_counter += 1
                         self.items_group.remove(sprite)
                         self.group.remove(sprite)
 
