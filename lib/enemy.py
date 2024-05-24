@@ -72,6 +72,8 @@ class Enemy(pygame.sprite.Sprite):
         self.anim_action_down = SpriteStripAnim(self.image_path, (0, self.width*14, self.width, self.height), 6, -1, False, frame_speed)
         self.anim_action_right = SpriteStripAnim(self.image_path, (0, self.width*15, self.width, self.height), 6, -1, False, frame_speed)
 
+        #self.anim_dead = SpriteStripAnim(self.image_path, (0, self.height*21, self.width, self.height), 6, -1, False, frame_speed)
+
         self.anim_effect = OrderedDict()
         self.anim_attack = OrderedDict()
         self.anim_walk = OrderedDict()
@@ -216,8 +218,13 @@ class Enemy(pygame.sprite.Sprite):
 
         elif self.velocity[0] == 0 and self.velocity[1] == 0:
             # FIXME enemy attack
-            if self.run_attack_action == False:
+            if self.level <= 2:
+                self.anim_attack
+                pass
+            if self.level == 2:
+                self.run_attack_action = False
                 self.attack()
+
         else:
             self.image = self.anim_walk[self.direction].images[0]
 
@@ -239,7 +246,7 @@ class Enemy(pygame.sprite.Sprite):
                     # print(f"Play frame {self.animation_action_frame} in direction = {self.direction} facing {self.facing}")
                 else:
                     self.animation_action_frame = 0
-                    self.run_attack_action = False
+                    self.run_attack_action = True
                     # print("animation end")
 
                 self.prev_ticks = self.current_ticks
@@ -249,7 +256,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def pid_plus(self):
 
-        radius = 80
+        radius = 700
 
         # Check if position in X is greater than player position
         if self.position[0] > self.player.position[0]:
@@ -260,8 +267,8 @@ class Enemy(pygame.sprite.Sprite):
                 self.velocity[0] = error
             else:
                 self.velocity[0] = 0
-                self.wanderer = True
-                self.follower = False
+                self.wanderer = False
+                self.follower = True
 
         elif self.position[0] < self.player.position[0]:
             self.x_pid.set_setpoint(self.player.position[0])
@@ -299,7 +306,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def pid_minus(self):
 
-        radius = 100
+        radius = 200
 
         # Check if position in X is greater than player position
         if self.position[0] < self.player.position[0]:
@@ -356,6 +363,7 @@ class Enemy(pygame.sprite.Sprite):
         self.game.add_bullet(projectile)
 
     def attack(self):
+        self.pid_minus()
         self.shooting = True
         self.run_attack_action = True
 

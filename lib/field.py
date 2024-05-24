@@ -24,20 +24,20 @@ from .text import TextBox
 from .warp_point import WarpPoint
 from .player import Player
 from .npc import Npc
+from .effects import PurpleImpact
 
 
 class Field(object):
     def __init__(self, game, name, screen_size, music):
 
         print("INIT FIELD")
+        self.impact = None
         self.dialog_purple = None
         self.dialog_red = None
         self.dialog = None
         self.dialog_on = None
         self.hud = None
         self.game = game
-        self.player = None
-        self.pet = None
         self.hero_move_speed = None
         self.group = None
         self.map_layer = None
@@ -46,15 +46,21 @@ class Field(object):
         self.file_path = None
         self.menu = None
         self.player_collides = None
-
+        self.map_objects = None
         self.spawns = None
         self.items = None
         self.warps = None
         self.walls = None
+        self.player = None
+        self.pet = None
         self.enemies = None
         self.npcs = None
-        self.hide_counter = 0
-        self.max_counter = 2
+
+        self.hide_purple = False
+        self.hide_red = False
+
+        # self.max_counter = 2
+
         self.player_bullets = None
         self.map_name = name
         self.screen_size = screen_size
@@ -78,7 +84,7 @@ class Field(object):
         print("INITIALIZE FIELD")
 
 
-
+        self.impact = []
         self.player_bullets = []
         self.dialog_purple = False
         self.dialog_red = False
@@ -112,7 +118,7 @@ class Field(object):
 
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
 
-        self.hero_move_speed = 200  # pixels per second
+        self.hero_move_speed = 150  # pixels per second
 
         self.items = []
         self.npcs = []
@@ -120,11 +126,11 @@ class Field(object):
         self.walls = []
         self.warps = {}
         self.spawns = {}
-
+        self.map_objects = []
         self.player = Player(self, name="Izzy", x=0, y=0)
-
-        self.player.increase_life(1)
-        self.player.set_power(1)
+        self.impact = []
+        self.player.increase_life(2)
+        self.player.set_power(5)
 
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
 
@@ -176,7 +182,6 @@ class Field(object):
                 item = Item(item_name, (int(obj.x), int(obj.y)), 10)
                 self.items_group.add(item)
                 self.group.add(item)
-
             else:
                 pprint(obj)
 
@@ -194,7 +199,7 @@ class Field(object):
                       "<br>" \
                       "Restablece 1 punto de <font color=#6c17d3><b>poder.</b></font>" \
                       "<br>" \
-                      "<p>Pulsa cualquier botón"\
+                      "<p>Pulsa 'SPACE' para disparar" \
                       "</font>""</p>"
         image_path = os.path.join(RESOURCE_PATH, "dialog", "redgem.png")
         red_html = "<body>"\
@@ -206,7 +211,7 @@ class Field(object):
                           "<br>"\
                           "Restablece 1 corazón de <font color=#e20909><b>vida.</b></font>" \
                           "<br>" \
-                          "<p>Pulsa cualquier botón" \
+                          "<p>Pulsa la tecla X" \
                           "</font>""</p>"
         self.dialog_win_purple = TextBox(self.game, purple_html)
         self.dialog_win_red = TextBox(self.game, red_html)
@@ -329,23 +334,21 @@ class Field(object):
                         else:
                             self.warps[name].go_outisde()
 
-                if isinstance(sprite, Item, ):
+                if isinstance(sprite, Item):
                     if self.player.rect.colliderect(sprite.rect):
                         if sprite.name == "purplegem":
                             self.player.set_power(1)
-                            if self.hide_counter < self.max_counter:
+                            if self.hide_purple is False:
                                 self.dialog_win_purple.show_dialog(True)
                                 self.dialog_purple = True
-                            elif self.hide_counter == self.max_counter:
-                                pass
+                                self.hide_purple = True
                         if sprite.name == "redgem":
                             self.player.increase_life(1)
-                            if self.hide_counter < self.max_counter:
+                            if self.hide_red is False:
                                 self.dialog_win_red.show_dialog(True)
                                 self.dialog_red = True
-                            elif self.hide_counter == self.max_counter:
-                                pass
-                        self.hide_counter += 1
+                                self.hide_red = True
+
                         self.items_group.remove(sprite)
                         self.group.remove(sprite)
 

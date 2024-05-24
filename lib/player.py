@@ -38,7 +38,7 @@ class Player(pygame.sprite.Sprite):
         self.width = 64
         self.height = 64
 
-        frame_speed = 6
+        frame_speed = 5
 
         # self.sprite_sheet = SpriteSheet(self.image_path)
 
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = "DOWN"
         self.facing = 0
 
-        self.speed = 12
+        self.speed = 1
 
         self.power_laser_bar = 0
         self.life_bar = 0
