@@ -179,7 +179,7 @@ class Hud:
             if self.field.player:
                 power = self.field.player.get_power()
                 life = self.field.player.get_life()
-                #print(f"life {life}")
+                print(f"life {life}")
                 # TODO fix multiple calls to show()
                 if power >= 1:
                     # if self.power_laser_visible is not True:
