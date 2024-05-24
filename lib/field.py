@@ -1,4 +1,5 @@
 import os
+import random
 from pprint import pprint
 
 import oyaml as yaml
@@ -383,9 +384,15 @@ class Field(object):
 
                     for enemy_id, enemy in self.enemies.items():
                         if enemy.alive():
-                            if sprite.feet.colliderect(enemy.get_rect()):
+                            if sprite.feet.colliderect(enemy.get_feet()):
                                 if sprite.owner == "Player":
-                                    item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+
+                                    i = random.randint(0, 1)
+                                    if i == 1:
+                                        item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+                                    else:
+                                        item = Item("redgem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+
                                     self.items_group.add(item)
                                     self.group.add(item)
 

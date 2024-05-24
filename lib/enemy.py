@@ -114,7 +114,7 @@ class Enemy(pygame.sprite.Sprite):
         self._old_position = self.position
 
         self.rect = self.image.get_rect()
-        self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 8)
+        self.feet = pygame.Rect(0, 0, self.rect.width/2 * 0.5, 8)
 
         p = 3.0
         i = 2.0
@@ -397,8 +397,10 @@ class Enemy(pygame.sprite.Sprite):
                 self.velocity[1] = 0
 
     def get_rect(self):
-
         return self.rect
+
+    def get_feet(self):
+        return self.feet
 
     def get_id(self):
         return self.enemy_id
