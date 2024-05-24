@@ -115,6 +115,7 @@ class Field(object):
         # layer for sprites as 2
 
         self.items_group = pygame.sprite.Group()
+        self.enemy_group = pygame.sprite.Group()
 
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
 
@@ -122,7 +123,8 @@ class Field(object):
 
         self.items = []
         self.npcs = []
-        self.enemies = []
+        self.enemies = {}
+        self.enemies_killed = []
         self.walls = []
         self.warps = {}
         self.spawns = {}
@@ -136,6 +138,9 @@ class Field(object):
 
         self.group.add(self.player)
         self.group.add(self.pet)
+        self.group.add(self.pet)
+
+        enemy_count = 0
 
         for obj in self.tmx_data.objects:
 
@@ -158,12 +163,15 @@ class Field(object):
 
                 # print(F"Spawn {enemy_name} level {enemy_level}")
 
-                enemy = Enemy(self, self.player, name=enemy_name, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level)
+                enemy = Enemy(self, self.player, name=enemy_name, enemy_id=enemy_count, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level)
 
+                self.enemy_group.add(enemy)
                 self.group.add(enemy)
 
                 self.spawns[obj.name] = (int(obj.x), int(obj.y))
-                self.enemies.append(enemy)
+                self.enemies[enemy_count] = enemy
+
+                enemy_count += 1
 
             elif obj.type == "collision":
                 collision = Rect(int(obj.x), int(obj.y), int(obj.width), int(obj.height))
@@ -373,15 +381,21 @@ class Field(object):
                             self.player.decrease_life(1)
                             self.group.remove(sprite)
 
-                    for enemy in self.enemies:
-                        if sprite.feet.colliderect(enemy.get_rect()):
-                            if sprite.owner == "Player":
-                                item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
-                                self.items_group.add(item)
-                                self.group.add(item)
+                    for enemy_id, enemy in self.enemies.items():
+                        if enemy.alive():
+                            if sprite.feet.colliderect(enemy.get_rect()):
+                                if sprite.owner == "Player":
+                                    item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+                                    self.items_group.add(item)
+                                    self.group.add(item)
 
-                                self.group.remove(enemy)
-                                self.group.remove(sprite)
+                                    self.group.remove(sprite)
+                                    self.enemies_killed.append(enemy_id)
+
+                if len(self.enemies_killed) > 0:
+                    for enemy_id in self.enemies_killed:
+                        enemy = self.enemies[enemy_id]
+                        self.kill_enemy(enemy)
 
             if self.fading == "IN":
                 fade_speed = 1
@@ -420,6 +434,7 @@ class Field(object):
             self.group.center(self.player.rect.center)
 
             # draw the map and all sprites
+
             self.group.draw(screen)
 
             if self.fading is not None:
@@ -438,3 +453,9 @@ class Field(object):
         self.fading = "IN"
         self.previous_map_name = self.map_name
         self.map_name = name
+
+    def kill_enemy(self, enemy):
+        # self.player_bullets.append(bullet)
+
+        enemy.kill()
+        enemy.remove((self.enemy_group, self.group))

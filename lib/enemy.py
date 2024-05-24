@@ -18,12 +18,14 @@ class Enemy(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, game, player, name, x, y, width, height, follower=False, wanderer=False, level=0) -> None:
+    def __init__(self, game, player, name, enemy_id, x, y, width, height, follower=False, wanderer=False, level=0) -> None:
         super(Enemy, self).__init__()
 
         self.interval = None
         self.current_time = None
         self.previous_time = 0
+
+        self.enemy_id = enemy_id
 
         self.shooting = False
         self.run_attack_action = False
@@ -397,3 +399,6 @@ class Enemy(pygame.sprite.Sprite):
     def get_rect(self):
 
         return self.rect
+
+    def get_id(self):
+        return self.enemy_id
