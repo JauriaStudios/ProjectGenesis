@@ -24,7 +24,7 @@ class Item(pygame.sprite.Sprite):
         self.image = self.power_item.images[0]
         self.rect = self.image.get_rect()
 
-        self._position = (position[0], position[1])
+        self._position = (position[0]-self.width/2, position[1]-self.height/2)
         self._old_position = self.position
 
         self.rect.topleft = self._position

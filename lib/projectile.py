@@ -30,7 +30,7 @@ class Projectile(pygame.sprite.Sprite):
         self.x = self.player.position[0] + self.player.rect.width * 0.5
         self.y = self.player.position[1] + self.player.rect.height * 0.5
 
-        self.duration = 3 * 1000  # second * 1000 millis
+        self.duration = 1 * 1000  # second * 1000 millis
         self.prev_ticks = 0
         self.current_ticks = 0
 
@@ -80,9 +80,12 @@ class Projectile(pygame.sprite.Sprite):
     def update(self, dt: float) -> None:
 
         self.current_ticks += dt * 1000
-        if self.current_ticks - self.prev_ticks > self.duration:
-            self.game.remove_bullet(self)
+        print("SPRITE START")
+
+        if self.current_ticks - self.prev_ticks >= self.duration:
             self.prev_ticks = self.current_ticks
+            print("SPRITE FIN")
+            self.game.remove_bullet(self)
             return
 
         self.image = self.shoot_anim.next()

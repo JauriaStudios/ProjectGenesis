@@ -390,12 +390,11 @@ class Field(object):
                             if sprite.feet.colliderect(enemy.get_feet()):
                                 if sprite.owner == "Player":
 
-
                                     center_x = int(enemy.position[0]+enemy.width/2)
                                     center_y = int(enemy.position[1]+enemy.height/2)
 
                                     impact = PurpleImpact("impact", (center_x, center_y ),
-                                                           False,10)
+                                                           False,5)
 
                                     self.group.add(impact)
 
@@ -407,7 +406,7 @@ class Field(object):
                                     else:
                                         item_name = "redgem"
 
-                                    item = Item(item_name, (int(enemy.position[0]), int(enemy.position[1])), 10)
+                                    item = Item(item_name, (center_x, center_y), 10)
 
                                     self.items_group.add(item)
                                     self.group.add(item)
@@ -467,7 +466,8 @@ class Field(object):
 
     def remove_bullet(self, bullet):
         # self.player_bullets.append(bullet)
-        self.group.remove(bullet)
+        bullet.kill()
+        bullet.remove(self.group)
 
     def change_field(self, name):
         self.fading = "IN"
