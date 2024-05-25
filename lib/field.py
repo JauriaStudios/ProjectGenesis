@@ -115,10 +115,13 @@ class Field(object):
         # since we want the sprite to be on top of layer 1, we set the default
         # layer for sprites as 2
 
-        self.items_group = pygame.sprite.Group()
-        self.enemy_group = pygame.sprite.Group()
 
         self.group = PyscrollGroup(map_layer=self.map_layer, default_layer=8)
+        self.effects_group = PyscrollGroup(map_layer=self.map_layer, default_layer=9)
+
+        self.items_group = pygame.sprite.Group()
+        self.enemy_group = pygame.sprite.Group()
+        self.impacts_group = pygame.sprite.Group()
 
         self.hero_move_speed = 150  # pixels per second
 
@@ -387,22 +390,31 @@ class Field(object):
                             if sprite.feet.colliderect(enemy.get_feet()):
                                 if sprite.owner == "Player":
 
+
+                                    center_x = int(enemy.position[0]+enemy.width/2)
+                                    center_y = int(enemy.position[1]+enemy.height/2)
+
+                                    impact = PurpleImpact("impact", (center_x, center_y ),
+                                                           False,10)
+
+                                    self.group.add(impact)
+
+
                                     i = random.randint(0, 1)
+
                                     if i == 1:
-                                        item = Item("purplegem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+                                        item_name = "purplegem"
                                     else:
-                                        item = Item("redgem", (int(enemy.position[0]), int(enemy.position[1])), 10)
+                                        item_name = "redgem"
+
+                                    item = Item(item_name, (int(enemy.position[0]), int(enemy.position[1])), 10)
 
                                     self.items_group.add(item)
                                     self.group.add(item)
 
                                     self.group.remove(sprite)
-                                    self.enemies_killed.append(enemy_id)
+                                    self.kill_enemy(enemy)
 
-                if len(self.enemies_killed) > 0:
-                    for enemy_id in self.enemies_killed:
-                        enemy = self.enemies[enemy_id]
-                        self.kill_enemy(enemy)
 
             if self.fading == "IN":
                 fade_speed = 1
@@ -424,6 +436,7 @@ class Field(object):
             #     self.initialize()
             #     self.fade_end = False
             #     self.fading = "OUT"
+
 
             self.hud.update(dt)
             self.dialog_win_red.update(dt)

@@ -370,7 +370,7 @@ class Enemy(pygame.sprite.Sprite):
         self.run_attack_action = True
 
         self.attacking = True
-        print("el enemigo esta atacando")
+        # print("el enemigo esta atacando")
 
     def wander(self, dt):
 
