@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="28">
- <tileset firstgid="1" source="atlas.tsx"/>
+ <tileset firstgid="1" name="atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
+  <image source="terrain_atlas.png" width="1024" height="1024"/>
+  <wangsets>
+   <wangset name="Unnamed Set" type="mixed" tile="-1">
+    <wangcolor name="cesped" color="#007d00" tile="-1" probability="1"/>
+    <wangcolor name="agua" color="#1c71d8" tile="-1" probability="1"/>
+    <wangtile tileid="358" wangid="1,1,0,2,0,1,1,1"/>
+    <wangtile tileid="359" wangid="1,1,0,2,2,2,0,1"/>
+    <wangtile tileid="360" wangid="1,1,1,1,0,2,0,1"/>
+    <wangtile tileid="390" wangid="0,2,2,2,0,1,1,1"/>
+    <wangtile tileid="391" wangid="2,2,2,2,2,2,2,2"/>
+    <wangtile tileid="392" wangid="0,1,1,1,0,2,2,2"/>
+    <wangtile tileid="422" wangid="0,2,0,1,1,1,1,1"/>
+    <wangtile tileid="423" wangid="2,2,0,1,1,1,0,2"/>
+    <wangtile tileid="424" wangid="0,1,1,1,1,1,0,2"/>
+   </wangset>
+  </wangsets>
+ </tileset>
+ <tileset firstgid="1025" name="AutoMap Rules" tilewidth="32" tileheight="32" tilecount="5" columns="5" tilerendersize="grid" fillmode="preserve-aspect-fit">
+  <image source="qrc:/automap-tiles.svg" width="160" height="32"/>
+  <tile id="3">
+   <properties>
+    <property name="MatchType" value="Empty"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="MatchType" value="Ignore"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="MatchType" value="NonEmpty"/>
+   </properties>
+  </tile>
+  <tile id="4">
+   <properties>
+    <property name="MatchType" value="Other"/>
+   </properties>
+  </tile>
+  <tile id="0">
+   <properties>
+    <property name="MatchType" value="Negate"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer id="1" name="Ground1" width="64" height="64">
   <data encoding="csv">
 514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,515,516,514,

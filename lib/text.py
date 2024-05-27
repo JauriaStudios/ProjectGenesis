@@ -18,6 +18,7 @@ class TextBox:
         self.visible = False
         self.html_text = html_text
         self.text_box = UITextBox(
+
                 html_text=self.html_text,
                 relative_rect=pygame.Rect(SCREEN_SIZE[0]/2-350/2, SCREEN_SIZE[1]/2-360/2, 350, 360),
                 manager=self.manager)

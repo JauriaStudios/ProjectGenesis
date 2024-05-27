@@ -161,7 +161,19 @@ def main() -> None:
 
     pygame.display.set_caption("Project Genesis")
 
-    manager = pygame_gui.UIManager(SCREEN_SIZE)
+    theme_path = os.path.join(RESOURCE_PATH, "hud", "theme.json")
+    manager = pygame_gui.UIManager(SCREEN_SIZE, theme_path=theme_path)
+
+    font_path = os.path.join(RESOURCE_PATH, "fonts", "PressStart2P-Regular.ttf")
+    manager.add_font_paths("Press Start 2P", font_path)
+
+    # fonts = [
+    #     {"name": "press_start_12", "point_size": 12, "style": "regular"},
+    #     {"name": "press_start_14", "point_size": 14, "style": "regular"},
+    #     {"name": "press_start_18", "point_size": 18, "style": "regular"}
+    # ]
+    #
+    # manager.preload_fonts(fonts)
     try:
         game = Game(screen, manager)
         game.run()
