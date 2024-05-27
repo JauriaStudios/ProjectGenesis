@@ -13,16 +13,15 @@ class Projectile(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, player, game, owner, bullet_vector=None ):
+    def __init__(self, player, game, name, owner, bullet_vector=None):
         super(Projectile, self).__init__()
 
         self.game = game
         self.owner = owner
         self.player = player
-
-        self.name = "note1"
+        self.name = name
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        
+
         self.image_path = os.path.join(base_dir, RESOURCE_PATH, "shoots", f"{self.name}.png")
         self.rotation = 0
         self.rotation_speed = 20
@@ -42,7 +41,7 @@ class Projectile(pygame.sprite.Sprite):
 
         self.shoot_anim = SpriteStripAnim(self.image_path, (0, 0, self.height, self.width), 5, -1, True, frame_speed)
 
-        self.image = self.shoot_anim.images[0]
+
 
         if bullet_vector is not None:
             self.velocity = bullet_vector
@@ -58,7 +57,7 @@ class Projectile(pygame.sprite.Sprite):
 
         self._position = [self.x, self.y]
         self._old_position = self.position
-
+        self.image = self.shoot_anim.images[0]
         self.rect = self.image.get_rect()
         self.feet = pygame.Rect(0, 0, self.rect.width * 0.5, 8)
 
@@ -80,11 +79,11 @@ class Projectile(pygame.sprite.Sprite):
     def update(self, dt: float) -> None:
 
         self.current_ticks += dt * 1000
-        print("SPRITE START")
+        # print("SPRITE START")
 
         if self.current_ticks - self.prev_ticks >= self.duration:
             self.prev_ticks = self.current_ticks
-            print("SPRITE FIN")
+            # print("SPRITE FIN")
             self.game.remove_bullet(self)
             return
 

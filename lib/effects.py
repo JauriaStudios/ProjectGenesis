@@ -18,7 +18,7 @@ class PurpleImpact(pygame.sprite.Sprite):
         self.width = 72
         self.height = 70
 
-        self.speed = 6
+        self.speed = 9
         self.impact_anim = SpriteStripAnim(self.image_path, (0, 0, self.width, self.height), count=4, colorkey=-1, loop=loop, frames=frame_speed)
 
         self.image = self.impact_anim.images[0]

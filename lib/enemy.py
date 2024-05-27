@@ -18,7 +18,7 @@ class Enemy(pygame.sprite.Sprite):
 
     """
 
-    def __init__(self, game, player, name, enemy_id, x, y, width, height, follower=False, wanderer=False, level=0) -> None:
+    def __init__(self, game, player, name, enemy_id, x, y, width, height, follower=False, wanderer=False, level=0, extra_life=0) -> None:
         super(Enemy, self).__init__()
 
         self.interval = None
@@ -51,7 +51,10 @@ class Enemy(pygame.sprite.Sprite):
         self.follower = follower
         self.wanderer = wanderer
         self.level = level
+        self.extra_life = extra_life
 
+        self.powerbar = 0
+        self.lifebar = 0
         frame_speed = 6
 
         self.anim_effect_up = SpriteStripAnim(self.image_path, (0, self.width*0, self.width, self.height), 7, -1, False, frame_speed)
@@ -138,7 +141,14 @@ class Enemy(pygame.sprite.Sprite):
                              integrator=integrator,
                              integrator_max=integrator_max,
                              integrator_min=integrator_min)
-
+        self.initialize()
+    def initialize(self):
+        if self.level == 2:
+            self.set_power(5)
+            self.set_life(3)
+        elif self.level == 3:
+            self.set_power(12)
+            self.set_life(5)
     @property
     def position(self) -> List[int]:
         return list(self._position)
@@ -360,8 +370,15 @@ class Enemy(pygame.sprite.Sprite):
         norm = math.sqrt(distance[0] ** 2 + distance[1] ** 2)
         direction = [distance[0] / norm, distance[1] / norm]
         bullet_vector = [direction[0] * math.sqrt(20), direction[1] * math.sqrt(10)]
-        projectile = Projectile(self, self.game, "Enemy",  bullet_vector)
+        name = None
 
+        if self.level == 2:
+            name = "note3"
+        if self.level <= 3:
+            i = random.randint(0, 4)
+            names = ["note1", "note2", "note3", "note4", "note5"]
+            name = names[i]
+        projectile = Projectile(self, self.game, name, "Enemy", bullet_vector)
         self.game.add_bullet(projectile)
 
     def attack(self):
@@ -404,3 +421,19 @@ class Enemy(pygame.sprite.Sprite):
 
     def get_id(self):
         return self.enemy_id
+
+    def set_power(self, value):
+        self.powerbar += value
+
+    def get_power(self):
+        return self.powerbar
+
+    def decrease_life(self, value):
+        if self.lifebar >= 1:
+            self.lifebar -= value
+
+    def get_life(self):
+        return self.lifebar
+
+    def set_life(self, value):
+        self.lifebar = value

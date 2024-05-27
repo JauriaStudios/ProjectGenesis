@@ -1,6 +1,7 @@
 import math
 import os
 from collections import OrderedDict
+from random import randint
 from typing import List
 
 import time
@@ -216,9 +217,13 @@ class Player(pygame.sprite.Sprite):
         #
 
         if self.power_laser_bar > 0:
-            projectile = Projectile(self, self.game, "Player", None)
+            i = randint(0, 1)
+            names = ["note1", "note2"]
+            name = names[i]
+            projectile = Projectile(self, self.game, name, "Player", None)
             self.game.add_bullet(projectile)
-            self.power_laser_bar -= 1
+            self.power_laser_bar -= 0.5
+
 
     def attack(self):
         self.shooting = True

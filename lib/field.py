@@ -137,13 +137,10 @@ class Field(object):
         self.impact = []
         self.player.increase_life(2)
         self.player.set_power(5)
-
         self.pet = Pet(self, self.player, name="gengar", x=0, y=0, width=48, height=48, follower=True, wanderer=False)
-
         self.group.add(self.player)
         self.group.add(self.pet)
         self.group.add(self.pet)
-
         enemy_count = 0
 
         for obj in self.tmx_data.objects:
@@ -164,10 +161,10 @@ class Field(object):
 
                 enemy_name = obj.properties.get("Name")
                 enemy_level = obj.properties.get("Level")
-
+                enemy_extra_life = obj.properties.get("ExtraLife")
                 # print(F"Spawn {enemy_name} level {enemy_level}")
 
-                enemy = Enemy(self, self.player, name=enemy_name, enemy_id=enemy_count, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level)
+                enemy = Enemy(self, self.player, name=enemy_name, enemy_id=enemy_count, x=int(obj.x), y=int(obj.y), width=64, height=64, follower=True, wanderer=False, level=enemy_level, extra_life=enemy_extra_life)
 
                 self.enemy_group.add(enemy)
                 self.group.add(enemy)
@@ -382,8 +379,9 @@ class Field(object):
                 elif isinstance(sprite, Projectile):
                     if sprite.feet.colliderect(self.player.get_rect()):
                         if sprite.owner == "Enemy":
-                            self.player.decrease_life(1)
+                            self.player.decrease_life(1/2)
                             self.group.remove(sprite)
+
 
                     for enemy_id, enemy in self.enemies.items():
                         if enemy.alive():
@@ -397,22 +395,23 @@ class Field(object):
                                                            False,5)
 
                                     self.group.add(impact)
-
-
-                                    i = random.randint(0, 1)
-
-                                    if i == 1:
-                                        item_name = "purplegem"
-                                    else:
-                                        item_name = "redgem"
-
-                                    item = Item(item_name, (center_x, center_y), 10)
-
-                                    self.items_group.add(item)
-                                    self.group.add(item)
-
                                     self.group.remove(sprite)
-                                    self.kill_enemy(enemy)
+
+                                    enemy.decrease_life(1)
+                                    if enemy.get_life() == 0:
+                                        self.kill_enemy(enemy)
+
+                                        i = random.randint(0, 1)
+
+                                        if i == 1:
+                                            item_name = "purplegem"
+                                        else:
+                                            item_name = "redgem"
+
+                                        item = Item(item_name, (center_x, center_y), 10)
+
+                                        self.items_group.add(item)
+                                        self.group.add(item)
 
 
             if self.fading == "IN":
@@ -463,7 +462,6 @@ class Field(object):
     def add_bullet(self, bullet):
         # self.player_bullets.append(bullet)
         self.group.add(bullet)
-
     def remove_bullet(self, bullet):
         # self.player_bullets.append(bullet)
         bullet.kill()
