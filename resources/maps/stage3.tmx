@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="27">
- <tileset firstgid="1" source="../../../../Documentos/stage 3/scifi_space_rpg_tiles.tsx"/>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="16" tileheight="16" infinite="0" nextlayerid="10" nextobjectid="27">
+ <tileset firstgid="1" source="scifi_space_rpg_tiles.tsx"/>
  <tileset firstgid="2281" source="fondo2.tsx"/>
- <tileset firstgid="2401" source="../../../../Documentos/stage 3/middle.tsx"/>
+ <tileset firstgid="2401" source="middle.tsx"/>
  <layer id="6" name="bl" width="100" height="40">
   <data encoding="csv">
 1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,1291,
