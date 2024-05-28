@@ -144,11 +144,11 @@ class Enemy(pygame.sprite.Sprite):
         self.initialize()
     def initialize(self):
         if self.level == 2:
-            self.set_power(5)
+            self.set_power(2)
             self.set_life(3)
         elif self.level == 3:
-            self.set_power(12)
-            self.set_life(5)
+            self.set_power(9)
+            self.set_life(9)
     @property
     def position(self) -> List[int]:
         return list(self._position)
@@ -374,7 +374,7 @@ class Enemy(pygame.sprite.Sprite):
 
         if self.level == 2:
             name = "note3"
-        if self.level <= 3:
+        elif self.level == 3:
             i = random.randint(0, 4)
             names = ["note1", "note2", "note3", "note4", "note5"]
             name = names[i]

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="48" nextobjectid="89">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="160" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="48" nextobjectid="109">
  <tileset firstgid="1" source="cyberpunk-corridor.tsx"/>
  <tileset firstgid="1217" source="back.tsx"/>
  <tileset firstgid="1349" source="cyberpunk-corridor-foreground.tsx"/>
@@ -158,64 +158,95 @@
    </properties>
    <point/>
   </object>
-  <object id="55" name="Power item" type="item" x="830" y="214">
+  <object id="55" name="Power item" type="item" x="630" y="187">
    <properties>
     <property name="Name" value="purplegem"/>
    </properties>
    <point/>
   </object>
-  <object id="56" name="Gem item" type="item" x="430.667" y="208.667">
+  <object id="97" name="level 2 Lobo" type="enemy_spawn" x="1065.34" y="180.667">
    <properties>
-    <property name="Name" value="redgem"/>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="lobo_lvl2"/>
    </properties>
    <point/>
   </object>
-  <object id="69" name="level 1 conejo" type="enemy_spawn" x="1366" y="196">
+  <object id="98" name="level 2 Lobo" type="enemy_spawn" x="2469.67" y="170.001">
    <properties>
-    <property name="AttackType" value="melee"/>
-    <property name="Level" type="int" value="1"/>
-    <property name="Name" value="conejo_lvl1"/>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="lobo_lvl2"/>
    </properties>
    <point/>
   </object>
-  <object id="77" name="level 1 conejo" type="enemy_spawn" x="1769" y="184">
+  <object id="99" name="Power item" type="item" x="2411" y="171.667">
    <properties>
-    <property name="AttackType" value="melee"/>
-    <property name="Level" type="int" value="1"/>
-    <property name="Name" value="conejo_lvl1"/>
+    <property name="Name" value="purplegem"/>
    </properties>
    <point/>
   </object>
-  <object id="80" name="level 1 rata" type="enemy_spawn" x="2292" y="190">
+  <object id="100" name="level 1 Skeleton" type="enemy_spawn" x="1294.66" y="167.334">
    <properties>
     <property name="AttackType" value="melee"/>
     <property name="Level" type="int" value="1"/>
-    <property name="Name" value="rata_lvl1"/>
+    <property name="Name" value="Malote"/>
    </properties>
    <point/>
   </object>
-  <object id="82" name="level 1 conejo" type="enemy_spawn" x="2463" y="179">
+  <object id="101" name="level 1 cerdo" type="enemy_spawn" x="800.667" y="182.333">
    <properties>
     <property name="AttackType" value="melee"/>
     <property name="Level" type="int" value="1"/>
-    <property name="Name" value="conejo_lvl1"/>
+    <property name="Name" value="cerdo_lvl2"/>
    </properties>
    <point/>
   </object>
-  <object id="85" name="level 1 rata" type="enemy_spawn" x="1570" y="208">
+  <object id="102" name="level 2 Furro" type="enemy_spawn" x="2260" y="169">
    <properties>
-    <property name="AttackType" value="melee"/>
-    <property name="ExtraLife" type="int" value="3"/>
-    <property name="Level" type="int" value="1"/>
-    <property name="Name" value="rata_lvl1"/>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="cerdo_lvl2"/>
    </properties>
    <point/>
   </object>
-  <object id="86" name="level 1 rata" type="enemy_spawn" x="1099" y="202">
+  <object id="103" name="level 2 Lobo" type="enemy_spawn" x="2335.33" y="168.667">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="lobo_lvl2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="104" name="level 2 Furro" type="enemy_spawn" x="2503.33" y="180">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="cerdo_lvl2"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="105" name="level 1 Skeleton" type="enemy_spawn" x="1950" y="163.333">
    <properties>
     <property name="AttackType" value="melee"/>
     <property name="Level" type="int" value="1"/>
-    <property name="Name" value="rata_lvl1"/>
+    <property name="Name" value="Malote"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="106" name="level 1 Skeleton" type="enemy_spawn" x="1707.33" y="170">
+   <properties>
+    <property name="AttackType" value="melee"/>
+    <property name="Level" type="int" value="1"/>
+    <property name="Name" value="Malote"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="108" name="level 2 Furro" type="enemy_spawn" x="1559.33" y="210">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="cerdo_lvl2"/>
    </properties>
    <point/>
   </object>
@@ -320,25 +351,17 @@
   <object id="3" type="collision" x="-14.903" y="146.343" width="20.501" height="154.18"/>
   <object id="4" type="collision" x="0.098022" y="0.0585" width="589.191" height="146.05"/>
   <object id="5" type="collision" x="767.829" y="0.9505" width="1018.56" height="147.972"/>
-  <object id="12" type="collision" x="591" y="0.5" width="175.5" height="131.121"/>
+  <object id="12" type="collision" x="591" y="0.5" width="175.5" height="145.121"/>
   <object id="13" type="collision" x="-1.25" y="300.5" width="2561.34" height="23.5"/>
   <object id="59" type="collision" x="1963.06" y="0.220521" width="603.082" height="145.063"/>
   <object id="60" type="collision" x="2554.27" y="144.938" width="7.1778" height="154.599"/>
-  <object id="61" type="collision" x="1787.09" y="0.436721" width="175.5" height="131.152"/>
+  <object id="61" type="collision" x="1787.09" y="0.436721" width="175.5" height="142.152"/>
  </objectgroup>
  <objectgroup id="47" name="warp">
   <object id="67" name="Warp" type="map_warp" x="2504.21" y="140" width="42.875" height="24.375">
    <properties>
-    <property name="Map" value="city2"/>
+    <property name="Map" value="stage3"/>
    </properties>
-  </object>
-  <object id="88" name="level 2 Lobo" type="enemy_spawn" x="687" y="218">
-   <properties>
-    <property name="Attack" value="projectiles"/>
-    <property name="Level" type="int" value="2"/>
-    <property name="Name" value="lobo_lvl2"/>
-   </properties>
-   <point/>
   </object>
  </objectgroup>
 </map>

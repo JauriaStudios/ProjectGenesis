@@ -217,10 +217,7 @@ class Player(pygame.sprite.Sprite):
         #
 
         if self.power_laser_bar > 0:
-            i = randint(0, 1)
-            names = ["note1", "note2"]
-            name = names[i]
-            projectile = Projectile(self, self.game, name, "Player", None)
+            projectile = Projectile(self, self.game, "note1", "Player", None)
             self.game.add_bullet(projectile)
             self.power_laser_bar -= 0.5
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="32">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="100" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="18" nextobjectid="39">
  <tileset firstgid="1" source="tileset.tsx"/>
  <tileset firstgid="817" source="buildings-bg.tsx"/>
  <tileset firstgid="880" source="fondo2.tsx"/>
@@ -438,22 +438,13 @@
   <object id="8" type="collision" x="-1.00167" y="134.333" width="1600.67" height="56"/>
   <object id="9" type="collision" x="-43.3333" y="189.333" width="42.6667" height="292"/>
   <object id="11" type="collision" x="1600" y="190.667" width="42.6667" height="292"/>
-  <object id="12" name="Warp" type="map_warp" x="1561.26" y="275.084" width="32.1667" height="43.1667">
+  <object id="12" name="Warp" type="map_warp" x="1493.26" y="151.084" width="40.1667" height="59.1667">
    <properties>
-    <property name="Map" value="stage3"/>
+    <property name="Map" value="stage2.0"/>
    </properties>
    <ellipse/>
   </object>
-  <object id="17" name="level 1 Furro" type="enemy_spawn" x="339.333" y="253.334">
-   <properties>
-    <property name="AttackType" value="melee"/>
-    <property name="Level" type="int" value="1"/>
-    <property name="Name" value="Malote"/>
-    <property name="extra_life" type="int" value="0"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="19" name="level 1 Furro" type="enemy_spawn" x="1239.33" y="288">
+  <object id="19" name="level 1 Skeleton" type="enemy_spawn" x="1547.33" y="390">
    <properties>
     <property name="AttackType" value="melee"/>
     <property name="Level" type="int" value="1"/>
@@ -461,47 +452,49 @@
    </properties>
    <point/>
   </object>
-  <object id="26" name="level 2 Furro" type="enemy_spawn" x="1472.67" y="226">
-   <properties>
-    <property name="Attack" value="projectiles"/>
-    <property name="Level" type="int" value="2"/>
-    <property name="Name" value="cerdo_lvl2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="27" name="level 2 Lobo" type="enemy_spawn" x="682" y="271.333">
-   <properties>
-    <property name="Attack" value="projectiles"/>
-    <property name="Level" type="int" value="2"/>
-    <property name="Name" value="lobo_lvl2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="28" name="level 1 cerdo" type="enemy_spawn" x="502.667" y="266.666">
+  <object id="28" name="level 1 cerdo" type="enemy_spawn" x="788.667" y="274.666">
    <properties>
     <property name="AttackType" value="melee"/>
     <property name="Level" type="int" value="1"/>
     <property name="Name" value="cerdo_lvl2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="29" name="level 2 Lobo" type="enemy_spawn" x="988" y="244">
-   <properties>
-    <property name="Attack" value="projectiles"/>
-    <property name="Level" type="int" value="2"/>
-    <property name="Name" value="lobo_lvl2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="30" name="Power item" type="item" x="1155.33" y="218.666">
-   <properties>
-    <property name="Name" value="purplegem"/>
    </properties>
    <point/>
   </object>
   <object id="31" name="Gem item" type="item" x="73.3333" y="249.333">
    <properties>
     <property name="Name" value="redgem"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="32" name="level 1 conejo" type="enemy_spawn" x="472" y="387.667">
+   <properties>
+    <property name="AttackType" value="melee"/>
+    <property name="Level" type="int" value="1"/>
+    <property name="Name" value="conejo_lvl1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="33" name="level 1 rata" type="enemy_spawn" x="1043" y="369.667">
+   <properties>
+    <property name="AttackType" value="melee"/>
+    <property name="Level" type="int" value="1"/>
+    <property name="Name" value="rata_lvl1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="34" name="level 1 conejo" type="enemy_spawn" x="1342" y="246.667">
+   <properties>
+    <property name="AttackType" value="melee"/>
+    <property name="Level" type="int" value="1"/>
+    <property name="Name" value="conejo_lvl1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="38" name="level 2 Furro" type="enemy_spawn" x="1056" y="264">
+   <properties>
+    <property name="Attack" value="projectiles"/>
+    <property name="Level" type="int" value="2"/>
+    <property name="Name" value="cerdo_lvl2"/>
    </properties>
    <point/>
   </object>
