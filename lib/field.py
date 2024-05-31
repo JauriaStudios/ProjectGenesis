@@ -37,6 +37,8 @@ class Field(object):
         self.dialog_red = None
         self.dialog = None
         self.dialog_on = None
+        self.dialog_continue = None
+        self.dialog_game_over = None
         self.hud = None
         self.game = game
         self.hero_move_speed = None
@@ -87,6 +89,8 @@ class Field(object):
 
         self.impact = []
         self.player_bullets = []
+        self.dialog_continue = False
+
         self.dialog_purple = False
         self.dialog_red = False
         self.dialog_on = False
@@ -222,8 +226,17 @@ class Field(object):
                           "<br>" \
                           "<p>Pulsa la tecla X" \
                           "</font>""</p>"
+        gameover_html = "<body>" \
+                   "padding='40px 10px 0px 100px'>" \
+                   "<br>" \
+                   "<p><font color=#ffffff text_vert_alignment='center'>" \
+                   "GAME OVER</font>" \
+                   "<br>" \
+                   "<b>Continue?</b></font>" \
+                   "<br>"
         self.dialog_win_purple = TextBox(self.game, purple_html)
         self.dialog_win_red = TextBox(self.game, red_html)
+        self.dialog_game_over = TextBox(self.game, gameover_html)
 
 
     def init_menu(self):
@@ -245,7 +258,6 @@ class Field(object):
             if event.type == JOYAXISMOTION:
                 if event.axis == 0 or event.axis == 1:
                     if abs(event.value) > dead_zone:
-
                         self.player.velocity[event.axis] = event.value * self.hero_move_speed
                     else:
                         self.player.velocity[event.axis] = 0
@@ -415,7 +427,7 @@ class Field(object):
 
 
             if self.fading == "IN":
-                fade_speed = 1
+                fade_speed = 2
                 self.alpha += fade_speed
                 if self.alpha >= 255:
                     self.fading = None
@@ -424,7 +436,7 @@ class Field(object):
                         self.initialize()
 
             elif self.fading == "OUT":
-                fade_speed = 1
+                fade_speed = 2
                 self.alpha -= fade_speed
                 if self.alpha <= 0:
                     self.fading = None

@@ -10,15 +10,16 @@ from lib.const import RESOURCE_PATH, ROOT_PATH, SCREEN_SIZE
 
 
 class TextBox:
-    def __init__(self, game, html_text):
+    def __init__(self, game, html_text, font_name=None):
         super().__init__()
         self.game = game
         self.manager = self.game.manager
         self.screen = self.game.screen
         self.visible = False
         self.html_text = html_text
+        self.font = os.path.join(RESOURCE_PATH, "fonts", "PressStart2P-Regular.ttf")
+        self.font = font_name
         self.text_box = UITextBox(
-
                 html_text=self.html_text,
                 relative_rect=pygame.Rect(SCREEN_SIZE[0]/2-350/2, SCREEN_SIZE[1]/2-360/2, 350, 360),
                 manager=self.manager)

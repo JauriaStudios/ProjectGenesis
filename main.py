@@ -32,7 +32,6 @@ class Game:
         self.screen = screen
         self.fps = 60
         self.music_list = MusicList()
-
         self.manager = manager
         self.running = False
         self.mode = "MENU"
@@ -41,6 +40,8 @@ class Game:
         self.loading_start = 0
         self.loading_end = 2 * 1000  # 4 secs for loading screen
         self.shooting = False
+        self.dialog_continue = None
+        self.dialog_game_over = None
 
         with open(os.path.join(ROOT_PATH, RESOURCE_PATH, "menu", "main.yml")) as fh:
             menu_options = yaml.load(fh, Loader=yaml.FullLoader)
@@ -52,7 +53,7 @@ class Game:
 
         self.loading = Menu(loading_options, self.music_list)
 
-        self.field = Field(self, "stage2.0", self.screen.get_size(), self.music_list)
+        self.field = Field(self, "city2", self.screen.get_size(), self.music_list)
 
     def draw(self, dt) -> None:
         if self.mode == "LOADING":
@@ -68,7 +69,6 @@ class Game:
         poll = pygame.event.poll
 
         event = poll()
-
         while event:
             if event.type == QUIT:
                 self.running = False
@@ -76,8 +76,12 @@ class Game:
 
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
-                    self.running = False
-                    break
+                    self.dialog_game_over.show_dialog(True)
+                    self.dialog_continue = True
+
+                    if event.type == K_ESCAPE:
+                        self.running = False
+                        break
 
             if self.mode == "MENU":
                 self.menu.handle_input(event)
